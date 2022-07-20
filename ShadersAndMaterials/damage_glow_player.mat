@@ -1,0 +1,331 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: damage_glow_player
+  m_Shader: {fileID: 4800000, guid: ed3f465ffac1afb44b609394c0db1077, type: 3}
+  m_ShaderKeywords: FINALPASS SOFTPARTICLES_ON _ALPHAPREMULTIPLY_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _1st_ShadeMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _2nd_ShadeMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ClippingMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ColorMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailEmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FlickerTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: c5561970e6fa2564381647a98395a7b6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Matcap1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Matcap2:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Matcap3:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Matcap4:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MatcapMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OutlineMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Ramp:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ShadingGradeMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecularDetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ThicknessMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _WarpTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _1st_ShadeColor_Feather: 0.01
+    - _1st_ShadeColor_Step: 0.5
+    - _2nd_ShadeColor_Feather: 0.01
+    - _2nd_ShadeColor_Step: 0
+    - _AlbedoAlphaMode: 0
+    - _AlphaSharp: 0
+    - _AnimationSpeed: 10
+    - _Anisotropy: 0.8
+    - _ApplyFog: 0
+    - _AtoCMode: 0
+    - _BlendOp: 0
+    - _BumpScale: 1
+    - _CelSpecularSoftness: 0.02
+    - _CelSpecularSteps: 1
+    - _ColorMask: 15
+    - _ColorWriteMask: 15
+    - _Columns: 2
+    - _Crosstone2ndSeparation: 0
+    - _CrosstoneToneSeparation: 0
+    - _CullMode: 2
+    - _CustomGradient: 1
+    - _CustomGradientAlpha: 2
+    - _CustomMode: 2
+    - _CustomWarpPow: 0
+    - _Cutoff: 0.5
+    - _Detail: 0
+    - _DetailAlbedoMapScale: 1
+    - _DetailEmissionUVSec: 0
+    - _DetailNormalMapScale: 1
+    - _DiffuseGeomShadowFactor: 1
+    - _DstBlend: 10
+    - _EdgeFalloff: 5
+    - _EmissionDetailType: 0
+    - _EmissiveLightSenseEnd: 0
+    - _EmissiveLightSenseStart: 1
+    - _FlickerSpeed: 5
+    - _FogPow: 0
+    - _FogScale: 0.75
+    - _FrameNumber: 0
+    - _FresnelLightMask: 1
+    - _FresnelStrength: 0.5
+    - _FresnelStrengthInv: 0.5
+    - _FresnelWidth: 0.5
+    - _FresnelWidthInv: 0.5
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _HDRIntensity: 1
+    - _IndirectShadingType: 0
+    - _Intensity: 10
+    - _InvFade: 1
+    - _InventoryItem01Animated: 1
+    - _InventoryItem02Animated: 1
+    - _InventoryItem03Animated: 1
+    - _InventoryItem04Animated: 1
+    - _InventoryItem05Animated: 1
+    - _InventoryItem06Animated: 1
+    - _InventoryItem07Animated: 1
+    - _InventoryItem08Animated: 1
+    - _InventoryItem09Animated: 1
+    - _InventoryItem10Animated: 1
+    - _InventoryItem11Animated: 1
+    - _InventoryItem12Animated: 1
+    - _InventoryItem13Animated: 1
+    - _InventoryItem14Animated: 1
+    - _InventoryItem15Animated: 1
+    - _InventoryItem16Animated: 1
+    - _InventoryStride: 1
+    - _LightClampAnimated: 0
+    - _LightMultiplyAnimated: 1
+    - _LightPow: 1
+    - _LightScale: 0.75
+    - _LightWrappingCompensationFactor: 0.8
+    - _LightingCalculationType: 0
+    - _Matcap1Blend: 0
+    - _Matcap1Strength: 1
+    - _Matcap2Blend: 0
+    - _Matcap2Strength: 1
+    - _Matcap3Blend: 0
+    - _Matcap3Strength: 1
+    - _Matcap4Blend: 0
+    - _Matcap4Strength: 1
+    - _Metallic: 0
+    - _MinimumSize: 0.116
+    - _Mode: 3
+    - _MultiplyAlpha: 1
+    - _NoFog: 1
+    - _NoLight: 0
+    - _OcclusionStrength: 1
+    - _Offset: 0
+    - _OutlineMode: 0
+    - _Parallax: 0.02
+    - _ParticleCutoff: 0
+    - _ParticleCutoffEnable: 0
+    - _ParticleCutoffSoftness: 1
+    - _ParticleDstBlend: 1
+    - _ParticleSrcBlend: 1
+    - _ParticleZWrite: 0
+    - _PixelSampleMode: 0
+    - _PremultiplyAlpha: 0
+    - _ReadMask: 255
+    - _RemultiplyAlpha: 0
+    - _RenderQueueOverride: -1
+    - _Rows: 2
+    - _SSSAmbient: 0
+    - _SSSDist: 1
+    - _SSSIntensity: 1
+    - _SSSPow: 1
+    - _Scale: 1
+    - _Smoothness: 1
+    - _SmoothnessTextureChannel: 0
+    - _SoftParticles: 0
+    - _SpecularDetailStrength: 1
+    - _SpecularHighlights: 1
+    - _SpecularType: 0
+    - _SrcBlend: 1
+    - _Stencil: 0
+    - _StencilComp: 0
+    - _StencilFail: 0
+    - _StencilOp: 0
+    - _StencilZFail: 0
+    - _ThicknessMapInvert: 0
+    - _ThicknessMapPower: 1
+    - _TotalFrames: 4
+    - _Tweak_ShadingGradeMapLevel: 0
+    - _Tweak_Transparency: 0
+    - _UVSec: 0
+    - _UseAdvancedEmission: 0
+    - _UseAnimation: 0
+    - _UseBicubic: 0
+    - _UseCustom: 0
+    - _UseDetailMaps: 0
+    - _UseDistortion: 0
+    - _UseEmissiveLightSense: 0
+    - _UseEnergyConservation: 0
+    - _UseFlickering: 0
+    - _UseFresnel: 0
+    - _UseFresnelLightMask: 0
+    - _UseGradient: 0
+    - _UseInventory: 0
+    - _UseMatcap: 0
+    - _UseMetallic: 0
+    - _UseRampAlpha: 0
+    - _UseSubsurfaceScattering: 0
+    - _UseVanishing: 0
+    - _VanishingEnd: -900
+    - _VanishingStart: -1001
+    - _VertexColorType: 2
+    - _ViewOffset: 0
+    - _VisDistance: 0
+    - _WriteMask: 255
+    - _ZEdge: 0
+    - _ZTest: 4
+    - _ZWrite: 0
+    - __Baked: 0
+    - _alBandA: 0
+    - _alBandB: 3
+    - _alBandG: 2
+    - _alBandR: 1
+    - _alFallbackBPM: 160
+    - _alModeA: 0
+    - _alModeB: 0
+    - _alModeG: 0
+    - _alModeR: 0
+    - _alTimeRangeA: 1
+    - _alTimeRangeB: 1
+    - _alTimeRangeG: 1
+    - _alTimeRangeR: 1
+    - _alUseFallback: 1
+    - _colormask: 15
+    - _outline_width: 0.1
+    m_Colors:
+    - _1st_ShadeColor: {r: 0, g: 0, b: 0, a: 1}
+    - _2nd_ShadeColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Color: {r: 0.7735849, g: 0.09122462, b: 0.32562327, a: 1}
+    - _CustomFresnelColor: {r: 0, g: 0, b: 0, a: 1}
+    - _DetailTimePow: {r: 0, g: 0, b: 0, a: 0}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionDetailParams: {r: 0, g: 0, b: 0, a: 0}
+    - _FresnelTint: {r: 1, g: 1, b: 1, a: 1}
+    - _FresnelTintInv: {r: 1, g: 1, b: 1, a: 1}
+    - _LightSkew: {r: 1, g: 0.1, b: 1, a: 0}
+    - _Matcap1Tint: {r: 1, g: 1, b: 1, a: 1}
+    - _Matcap2Tint: {r: 1, g: 1, b: 1, a: 1}
+    - _Matcap3Tint: {r: 1, g: 1, b: 1, a: 1}
+    - _Matcap4Tint: {r: 1, g: 1, b: 1, a: 1}
+    - _Offset: {r: 0, g: 0, b: 0, a: 0}
+    - _SSSCol: {r: 1, g: 1, b: 1, a: 1}
+    - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
+    - _TimePow: {r: 0, g: 0, b: 0, a: 0}
+    - _TintColor: {r: 1, g: 1, b: 1, a: 1}
+    - _WarpPow: {r: 1, g: 1, b: 1, a: 1}
+    - _alColorA: {r: 0.33299997, g: 0.33299997, b: 0.33299997, a: 0}
+    - _alColorB: {r: 0.32999998, g: 0, b: 1, a: 0}
+    - _alColorG: {r: 0, g: 1, b: 0.33299997, a: 0}
+    - _alColorR: {r: 1, g: 0.33299997, b: 0, a: 0}
+    - _outline_color: {r: 0.5, g: 0.5, b: 0.5, a: 1}

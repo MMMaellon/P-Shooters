@@ -1,0 +1,16 @@
+* What is a light ramp?
+A light ramp controls the impact of light on the model. 
+In this case, it controls the transition from indirect to direct light, 
+or shadow to fully lit.
+
+* What are the specifications for a light ramp?
+A light ramp should be a power-of-two sized texture with
+black on the left and white on the right and any kind of gradation
+between them. 
+
+You can also choose to avoid going to fully dark if you want your model
+to always be partially lit.
+
+Also, when imported into Unity, the texture wrapping mode must be set to
+clamp. You can change this by clicking on the texture file in Unity and going
+into the inspector. 
