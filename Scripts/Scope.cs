@@ -72,8 +72,8 @@ public class Scope : UdonSharpBehaviour
                 last_scope = Time.timeSinceLevelLoad;
             } else if (gunObject.grip == null || !gunObject.grip.reparented)
             {
-                target_pos = parent_pos;
                 target_rot = parent_rot * gunObject.rest_local_rotation * local_rest_rot;
+                target_pos = parent_pos + target_rot * local_rest_pos;
                 if (last_scope + 1f > Time.timeSinceLevelLoad)
                 {
                     float lerp_amount = Mathf.Lerp(1f, 0f, (last_scope + 1f) - Time.timeSinceLevelLoad);
