@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ZoomLensScopeRound
+  m_Name: ZoomLensScopeSquare
   m_Shader: {fileID: 4800000, guid: d3c7f26f750c87448b2a5b7a3d9326bd, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -56,11 +56,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _lines:
-        m_Texture: {fileID: 2800000, guid: 5aa2d731f268c5e49b344cfbb4275788, type: 3}
+        m_Texture: {fileID: 2800000, guid: 8442ddad526907f4f974352571b17008, type: 3}
         m_Scale: {x: -0.02, y: -0.02}
         m_Offset: {x: 0.5, y: 0.5}
     - _scope:
-        m_Texture: {fileID: 2800000, guid: a1d35c7dd5e60a64986754f09cb3bcd9, type: 3}
+        m_Texture: {fileID: 2800000, guid: c82c29f5db62a0840a1fc436501e0490, type: 3}
         m_Scale: {x: 0.02, y: 0.02}
         m_Offset: {x: 0.5, y: 0.5}
     - _scope_2nd:
