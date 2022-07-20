@@ -10,7 +10,7 @@ If you need help with any of this, contact me at @MMMaellon on Twitter or MMMael
 
 ## Setup Instructions
 
-0) Download the latest unitypackage here: <https://www.pornhub.com>
+0) Download the latest unitypackage here: <https://github.com/MMMaellon/P-Shooters/releases>
 1) Navigate to the '__PREFABS__' folder and drag the prefab called '__GUN MANAGER__' into your scene.
 2) Read the instructions on the inspector of the '__Gun Manager__' object.
 3) Repeatedly and passionately mash the setup buttons on the '__Gun Manager__' object any time you make a change to anything.
