@@ -12,17 +12,16 @@ If you need help with any of this, contact me at @MMMaellon on Twitter or MMMael
 
 0) Download the latest unitypackage here: <https://github.com/MMMaellon/P-Shooters/releases>
 1) Navigate to the '__PREFABS__' folder and drag the prefab called '__GUN MANAGER__' into your scene.
-2) Read the instructions on the inspector of the '__Gun Manager__' object.
-3) Repeatedly and passionately mash the setup buttons on the '__Gun Manager__' object any time you make a change to anything.
+2) Read the instructions on the inspector of the '__GUN MANAGER__' object.
+3) Repeatedly and passionately mash the setup buttons on the '__GUN MANAGER__' object any time you make a change to anything.
 
 ## Dependencies
 
-This prefab relies on UdonSharp and CyanPlayerObjectPool (included in the unitypackage)
+This prefab relies on CyanPlayerObjectPool (included in the unitypackage) and UdonSharp
 
 ## Notes
 
-- The example scene references 3d models that weren't included in the unity package, so it may not render correctly
-- I left room in the code to add upgrades to weapons and players, but did not implement any yet
+- I left room in the code to lay the foundation for adding upgrades to weapons and players, but did not implement any yet
 
 ## CREDITS
 
@@ -30,4 +29,4 @@ FakeLight and Filamented Shaders from Silent (@Silent0264 on Twitter)
 Scope Shader from migero <https://migero.booth.pm/>
 CyanPlayerObjectPool from CyanLaser (@CyanLaser on Twitter)
 Sound Effects from FreeSound.org and JetDog8808 (@jetdog8808_dev on Twitter)
-Temp Gun Model from Smooth_Octopus (@nataliedesign on Twitter)
+Gun Models from Smooth_Octopus (@nataliedesign on Twitter)
