@@ -18,6 +18,7 @@ If you need help with any of this, contact me at @MMMaellon on Twitter or MMMael
 ## Dependencies
 
 This prefab relies on UdonSharp and CyanPlayerObjectPool (included in the unitypackage)
+I used VRChat's Creator Companion to create all my projects, so you'll need the version of UdonSharp that the creator companion gives you
 
 ## Notes
 
