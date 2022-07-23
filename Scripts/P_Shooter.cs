@@ -29,7 +29,8 @@ public class P_Shooter : UdonSharpBehaviour
     public int _starting_ammo_reserve = -1;
     [FieldChangeCallback(nameof(upgrades))] [UdonSynced(UdonSyncMode.None)] public string[] _upgrades = new string[0];//names of all the upgrades. These get applied to the animator as they get picked up (through SetBool). When the gun is reset, or an upgrade is lost, we pop it off the list
     [System.NonSerialized] public string[] local_upgrades = new string[0];//local copy so we can diff
-    private Animator animator;
+    public Animator animator;
+    public SmartPickupSync smartPickup;
     public ParticleSystem particle_shooter;
     public SecondGrip grip = null;
     public Scope scope = null;
@@ -188,7 +189,6 @@ public class P_Shooter : UdonSharpBehaviour
     }
     void Start()
     {
-        animator = (Animator)GetComponent(typeof(Animator));
         if (animator != null)
         {
             animator.SetBool("local", local_held);
@@ -286,54 +286,55 @@ public class P_Shooter : UdonSharpBehaviour
 
     public void _OnPickup()
     {
-        VRC_Pickup pickup = (VRC_Pickup)GetComponentInParent(typeof(VRC_Pickup));
-        if (manager == null || manager.player_handler == null || manager.player_handler._localPlayer == null)
+        if (smartPickup != null && smartPickup.pickup != null)
         {
-            if (pickup != null)
+            if (manager == null || manager.player_handler == null || manager.player_handler._localPlayer == null)
             {
-                pickup.Drop();
+                smartPickup.pickup.Drop();
+                return;
             }
-            return;
-        }
-        _TakeOwnership();
-        local_held = true;
-        animator.SetBool("local", local_held);
-        shoot_state = SHOOT_STATE_IDLE;
-        ClearSpawnId();
-        if (Networking.LocalPlayer.GetPickupInHand(VRC_Pickup.PickupHand.Left) == pickup)
-        {
-            manager.player_handler._localPlayer.left_pickup_index = id;
-            manager.player_handler._localPlayer.RequestSerialization();
-            
-        } else
-        {
-            manager.player_handler._localPlayer.right_pickup_index = id;
-            manager.player_handler._localPlayer.RequestSerialization();
-        }
-        RequestSerialization();
+            _TakeOwnership();
+            local_held = true;
+            animator.SetBool("local", local_held);
+            shoot_state = SHOOT_STATE_IDLE;
+            ClearSpawnId();
+            if (Networking.LocalPlayer.GetPickupInHand(VRC_Pickup.PickupHand.Left) == smartPickup.pickup)
+            {
+                manager.player_handler._localPlayer.left_pickup_index = id;
+                manager.player_handler._localPlayer.RequestSerialization();
 
-        if (local_held_objects != null && local_held_objects.Length > 0)
-        {
-            foreach (GameObject obj in local_held_objects){
-                if (obj != null)
+            }
+            else
+            {
+                manager.player_handler._localPlayer.right_pickup_index = id;
+                manager.player_handler._localPlayer.RequestSerialization();
+            }
+            RequestSerialization();
+
+            if (local_held_objects != null && local_held_objects.Length > 0)
+            {
+                foreach (GameObject obj in local_held_objects)
                 {
-                    obj.SetActive(true);
+                    if (obj != null)
+                    {
+                        obj.SetActive(true);
+                    }
                 }
             }
-        }
-        if (grip != null)
-        {
-            grip.AllowPickup();
-        }
-        if (scope != null)
-        {
-            scope.SetCameraActive(true);
+            if (grip != null)
+            {
+                grip.AllowPickup();
+            }
+            if (scope != null)
+            {
+                scope.SetCameraActive(true);
+            }
         }
     }
 
     public void _OnPickupUseDown()
     {
-        if (manager == null || manager.player_handler == null || manager.player_handler._localPlayer == null)
+        if (manager == null || manager.player_handler == null || manager.player_handler._localPlayer == null || manager.player_handler._localPlayer.last_safe + 0.1f > Time.timeSinceLevelLoad)
         {
             return;
         }
@@ -465,10 +466,9 @@ public class P_Shooter : UdonSharpBehaviour
             Vector3 gripPos = parentPos;
             if (transform.parent != null)
             {
-                VRC_Pickup pickup = GetComponentInParent<VRC_Pickup>();
-                if (pickup != null)
+                if (smartPickup != null && smartPickup.pickup != null)
                 {
-                    gripPos = pickup.ExactGrip.position;
+                    gripPos = smartPickup.pickup.ExactGrip.position;
                 }
                 parentPos = transform.parent.position;
                 parentRot = transform.parent.rotation;
@@ -727,10 +727,9 @@ public class P_Shooter : UdonSharpBehaviour
     {
         if (Networking.LocalPlayer.IsOwner(gameObject))
         {
-            SmartPickupSync pickup = GetComponentInParent<SmartPickupSync>();
-            if (pickup != null)
+            if (smartPickup != null)
             {
-                pickup.Respawn();
+                smartPickup.Respawn();
             }
             _Reset();
         }

@@ -264,17 +264,25 @@ public class SmartPickupSync : UdonSharpBehaviour
         }
     }
 
-    public override bool OnOwnershipRequest(VRCPlayerApi requestingPlayer, VRCPlayerApi requestedOwner)
+    // public override bool OnOwnershipRequest(VRCPlayerApi requestingPlayer, VRCPlayerApi requestedOwner)
+    // {
+    //     if (requestedOwner != null && requestedOwner.isLocal && isHeld)
+    //     {
+    //         if (pickup != null)
+    //         {
+    //             pickup.Drop();
+    //             OnDrop();
+    //         }
+    //     }
+    //     return true;
+    // }
+
+    public override void OnOwnershipTransferred(VRCPlayerApi player)
     {
-        if (requestedOwner != null && requestedOwner.isLocal && isHeld)
+        if (player != null && player.IsValid() && !player.isLocal && pickup != null)
         {
-            if (pickup != null)
-            {
-                pickup.Drop();
-                OnDrop();
-            }
+            pickup.Drop();
         }
-        return true;
     }
 
 }

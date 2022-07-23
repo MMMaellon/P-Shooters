@@ -9924,7 +9924,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
+    SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -9973,7 +9973,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
+    SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -13809,7 +13809,7 @@ ParticleSystem:
         m_RotationOrder: 4
     minKillSpeed: 0
     maxKillSpeed: 10000
-    radiusScale: 1
+    radiusScale: 0.1
     collidesWith:
       serializedVersion: 2
       m_Bits: 20973569
@@ -14861,7 +14861,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
+    SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -15016,7 +15016,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
+    SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -15036,6 +15036,8 @@ MonoBehaviour:
   _starting_ammo_mag_capacity: 10
   _starting_ammo_reserve: -1
   _upgrades: []
+  animator: {fileID: 7010921152858364085}
+  smartPickup: {fileID: 6156854182014271368}
   particle_shooter: {fileID: 4651619552879110024}
   grip: {fileID: 0}
   scope: {fileID: 0}
@@ -15046,7 +15048,6 @@ MonoBehaviour:
   sound_reload: {fileID: 8300000, guid: 1b77ce50e11abe24fab8e02f608df9f1, type: 3}
   sound_reload_stop: {fileID: 8300000, guid: e8e864088d181d64ba2e84bb4deeb2c5, type: 3}
   sound_upgrade: {fileID: 8300000, guid: c62209b053fff0b4998af16d390ef5bb, type: 3}
-  sound_bullet_travel: {fileID: 0}
   sound_bullet_impact_environment: {fileID: 8300000, guid: 5caf8dccb4a8e8547840597f4f94f514,
     type: 3}
   local_held_objects: []
