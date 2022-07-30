@@ -57,6 +57,8 @@ public class P_Shooter : UdonSharpBehaviour
     private GunManager manager;
     [System.NonSerialized] [UdonSynced(UdonSyncMode.None)] public int spawn_id = -1;
 
+    private Vector3 local_rest_pickup_point_offset;
+
     //callbacks
     public int shoot_state
     {
@@ -227,6 +229,10 @@ public class P_Shooter : UdonSharpBehaviour
             grip.DisablePickup();
         }
         rest_local_rotation = transform.localRotation;
+        if (smartPickup != null && smartPickup.pickup != null && smartPickup.pickup.ExactGun != null)
+        {
+            local_rest_pickup_point_offset = transform.InverseTransformPoint(smartPickup.pickup.ExactGun.position);
+        }
         ran_start = true;
     }
 
@@ -507,7 +513,7 @@ public class P_Shooter : UdonSharpBehaviour
             Vector3 gripPos = parentPos;
             if (transform.parent != null)
             {
-                if (smartPickup != null && smartPickup.pickup != null)
+                if (smartPickup != null && smartPickup.pickup != null && smartPickup.pickup.ExactGrip)
                 {
                     gripPos = smartPickup.pickup.ExactGrip.position;
                 }
@@ -520,7 +526,11 @@ public class P_Shooter : UdonSharpBehaviour
             Vector3 targetPos = grip.transform.position - ((transform.rotation * Quaternion.Inverse(rest_local_rotation)) * flat_z_rest);
             // targetPos = grip.transform.position;
             Quaternion lookAtRotation = Quaternion.LookRotation(targetPos - transform.position, parentRot * Vector3.up);
-        // transform.LookAt(targetPos, parentRot * Vector3.up);
+            if (grip.rest_local_pos.z < 0)
+            {
+                lookAtRotation = Quaternion.LookRotation(transform.position - targetPos, parentRot * Vector3.up);
+            }
+            // transform.LookAt(targetPos, parentRot * Vector3.up);
 
             if (!Networking.LocalPlayer.IsOwner(gameObject) || !Input.GetKey(KeyCode.LeftAlt))
             {
