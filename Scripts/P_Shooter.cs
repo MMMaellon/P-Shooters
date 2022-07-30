@@ -34,6 +34,7 @@ public class P_Shooter : UdonSharpBehaviour
     public ParticleSystem particle_shooter;
     public SecondGrip grip = null;
     public Scope scope = null;
+    public TacticalReload tacticalReload;
     public AudioSource sound_source;
     public AudioClip sound_shoot;
     public AudioClip sound_melee_boost;
@@ -46,8 +47,8 @@ public class P_Shooter : UdonSharpBehaviour
     public GameObject[] local_held_objects;
 
     private bool local_trigger = false;
-    private bool local_reload = false;
-    private bool local_load = false;
+    private bool local_reload = false; //if the player sees the animation, could be diff between remote and local clients
+    // private bool local_load = false;
     [System.NonSerialized] public bool local_held = false;
     [System.NonSerialized] public Quaternion rest_local_rotation;
     private bool ran_start = false;
@@ -66,6 +67,10 @@ public class P_Shooter : UdonSharpBehaviour
             if (animator != null)
             {
                 animator.SetInteger("shoot_state", _shoot_state);
+                if (_shoot_state == SHOOT_STATE_RELOAD)
+                {
+                    local_reload = true;
+                }
             }
             if (melee && _shoot_state == SHOOT_STATE_SHOOT)
             {
@@ -250,7 +255,7 @@ public class P_Shooter : UdonSharpBehaviour
     public void _ResetLocalState()
     {
         local_trigger = false;
-        local_reload = false;
+        // local_reload = false;
     }
 
     public void _Reset()
@@ -403,48 +408,84 @@ public class P_Shooter : UdonSharpBehaviour
 
     public void LateUpdate()
     {
-        if (local_held && !melee)
+        if (Networking.LocalPlayer.IsOwner(gameObject))
         {
-            if (track_ammo_mag && (ammo_mag < ammo_mag_capacity) && !local_trigger && particle_shooter != null)
+            if (Networking.LocalPlayer.IsUserInVR())
             {
-                if (!local_reload)
+                if (tacticalReload != null)
                 {
-                    float down_angle = Vector3.Angle(Vector3.down, particle_shooter.transform.forward);
-                    if (down_angle < 30 || down_angle > 150)
+                    tacticalReload.ToggleCollider(local_held && track_ammo_mag && ammo_mag < ammo_mag_capacity);
+                    if (tacticalReload.pickup != null && tacticalReload.pickup.IsHeld)
                     {
-                        local_reload = true;
-                        _ReloadStart();
-                    }
-                    if (!Networking.LocalPlayer.IsUserInVR() && Input.GetKey(KeyCode.E))
-                    {
-                        local_reload = true;
-                        _ReloadStart();
-                    }
-                }
-                else
-                {
-                    float down_angle = Vector3.Angle(Vector3.down, particle_shooter.transform.forward);
-                    if (down_angle >= 30 && down_angle <= 150)
-                    {
-                        local_reload = false;
-                        _ReloadStop();
-                    }
-                    if (!Networking.LocalPlayer.IsUserInVR() && !Input.GetKey(KeyCode.E))
-                    {
-                        local_reload = false;
-                        _ReloadStop();
+                        if (ammo_mag >= ammo_mag_capacity)
+                        {
+                            tacticalReload.pickup.Drop();
+                        }
+                        else
+                        {
+                            TacticalReload();
+                        }
                     }
                 }
             }
             else
             {
-                if (local_reload)
+                if (Input.GetKey(KeyCode.E))
                 {
-                    local_reload = false;
-                    _ReloadStop();
+                    TacticalReload();
                 }
             }
         }
+
+        if (tacticalReload != null)
+        {
+            if (tacticalReload.isHeld && local_reload)
+            {
+                tacticalReload.HandPos();
+            }
+        }
+        // if (local_held && !melee)
+        // {
+        //     if (track_ammo_mag && (ammo_mag < ammo_mag_capacity) && !local_trigger && particle_shooter != null)
+        //     {
+        //         if (!local_reload)
+        //         {
+        //             float down_angle = Vector3.Angle(Vector3.down, particle_shooter.transform.forward);
+        //             if (down_angle < 30 || down_angle > 150)
+        //             {
+        //                 local_reload = true;
+        //                 _ReloadStart();
+        //             }
+        //             if (!Networking.LocalPlayer.IsUserInVR() && Input.GetKey(KeyCode.E))
+        //             {
+        //                 local_reload = true;
+        //                 _ReloadStart();
+        //             }
+        //         }
+        //         else
+        //         {
+        //             float down_angle = Vector3.Angle(Vector3.down, particle_shooter.transform.forward);
+        //             if (down_angle >= 30 && down_angle <= 150)
+        //             {
+        //                 local_reload = false;
+        //                 _ReloadStop();
+        //             }
+        //             if (!Networking.LocalPlayer.IsUserInVR() && !Input.GetKey(KeyCode.E))
+        //             {
+        //                 local_reload = false;
+        //                 _ReloadStop();
+        //             }
+        //         }
+        //     }
+        //     else
+        //     {
+        //         if (local_reload)
+        //         {
+        //             local_reload = false;
+        //             _ReloadStop();
+        //         }
+        //     }
+        // }
         if (grip != null && ran_start)
         {
             if (grip.reparented || grip.smartPickup.isHeld)
@@ -627,6 +668,7 @@ public class P_Shooter : UdonSharpBehaviour
     }
     public void _ReloadCallbackFull()
     {
+        local_reload = false;
         if (local_held)
         {
             if (ammo_mag < 0)
@@ -660,6 +702,7 @@ public class P_Shooter : UdonSharpBehaviour
     }
     public void _ReloadCallbackSingle()
     {
+        local_reload = false;
         if (local_held)
         {
             if (ammo_mag < 0)
@@ -732,6 +775,20 @@ public class P_Shooter : UdonSharpBehaviour
                 smartPickup.Respawn();
             }
             _Reset();
+        }
+    }
+
+    public void TacticalReload()
+    {
+        if (local_held && !melee)
+        {
+            if (track_ammo_mag && (ammo_mag < ammo_mag_capacity))
+            {
+                if (shoot_state != SHOOT_STATE_RELOAD)
+                {
+                    _ReloadStart();
+                }
+            }
         }
     }
 
