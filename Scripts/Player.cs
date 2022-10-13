@@ -434,7 +434,7 @@ public class Player : UdonSharpBehaviour
                 damage = attacker.CalcDamage(left_hand);
                 if (damage > 0)
                 {
-                    bool died = player_handler.LowerHealth(damage);
+                    bool died = player_handler.LowerHealth(damage, false);
                     if (died)
                     {
                         attacker.SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(GotKill));
@@ -462,7 +462,7 @@ public class Player : UdonSharpBehaviour
             Player attacker = player_handler.players[other_id];
             if (attacker != null && attacker.Owner != null && attacker.Owner.IsValid())
             {
-                player_handler.LowerHealth(999999);
+                player_handler.LowerHealth(999999, true);
                 attacker.SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(GotKill));
             }
 

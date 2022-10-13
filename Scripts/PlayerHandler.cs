@@ -147,12 +147,12 @@ public class PlayerHandler : UdonSharpBehaviour
         gun_manager = guns;
     }
 
-    public bool LowerHealth(int amount)
+    public bool LowerHealth(int amount, bool ignoreShield)
     {
         bool died = false;
         if (_localPlayer != null)
         {
-            if (_localPlayer.shield > 0)
+            if (_localPlayer.shield > 0 && !ignoreShield)
             {
                 TakeDamageShieldFX();
                 _localPlayer.shield -= amount;
@@ -308,5 +308,4 @@ public class PlayerHandler : UdonSharpBehaviour
             }
         }
     }
-
 }
