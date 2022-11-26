@@ -535,7 +535,7 @@ public class P_Shooter : UdonSharpBehaviour
             else
             {
                 grip.transform.parent = transform.parent;
-                // grip.ApplyRestTransforms();
+                grip.ApplyRestTransforms();
             }
         }
     }
