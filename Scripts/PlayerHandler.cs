@@ -194,12 +194,14 @@ public class PlayerHandler : UdonSharpBehaviour
 
     public bool IncreaseHealth(int amount, bool affects_health, bool affects_shield)
     {
-        bool maxHealth = false;
+        bool healed = false;
         if (_localPlayer != null)
         {
             if(affects_health && _localPlayer.health < starting_health){
                 _localPlayer.health += amount;
                 HealFX();
+                last_heal = Time.timeSinceLevelLoad;
+                healed = true;
                 if (_localPlayer.health >= starting_health)
                 {
                     if (affects_shield)
@@ -207,11 +209,8 @@ public class PlayerHandler : UdonSharpBehaviour
                         _localPlayer.shield += _localPlayer.health - starting_health;
                         if (_localPlayer.shield >= starting_shield)
                         {
-                            maxHealth = true;
+                            _localPlayer.shield = starting_shield;
                         }
-                    } else
-                    {
-                        maxHealth = true;
                     }
                     _localPlayer.health = starting_health;
                 }
@@ -219,14 +218,15 @@ public class PlayerHandler : UdonSharpBehaviour
             {
                 _localPlayer.shield += amount;
                 HealFX();
+                last_heal = Time.timeSinceLevelLoad;
+                healed = true;
                 if (_localPlayer.shield >= starting_shield)
                 {
                     _localPlayer.shield = starting_shield;
-                    maxHealth = true;
                 }
             }
         }
-        return maxHealth;
+        return healed;
     }
 
     public void Respawn()
@@ -356,7 +356,7 @@ public class PlayerHandler : UdonSharpBehaviour
                 animator.SetFloat("Shield", (((float)_localPlayer.shield)/(float)starting_shield));
                 animator.SetFloat("Health", (((float)_localPlayer.health)/(float)starting_health));
                 animator.SetBool("Hide", last_damage + shield_regen_delay + hud_hide_delay < Time.timeSinceLevelLoad && last_heal + hud_hide_delay < Time.timeSinceLevelLoad);
-                if (last_damage + shield_regen_delay < Time.timeSinceLevelLoad)
+                if (shield_regen_delay > 0 && last_damage + shield_regen_delay < Time.timeSinceLevelLoad)
                 {
                     if (Mathf.RoundToInt(Time.timeSinceLevelLoad - Time.deltaTime) < Mathf.RoundToInt(Time.timeSinceLevelLoad) && _localPlayer.shield < starting_shield)
                     {

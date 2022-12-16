@@ -101,7 +101,11 @@ public class HealUpgrade : UdonSharpBehaviour
         {
             return;
         }
-        bool full = player_handler.IncreaseHealth(heal_amount, affects_health, affects_shield);
+        bool healed = player_handler.IncreaseHealth(heal_amount, affects_health, affects_shield);
+        if (!healed) //was already full health
+        {
+            return;
+        }
         last_heal = Time.timeSinceLevelLoad;
         if (first_heal < 0)
         {
