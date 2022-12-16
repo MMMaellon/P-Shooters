@@ -76,7 +76,7 @@ public class PlayerHandlerEditor : Editor
 }
 #endif
 
-[UdonBehaviourSyncMode(BehaviourSyncMode.Manual), RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(Animator))]
 public class PlayerHandler : UdonSharpBehaviour
 {
     public Cyan.PlayerObjectPool.CyanPlayerObjectAssigner objectPoolAssigner;
@@ -147,11 +147,6 @@ public class PlayerHandler : UdonSharpBehaviour
     public void _Register(GunManager guns)
     {
         gun_manager = guns;
-    }
-
-    public void BroadcastResetKills()
-    {
-        SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, nameof(ResetKills));
     }
 
     public void ResetKills()
@@ -356,6 +351,7 @@ public class PlayerHandler : UdonSharpBehaviour
                 animator.SetFloat("Shield", (((float)_localPlayer.shield)/(float)starting_shield));
                 animator.SetFloat("Health", (((float)_localPlayer.health)/(float)starting_health));
                 animator.SetBool("Hide", last_damage + shield_regen_delay + hud_hide_delay < Time.timeSinceLevelLoad && last_heal + hud_hide_delay < Time.timeSinceLevelLoad);
+                // animator.SetBool("Hide", last_damage + shield_regen_delay + hud_hide_delay < Time.timeSinceLevelLoad && last_heal + hud_hide_delay < Time.timeSinceLevelLoad && _localPlayer.left_pickup_index < 0 && _localPlayer.right_pickup_index < 0);
                 if (shield_regen_delay > 0 && last_damage + shield_regen_delay < Time.timeSinceLevelLoad)
                 {
                     if (Mathf.RoundToInt(Time.timeSinceLevelLoad - Time.deltaTime) < Mathf.RoundToInt(Time.timeSinceLevelLoad) && _localPlayer.shield < starting_shield)

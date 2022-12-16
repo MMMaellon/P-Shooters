@@ -15,6 +15,7 @@ public class P_Shooter : UdonSharpBehaviour
 
     public bool melee = false;
     public bool rare = false;
+    public bool self_damage = false;
     public bool track_ammo_mag = false;
     public bool track_ammo_reserve = false;
     public bool auto_reload = true;

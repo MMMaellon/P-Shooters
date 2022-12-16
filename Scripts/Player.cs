@@ -13,14 +13,15 @@ public class Player : UdonSharpBehaviour
     [PublicAPI, System.NonSerialized]
     public VRCPlayerApi Owner;
     private int id = -1;
-    [System.NonSerialized][UdonSynced(UdonSyncMode.None)] public int _health = 100;
-    [System.NonSerialized][UdonSynced(UdonSyncMode.None)] public int _shield = 300;
+    [System.NonSerialized][UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(health))] public int _health = 100;
+    [System.NonSerialized][UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(shield))] public int _shield = 300;
     [System.NonSerialized] public int local_health = 100;
     [System.NonSerialized] public int local_shield = 300;
     private float last_damage = -99;
-    [System.NonSerialized][UdonSynced(UdonSyncMode.None)] public float _damage = 1f;
-    [System.NonSerialized][UdonSynced(UdonSyncMode.None)] public Vector3 _death_spot = Vector3.zero;
-    [System.NonSerialized][UdonSynced(UdonSyncMode.None)] public int _kills = 0;
+    [System.NonSerialized][UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(damage))] public float _damage = 1f;
+    [System.NonSerialized][UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(death_spot))] public Vector3 _death_spot = Vector3.zero;
+    [System.NonSerialized][UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(kills))] public int _kills = 0;
+    [System.NonSerialized][UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(team))] public int _team = 1;
     private Vector3 _local_death_spot = Vector3.zero;
     [System.NonSerialized][UdonSynced(UdonSyncMode.None)] public int left_pickup_index = -1;
     [System.NonSerialized][UdonSynced(UdonSyncMode.None)] public int right_pickup_index = -1;
@@ -68,12 +69,27 @@ public class Player : UdonSharpBehaviour
             }
         }
     }
-    
-    public int kills{
+
+    public int kills
+    {
         get => _kills;
         set
         {
             _kills = value;
+            RequestSerialization();
+
+            if (player_handler != null && player_handler.scores != null)
+            {
+                player_handler.scores.UpdateScores();
+            }
+        }
+    }
+    public int team
+    {
+        get => _team;
+        set
+        {
+            _team = value;
             RequestSerialization();
 
             if (player_handler != null && player_handler.scores != null)
@@ -88,7 +104,6 @@ public class Player : UdonSharpBehaviour
         get => _shield;
         set
         {
-            Debug.LogWarningFormat("shield:{0} local_shield:{1} value:{2}", _shield, local_shield, value);
             if (value >= local_shield && player_handler != null)
             {
                 if (value == player_handler.starting_shield || last_damage + player_handler.shield_regen_delay/2f < Time.timeSinceLevelLoad)
@@ -103,12 +118,10 @@ public class Player : UdonSharpBehaviour
 
                 if (value <= 0)
                 {
-                    Debug.LogWarningFormat("shieldBreakFX");
                     ShieldBreakFX();
                 }
                 else
                 {
-                    Debug.LogWarningFormat("shieldFX");
                     ShieldFX();
                 }
             }
@@ -284,11 +297,23 @@ public class Player : UdonSharpBehaviour
         {
             if (player_handler.damage_layers == (player_handler.damage_layers | (1 << other.gameObject.layer)))
             {
+                if ( player_handler.scores != null && player_handler.scores.teams && player_handler._localPlayer.team == team)
+                {
+                    return;
+                }
                 VRC_Pickup leftPickup = Networking.LocalPlayer.GetPickupInHand(VRC_Pickup.PickupHand.Left);
                 VRC_Pickup rightPickup = Networking.LocalPlayer.GetPickupInHand(VRC_Pickup.PickupHand.Right);
                 int damage = 0;
                 if (leftPickup != null && (leftPickup.gameObject == other.transform.parent.parent.gameObject || (other.transform.parent.parent.parent != null && leftPickup.gameObject == other.transform.parent.parent.parent.gameObject)))
                 {
+                    if (Owner.isLocal)
+                    {
+                        P_Shooter shooter = GetLeftShooter();
+                        if (shooter != null && !shooter.self_damage)
+                        {
+                            return;
+                        }
+                    }
                     damage = player_handler._localPlayer.CalcDamage(true);
                     if (shield > 0)
                     {
@@ -303,6 +328,14 @@ public class Player : UdonSharpBehaviour
                 }
                 else if (rightPickup != null && (rightPickup.gameObject == other.transform.parent.parent.gameObject || (other.transform.parent.parent.parent != null && rightPickup.gameObject == other.transform.parent.parent.parent.gameObject)))
                 {
+                    if (Owner.isLocal)
+                    {
+                        P_Shooter shooter = GetRightShooter();
+                        if (shooter != null && !shooter.self_damage)
+                        {
+                            return;
+                        }
+                    }
                     damage = player_handler._localPlayer.CalcDamage(false);
                     if (shield > 0)
                     {
@@ -409,6 +442,23 @@ public class Player : UdonSharpBehaviour
         }
     }
 
+    public P_Shooter GetLeftShooter()
+    {
+        if (left_pickup_index >= 0 && left_pickup_index < player_handler.gun_manager.shooters.Length)
+        {
+            return player_handler.gun_manager.shooters[left_pickup_index];
+        }
+        return null;
+    }
+    public P_Shooter GetRightShooter()
+    {
+        if (right_pickup_index >= 0 && right_pickup_index < player_handler.gun_manager.shooters.Length)
+        {
+            return player_handler.gun_manager.shooters[right_pickup_index];
+        }
+        return null;
+    }
+
     public int CalcDamage(bool left_hand)
     {
         int effective_damage = 0;
@@ -491,13 +541,6 @@ public class Player : UdonSharpBehaviour
             }
             
         }
-    }
-
-    override public void OnDeserialization()
-    {
-        death_spot = death_spot;
-        health = health;
-        shield = shield;
     }
     
     public void InstakillBy(int other_id){

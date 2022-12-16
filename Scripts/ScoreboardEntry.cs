@@ -7,13 +7,14 @@ using VRC.Udon;
 public class ScoreboardEntry : UdonSharpBehaviour
 {
     public TMPro.TextMeshProUGUI scoreText;
+    public TMPro.TextMeshProUGUI teamText;
     public TMPro.TextMeshProUGUI nameText;
     void Start()
     {
         
     }
 
-    public void DisplayScore(Player playerObject)
+    public void DisplayScore(Player playerObject, bool show_teams)
     {
         if (playerObject == null || !playerObject.gameObject.activeSelf || playerObject.Owner == null || !playerObject.Owner.IsValid())
         {
@@ -22,7 +23,18 @@ public class ScoreboardEntry : UdonSharpBehaviour
         }
 
         gameObject.SetActive(true);
-        scoreText.text = playerObject.kills.ToString();
-        nameText.text = playerObject.Owner.displayName;
+        if (scoreText != null)
+        {
+            scoreText.text = playerObject.kills.ToString();
+        }
+        if (teamText != null)
+        {
+            teamText.gameObject.SetActive(show_teams);
+            teamText.text = "Team " + playerObject.team;
+        }
+        if (nameText != null)
+        {
+            nameText.text = playerObject.Owner.displayName;
+        }
     }
 }
