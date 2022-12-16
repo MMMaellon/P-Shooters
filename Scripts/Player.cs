@@ -20,6 +20,7 @@ public class Player : UdonSharpBehaviour
     private float last_damage = -99;
     [System.NonSerialized][UdonSynced(UdonSyncMode.None)] public float _damage = 1f;
     [System.NonSerialized][UdonSynced(UdonSyncMode.None)] public Vector3 _death_spot = Vector3.zero;
+    [System.NonSerialized][UdonSynced(UdonSyncMode.None)] public int _kills = 0;
     private Vector3 _local_death_spot = Vector3.zero;
     [System.NonSerialized][UdonSynced(UdonSyncMode.None)] public int left_pickup_index = -1;
     [System.NonSerialized][UdonSynced(UdonSyncMode.None)] public int right_pickup_index = -1;
@@ -43,6 +44,7 @@ public class Player : UdonSharpBehaviour
                 if (value == player_handler.starting_health)
                 {
                     local_health = value;
+                    HealFX();
                 }
             } else
             {
@@ -50,17 +52,37 @@ public class Player : UdonSharpBehaviour
                 last_damage = Time.timeSinceLevelLoad;
                 DamageFX();
             }
-            if (health != value)
+            if (_health != value)
             {
+                if (value >= _health)
+                {
+                    local_health = value;
+                    HealFX();
+                }
                 _health = value;
                 if (Owner != null && Owner.IsValid() && Owner.isLocal)
                 {
+                    local_health = value;
                     RequestSerialization();
                 }
             }
         }
     }
     
+    public int kills{
+        get => _kills;
+        set
+        {
+            _kills = value;
+            RequestSerialization();
+
+            if (player_handler != null && player_handler.scores != null)
+            {
+                player_handler.scores.UpdateScores();
+            }
+        }
+    }
+
     public int shield
     {
         get => _shield;
@@ -92,9 +114,15 @@ public class Player : UdonSharpBehaviour
             }
             if (_shield != value)
             {
+                if (value >= _shield)
+                {
+                    local_shield = value;
+                    HealFX();
+                }
                 _shield = value;
                 if (Owner != null && Owner.IsValid() && Owner.isLocal)
                 {
+                    local_shield = value;
                     RequestSerialization();
                 }
             }
@@ -186,6 +214,11 @@ public class Player : UdonSharpBehaviour
                 player_collider.radius = 0.2f;
             }
         }
+
+        if (player_handler != null && player_handler.scores != null)
+        {
+            player_handler.scores.DelayedUpdateScores();
+        }
     }
 
     // This method will be called on all clients when the original owner has left and the object is about to be disabled.
@@ -193,6 +226,10 @@ public class Player : UdonSharpBehaviour
     public void _OnCleanup()
     {
         // Cleanup the object here
+        if (player_handler != null && player_handler.scores != null)
+        {
+            player_handler.scores.DelayedUpdateScores();
+        }
     }
     
     public void Start()
@@ -225,14 +262,15 @@ public class Player : UdonSharpBehaviour
     {
         if (Owner != null && Owner.IsValid())
         {
-            Vector3 feet_pos = Owner.GetPosition();
+            Vector3 feet_pos = Vector3.Lerp(Owner.GetBonePosition(HumanBodyBones.LeftFoot), Owner.GetBonePosition(HumanBodyBones.RightFoot), 0.5f);
+            feet_pos = feet_pos != Vector3.zero ? feet_pos : Owner.GetPosition();
             Vector3 head_pos = Owner.GetTrackingData(VRCPlayerApi.TrackingDataType.Head).position;
             float headheight = Vector3.Distance(head_pos, feet_pos);
             float minimum = Mathf.Max(1f, headheight) + 0.2f;
             float vertical_minimum = Mathf.Max(0.5f, headheight) + 0.2f;
             transform.position = feet_pos;
             transform.localScale = new Vector3(minimum, vertical_minimum, minimum);
-            // transform.rotation = Quaternion.FromToRotation(Vector3.up, head_pos - feet_pos);
+            transform.rotation = Quaternion.FromToRotation(Vector3.up, head_pos - feet_pos);
         }
     }
 
@@ -404,6 +442,10 @@ public class Player : UdonSharpBehaviour
     {
         animator.SetTrigger("damage");
     }
+    public void HealFX()
+    {
+        animator.SetTrigger("upgrade");
+    }
     public void DeathFX()
     {
         death_particles.transform.position = death_spot;
@@ -417,6 +459,12 @@ public class Player : UdonSharpBehaviour
         {
             player_handler.KillFX();
         }
+        kills++;
+    }
+
+    public void ResetKills()
+    {
+        kills = 0;
     }
 
     public void ShotBy(int other_id, bool left_hand)

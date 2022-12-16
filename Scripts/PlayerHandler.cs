@@ -106,6 +106,7 @@ public class PlayerHandler : UdonSharpBehaviour
     public AudioClip lose_shield_sound;
     public AudioClip kill_other_player_sound;
     public AudioClip die_sound;
+    public AudioClip heal_sound;
     public Animator animator;
     [System.NonSerialized] public GunManager gun_manager;
 
@@ -114,6 +115,7 @@ public class PlayerHandler : UdonSharpBehaviour
     public float shield_regen_delay = 5;
     public int shield_regen_rate = 10;//per second
     public float hud_hide_delay = 3;//per second
+    public Scoreboard scores;
     public void _OnLocalPlayerAssigned()
     {
         // Get the local player's pool object so we can later perform operations on it.
@@ -147,6 +149,19 @@ public class PlayerHandler : UdonSharpBehaviour
         gun_manager = guns;
     }
 
+    public void BroadcastResetKills()
+    {
+        SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, nameof(ResetKills));
+    }
+
+    public void ResetKills()
+    {
+        if (_localPlayer != null)
+        {
+            _localPlayer.ResetKills();
+        }
+    }
+
     public bool LowerHealth(int amount, bool ignoreShield)
     {
         bool died = false;
@@ -175,6 +190,43 @@ public class PlayerHandler : UdonSharpBehaviour
             }
         }
         return died;
+    }
+
+    public bool IncreaseHealth(int amount, bool affects_health, bool affects_shield)
+    {
+        bool maxHealth = false;
+        if (_localPlayer != null)
+        {
+            if(affects_health && _localPlayer.health < starting_health){
+                _localPlayer.health += amount;
+                HealFX();
+                if (_localPlayer.health >= starting_health)
+                {
+                    if (affects_shield)
+                    {
+                        _localPlayer.shield += _localPlayer.health - starting_health;
+                        if (_localPlayer.shield >= starting_shield)
+                        {
+                            maxHealth = true;
+                        }
+                    } else
+                    {
+                        maxHealth = true;
+                    }
+                    _localPlayer.health = starting_health;
+                }
+            } else if (affects_shield)
+            {
+                _localPlayer.shield += amount;
+                HealFX();
+                if (_localPlayer.shield >= starting_shield)
+                {
+                    _localPlayer.shield = starting_shield;
+                    maxHealth = true;
+                }
+            }
+        }
+        return maxHealth;
     }
 
     public void Respawn()
@@ -234,6 +286,14 @@ public class PlayerHandler : UdonSharpBehaviour
         if (_localPlayer != null && _localPlayer.last_death + 2f < Time.timeSinceLevelLoad)
         {
             global_sound_fx.clip = kill_other_player_sound;
+            global_sound_fx.Play();
+        }
+    }
+    public void HealFX()
+    {
+        if (_localPlayer != null && _localPlayer.last_death + 2f < Time.timeSinceLevelLoad)
+        {
+            global_sound_fx.clip = heal_sound;
             global_sound_fx.Play();
         }
     }

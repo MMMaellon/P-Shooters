@@ -61,6 +61,17 @@ public class SmartPickupSync : UdonSharpBehaviour
         start_ran = true;
     }
 
+
+#if !COMPILER_UDONSHARP && UNITY_EDITOR
+    public void Reset()
+    {
+        if (pickup == null)
+        {
+            pickup = GetComponent<VRC_Pickup>();
+        }
+    }
+#endif
+
     public override void OnDrop()
     {
         pickup.pickupable = true;
