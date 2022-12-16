@@ -70,7 +70,7 @@ public class HealUpgrade : UdonSharpBehaviour
     public void OnTriggerStay(Collider other)
     {
         Debug.LogWarning("OnTriggerStay");
-        if (player_handler == null || !Utilities.IsValid(other) || other == null || on_interact)
+        if (player_handler == null || player_handler._localPlayer == null || (player_handler.scores != null && player_handler._localPlayer.team == 0) || !Utilities.IsValid(other) || other == null || on_interact)
         {
             return;
         }

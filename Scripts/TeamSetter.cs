@@ -7,6 +7,7 @@ using VRC.Udon;
 public class TeamSetter : UdonSharpBehaviour
 {
     public Scoreboard scoreboard;
+    [Header("Set Team to 0 to exit game")]
     public int team;
     public int random_min;
     public int random_max;

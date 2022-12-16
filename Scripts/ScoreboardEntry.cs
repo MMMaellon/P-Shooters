@@ -16,7 +16,7 @@ public class ScoreboardEntry : UdonSharpBehaviour
 
     public void DisplayScore(Player playerObject, bool show_teams)
     {
-        if (playerObject == null || !playerObject.gameObject.activeSelf || playerObject.Owner == null || !playerObject.Owner.IsValid())
+        if (playerObject == null || !playerObject.gameObject.activeSelf || playerObject.Owner == null || !playerObject.Owner.IsValid() || playerObject.team == 0)
         {
             gameObject.SetActive(false);
             return;

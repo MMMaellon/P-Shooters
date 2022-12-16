@@ -21,7 +21,7 @@ public class Player : UdonSharpBehaviour
     [System.NonSerialized][UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(damage))] public float _damage = 1f;
     [System.NonSerialized][UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(death_spot))] public Vector3 _death_spot = Vector3.zero;
     [System.NonSerialized][UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(kills))] public int _kills = 0;
-    [System.NonSerialized][UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(team))] public int _team = 1;
+    [System.NonSerialized][UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(team))] public int _team = 0;
     private Vector3 _local_death_spot = Vector3.zero;
     [System.NonSerialized][UdonSynced(UdonSyncMode.None)] public int left_pickup_index = -1;
     [System.NonSerialized][UdonSynced(UdonSyncMode.None)] public int right_pickup_index = -1;
@@ -297,7 +297,7 @@ public class Player : UdonSharpBehaviour
         {
             if (player_handler.damage_layers == (player_handler.damage_layers | (1 << other.gameObject.layer)))
             {
-                if ( player_handler.scores != null && player_handler.scores.teams && player_handler._localPlayer.team == team)
+                if ( player_handler.scores != null && ((player_handler.scores.teams && player_handler._localPlayer.team == team) || team == 0))
                 {
                     return;
                 }
@@ -355,7 +355,7 @@ public class Player : UdonSharpBehaviour
     public void OnTriggerEnter(Collider other)
     {
         Debug.LogWarning("OnTriggerEnter");
-        if (player_handler == null || player_handler._localPlayer == null || other == null)
+        if (player_handler == null || player_handler._localPlayer == null || other == null || (player_handler.scores != null && team == 0))
         {
             return;
         }

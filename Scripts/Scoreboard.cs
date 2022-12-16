@@ -244,9 +244,47 @@ public class Scoreboard : UdonSharpBehaviour
             gameStartBehaviour.SendCustomEvent(gameStartEvent);
         }
 
-        if (player_handler._localPlayer != null)
+        if (player_handler._localPlayer != null && player_handler._localPlayer.team > 0)
         {
             player_handler.Respawn();//Will automatically force them to drop what's in their hands
+        }
+    }
+
+    public void RequestDisableGame()
+    {
+        if (!world_owner_only || Networking.LocalPlayer.IsOwner(gameObject))
+        {
+            SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, nameof(DisableGame));
+        }
+    }
+
+    public void DisableGame()
+    {
+        player_handler.scores = null;
+
+        if (winningNameText != null)
+        {
+            winningNameText.text = "Just RP Mode";
+        }
+
+        if (winningScoreText != null)
+        {
+            winningScoreText.text = "";
+        }
+    }
+
+    public void Join()
+    {
+        if (player_handler._localPlayer != null && player_handler._localPlayer.team == 0)
+        {
+            player_handler._localPlayer.team = 1;
+        }
+    }
+    public void Leave()
+    {
+        if (player_handler._localPlayer != null)
+        {
+            player_handler._localPlayer.team = 0;
         }
     }
 
@@ -273,7 +311,7 @@ public class Scoreboard : UdonSharpBehaviour
         {
             Player prev = player_handler.players[sorted[i - 1]];
             Player next = player_handler.players[sorted[i]];
-            if ((next.gameObject.activeSelf && !prev.gameObject.activeSelf) || (next.Owner != null && prev.Owner == null) || (next.kills > prev.kills) || (next.Owner != null && System.String.Compare(next.Owner.displayName, prev.Owner.displayName) < 0)){
+            if ((next.gameObject.activeSelf && !prev.gameObject.activeSelf) || (next.Owner != null && prev.Owner == null) || (next.team > 0 && prev.team == 0) || (next.kills > prev.kills) || (next.Owner != null && System.String.Compare(next.Owner.displayName, prev.Owner.displayName) < 0)){
                 unsorted = true;
                 int temp = sorted[i];
                 sorted[i] = sorted[i - 1];
@@ -359,7 +397,7 @@ public class Scoreboard : UdonSharpBehaviour
         }
 
         //Here's where you would teleport people back
-        if (player_handler._localPlayer != null && !force_end)
+        if (player_handler._localPlayer != null && player_handler._localPlayer.team > 0 && !force_end)
         {
             player_handler.Respawn();//Will automatically force them to drop what's in their hands
         }
