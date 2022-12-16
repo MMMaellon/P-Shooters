@@ -494,20 +494,6 @@ public class P_Shooter : UdonSharpBehaviour
         // }
         if (grip != null && ran_start)
         {
-            if (grip.reparented || grip.smartPickup.isHeld)
-            {
-                grip.transform.parent = null;
-                if (grip.gunModel != null)
-                {
-                    grip.gunModel.localPosition = grip.gunModel.localPosition / 2f;
-                    grip.gunModel.localRotation = Quaternion.Slerp(Quaternion.identity, grip.gunModel.localRotation, 0.5f);
-                }
-            }
-            else
-            {
-                grip.transform.parent = transform.parent;
-                grip.ApplyRestTransforms();
-            }
             Vector3 parentPos = Vector3.zero;
             Quaternion parentRot = Quaternion.identity;
             Vector3 gripPos = parentPos;
@@ -523,8 +509,7 @@ public class P_Shooter : UdonSharpBehaviour
             float distance = Vector3.Distance(grip.transform.position, gripPos);
             Vector3 flat_z_rest = grip.rest_local_pos;
             flat_z_rest.z = 0;
-            Vector3 targetPos = grip.transform.position - ((transform.rotation * Quaternion.Inverse(rest_local_rotation)) * flat_z_rest);
-            // targetPos = grip.transform.position;
+            Vector3 targetPos = grip.transform.TransformPoint(Quaternion.Inverse(grip.rest_local_rot) * (-flat_z_rest));
             Quaternion lookAtRotation = Quaternion.LookRotation(targetPos - transform.position, parentRot * Vector3.up);
             if (grip.rest_local_pos.z < 0)
             {
@@ -535,6 +520,22 @@ public class P_Shooter : UdonSharpBehaviour
             if (!Networking.LocalPlayer.IsOwner(gameObject) || !Input.GetKey(KeyCode.LeftAlt))
             {
                 transform.rotation = lookAtRotation * rest_local_rotation;
+            }
+
+
+            if (grip.reparented || grip.smartPickup.isHeld)
+            {
+                grip.transform.parent = null;
+                if (grip.gunModel != null)
+                {
+                    grip.gunModel.localPosition = grip.gunModel.localPosition / 2f;
+                    grip.gunModel.localRotation = Quaternion.Slerp(Quaternion.identity, grip.gunModel.localRotation, 0.5f);
+                }
+            }
+            else
+            {
+                grip.transform.parent = transform.parent;
+                grip.ApplyRestTransforms();
             }
         }
     }
