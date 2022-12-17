@@ -385,7 +385,7 @@ public class Scoreboard : UdonSharpBehaviour
                         if (top_score >= max_kills || force_end)
                         {
                             winningScore = top_score;
-                            winningName = p.gameObject.activeSelf || p.team == 0 || p.Owner == null || !p.Owner.IsValid() ? "No Winner" : p.Owner.displayName + " WINS!";
+                            winningName = !p.gameObject.activeSelf || p.team == 0 || p.Owner == null || !p.Owner.IsValid() ? "No Winner" : p.Owner.displayName + " WINS!";
                             OnGameEnd();
                         }
                     }
