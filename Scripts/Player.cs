@@ -263,6 +263,16 @@ public class Player : UdonSharpBehaviour
 
     public void Reset()
     {
+        VRC_Pickup leftPickup = Networking.LocalPlayer.GetPickupInHand(VRC_Pickup.PickupHand.Left);
+        VRC_Pickup rightPickup = Networking.LocalPlayer.GetPickupInHand(VRC_Pickup.PickupHand.Right);
+        if (leftPickup != null)
+        {
+            leftPickup.Drop();
+        }
+        if (rightPickup != null)
+        {
+            rightPickup.Drop();
+        }
         last_death = Time.timeSinceLevelLoad;
         health = player_handler.starting_health;
         shield = player_handler.starting_shield;

@@ -226,16 +226,6 @@ public class PlayerHandler : UdonSharpBehaviour
 
     public void Respawn()
     {
-        VRC_Pickup leftPickup = Networking.LocalPlayer.GetPickupInHand(VRC_Pickup.PickupHand.Left);
-        VRC_Pickup rightPickup = Networking.LocalPlayer.GetPickupInHand(VRC_Pickup.PickupHand.Right);
-        if (leftPickup != null)
-        {
-            leftPickup.Drop();
-        }
-        if (rightPickup != null)
-        {
-            rightPickup.Drop();
-        }
         if (_localPlayer != null)
         {
             _localPlayer.death_spot = Networking.LocalPlayer.GetPosition();

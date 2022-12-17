@@ -9989,6 +9989,10 @@ MonoBehaviour:
   localTransforms: 0
   force_gun_orientation_in_vr: 1
   allow_theft_from_self: 0
+  hiddenUntilHeld:
+  - {fileID: 4254201641461726251}
+  linkedPShooter: {fileID: 7010921152858364084}
+  heldDisableDelay: 25
 --- !u!114 &5609211717587669749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15027,6 +15031,7 @@ MonoBehaviour:
   _udonSharpBackingUdonBehaviour: {fileID: 7010921152858364087}
   melee: 0
   rare: 0
+  self_damage: 0
   track_ammo_mag: 1
   track_ammo_reserve: 0
   auto_reload: 1

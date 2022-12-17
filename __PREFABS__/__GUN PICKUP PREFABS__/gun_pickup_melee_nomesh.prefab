@@ -4940,6 +4940,9 @@ MonoBehaviour:
   localTransforms: 0
   force_gun_orientation_in_vr: 0
   allow_theft_from_self: 0
+  hiddenUntilHeld: []
+  linkedPShooter: {fileID: 7010921152858364084}
+  heldDisableDelay: 25
 --- !u!114 &5609211717587669749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5214,6 +5217,7 @@ MonoBehaviour:
   _udonSharpBackingUdonBehaviour: {fileID: 7010921152858364087}
   melee: 1
   rare: 0
+  self_damage: 0
   track_ammo_mag: 1
   track_ammo_reserve: 0
   auto_reload: 1
@@ -5228,6 +5232,7 @@ MonoBehaviour:
   particle_shooter: {fileID: 0}
   grip: {fileID: 0}
   scope: {fileID: 0}
+  tacticalReload: {fileID: 0}
   sound_source: {fileID: 3347341872584532024}
   sound_shoot: {fileID: 0}
   sound_melee_boost: {fileID: 8300000, guid: 83ce8f715832af74d8f564f7a47c27d8, type: 3}

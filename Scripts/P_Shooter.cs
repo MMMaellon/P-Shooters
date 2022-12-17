@@ -493,21 +493,13 @@ public class P_Shooter : UdonSharpBehaviour
         //         }
         //     }
         // }
-        if (grip != null && grip.smartPickup.isHeld && ran_start)
+        if (grip != null && (grip.reparented || grip.smartPickup.isHeld) && ran_start)
         {
-            if (grip.reparented || grip.smartPickup.isHeld)
+            grip.transform.parent = null;
+            if (grip.gunModel != null)
             {
-                grip.transform.parent = null;
-                if (grip.gunModel != null)
-                {
-                    grip.gunModel.localPosition = grip.gunModel.localPosition / 2f;
-                    grip.gunModel.localRotation = Quaternion.Slerp(Quaternion.identity, grip.gunModel.localRotation, 0.5f);
-                }
-            }
-            else
-            {
-                grip.transform.parent = transform.parent;
-                grip.ApplyRestTransforms();
+                grip.gunModel.localPosition = grip.gunModel.localPosition / 2f;
+                grip.gunModel.localRotation = Quaternion.Slerp(Quaternion.identity, grip.gunModel.localRotation, 0.5f);
             }
             Vector3 parentPos = Vector3.zero;
             Quaternion parentRot = Quaternion.identity;
@@ -540,6 +532,11 @@ public class P_Shooter : UdonSharpBehaviour
         } else if (ran_start)
         {
             transform.localRotation = rest_local_rotation;
+            if (grip != null)
+            {
+                grip.transform.parent = transform.parent;
+                grip.ApplyRestTransforms();
+            }
         }
     }
     public void _StopParticles()

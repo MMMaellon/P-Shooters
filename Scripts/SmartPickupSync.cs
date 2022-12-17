@@ -3,6 +3,7 @@ using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
+using VRC.Udon.Common;
 
 [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
 public class SmartPickupSync : UdonSharpBehaviour
@@ -27,6 +28,12 @@ public class SmartPickupSync : UdonSharpBehaviour
     [System.NonSerialized] public Vector3 restPos;
     [System.NonSerialized] public Quaternion restRot;
 
+    public GameObject[] hiddenUntilHeld;
+
+    public P_Shooter linkedPShooter;
+    public float heldDisableDelay = 5f;
+    private int activeDisableTimers = 0;
+
     public bool isHeld
     {
         get => _isHeld;
@@ -38,6 +45,45 @@ public class SmartPickupSync : UdonSharpBehaviour
             {
                 pickup.pickupable = !_isHeld;
             }
+            if (value)
+            {
+                ToggleHeldObjects();
+            } else
+            {
+                SendCustomEventDelayedSeconds(nameof(ToggleHeldObjects), heldDisableDelay);
+                activeDisableTimers++;
+            }
+        }
+    }
+
+    public void ToggleHeldObjects(){
+        activeDisableTimers--;
+        if (!isHeld && activeDisableTimers > 0)
+        {
+            return;
+        }
+
+        if (linkedPShooter != null)
+        {
+            if (linkedPShooter.shoot_state != P_Shooter.SHOOT_STATE_IDLE)
+            {
+                SendCustomEventDelayedSeconds(nameof(ToggleHeldObjects), heldDisableDelay);//retry every 5 frames
+                activeDisableTimers++;
+            }
+            return;
+        }
+        
+        foreach (GameObject obj in hiddenUntilHeld)
+        {
+            if (obj != null)
+            {
+                obj.SetActive(isHeld);
+            }
+        }
+        if(linkedPShooter != null)
+        {
+            linkedPShooter.enabled = isHeld;
+            linkedPShooter.animator.enabled = isHeld;
         }
     }
     void Start()
@@ -59,6 +105,7 @@ public class SmartPickupSync : UdonSharpBehaviour
         restPos = pos;
         restRot = rot;
         start_ran = true;
+        isHeld = isHeld;
     }
 
 

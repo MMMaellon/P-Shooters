@@ -9,9 +9,9 @@ public class Scoreboard : UdonSharpBehaviour
     public PlayerHandler player_handler;
     public ScoreboardEntry[] entries;
 
-    public UdonSharpBehaviour gameStartBehaviour;
+    public UdonBehaviour gameStartBehaviour;
     public string gameStartEvent;
-    public UdonSharpBehaviour gameEndBehaviour;
+    public UdonBehaviour gameEndBehaviour;
     public string gameEndEvent;
     private bool unsorted = true;
     private int[] sorted;
@@ -61,14 +61,11 @@ public class Scoreboard : UdonSharpBehaviour
         get => _world_owner_only;
         set
         {
-            if (_world_owner_only != value)
+            _world_owner_only = value;
+            RequestSerialization();
+            if (world_owner_toggle != null)
             {
-                _world_owner_only = value;
-                RequestSerialization();
-            }
-            if (world_owner_toggle != null && world_owner_toggle.isOn != value)
-            {
-                world_owner_toggle.isOn = value;
+                world_owner_toggle.isOn = _world_owner_only;
             }
         }
     }
@@ -78,6 +75,9 @@ public class Scoreboard : UdonSharpBehaviour
         if (Networking.LocalPlayer.IsOwner(gameObject))
         {
             world_owner_only = !world_owner_only;
+        } else
+        {
+            world_owner_only = world_owner_only;
         }
     }
 
@@ -239,15 +239,15 @@ public class Scoreboard : UdonSharpBehaviour
             winningScoreText.text = "Settings Locked";
         }
 
-        if (gameStartBehaviour != null)
-        {
-            gameStartBehaviour.SendCustomEvent(gameStartEvent);
-        }
-
         if (player_handler._localPlayer != null && player_handler._localPlayer.team > 0)
         {
-            player_handler.Respawn();//Will automatically force them to drop what's in their hands
+            player_handler._localPlayer.Reset();//Will automatically force them to drop what's in their hands
+            if (gameStartBehaviour != null)
+            {
+                gameStartBehaviour.SendCustomEvent(gameStartEvent);
+            }
         }
+
     }
 
     public void RequestDisableGame()
@@ -290,7 +290,7 @@ public class Scoreboard : UdonSharpBehaviour
 
     public void DelayedUpdateScores()
     {
-        SendCustomEventDelayedFrames(nameof(UpdateScores), 5);
+        SendCustomEventDelayedSeconds(nameof(UpdateScores), 5);
     }
 
     public void UpdateScores()
@@ -301,6 +301,7 @@ public class Scoreboard : UdonSharpBehaviour
 
     public void Sort()
     {
+        Debug.LogWarning("Sort " + Time.timeSinceLevelLoad);
         if (!unsorted)
         {
             OnFinishSorting();
@@ -311,6 +312,10 @@ public class Scoreboard : UdonSharpBehaviour
         {
             Player prev = player_handler.players[sorted[i - 1]];
             Player next = player_handler.players[sorted[i]];
+            if (!next.gameObject.activeSelf || next.Owner == null || next.team == 0)
+            {
+                continue;
+            }
             if ((next.gameObject.activeSelf && !prev.gameObject.activeSelf) || (next.Owner != null && prev.Owner == null) || (next.team > 0 && prev.team == 0) || (next.kills > prev.kills) || (next.Owner != null && System.String.Compare(next.Owner.displayName, prev.Owner.displayName) < 0)){
                 unsorted = true;
                 int temp = sorted[i];
@@ -330,6 +335,7 @@ public class Scoreboard : UdonSharpBehaviour
 
     public void OnFinishSorting()
     {
+        Debug.LogWarning("OnFinishSorting");
         int[] teamKillCount = new int[0];
         for (int i = 0; i < entries.Length; i++)
         {
@@ -343,7 +349,7 @@ public class Scoreboard : UdonSharpBehaviour
                     if (top_score >= max_kills || (!teams && force_end))
                     {
                         winningScore = top_score;
-                        winningName = p.Owner == null || !p.Owner.IsValid() ? "Player Left World" : p.Owner.displayName + " WINS!";
+                        winningName = p.gameObject.activeSelf || (teams && p.team == 0) || p.Owner == null || !p.Owner.IsValid() ? "No Winner" : p.Owner.displayName + " WINS!";
                         OnGameEnd();
                     }
                 }
@@ -366,18 +372,23 @@ public class Scoreboard : UdonSharpBehaviour
         {
             int topTeam = 0;
             int topScore = teamKillCount[0];
+            int secondTopScore = -1001;
             for (int i = 1; i < teamKillCount.Length; i++)
             {
                 if (teamKillCount[i] > topScore)
                 {
+                    secondTopScore = topScore;
                     topScore = teamKillCount[i];
                     topTeam = i;
+                } else if (teamKillCount[i] > secondTopScore)
+                {
+                    secondTopScore = teamKillCount[i];
                 }
             }
             if (topScore >= max_kills || force_end)
             {
                 winningScore = topScore;
-                winningName = topTeam == 0 ? "DRAW" : "Team " + topTeam + " WINS!";
+                winningName = topTeam == 0 || topScore == secondTopScore ? "No Winner" : "Team " + topTeam + " WINS!";
                 OnGameEnd();
             }
         }
@@ -397,16 +408,15 @@ public class Scoreboard : UdonSharpBehaviour
         }
 
         //Here's where you would teleport people back
-        if (player_handler._localPlayer != null && player_handler._localPlayer.team > 0 && !force_end)
+        if (player_handler._localPlayer != null && player_handler._localPlayer.team > 0)
         {
-            player_handler.Respawn();//Will automatically force them to drop what's in their hands
+            player_handler._localPlayer.Reset();//Will automatically force them to drop what's in their hands
+            if (gameEndBehaviour != null)
+            {
+                gameEndBehaviour.SendCustomEvent(gameEndEvent);
+            }
         }
-
-
-        if (gameEndBehaviour != null)
-        {
-            gameEndBehaviour.SendCustomEvent(gameEndEvent);
-        }
+        
         force_end = false;
     }
 
