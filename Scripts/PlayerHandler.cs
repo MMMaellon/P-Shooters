@@ -230,7 +230,21 @@ public class PlayerHandler : UdonSharpBehaviour
         {
             _localPlayer.death_spot = Networking.LocalPlayer.GetPosition();
             _localPlayer.Reset();
-            Networking.LocalPlayer.Respawn();
+            if (scores != null)
+            {
+                scores.OnPlayerDie();
+            } else
+            {
+                Networking.LocalPlayer.Respawn();
+            }
+        }
+    }
+
+    public override void OnPlayerRespawn(VRCPlayerApi player)
+    {
+        if (scores != null && player != null && player.isLocal)
+        {
+            scores.PlayerRespawned();
         }
     }
 
@@ -330,7 +344,6 @@ public class PlayerHandler : UdonSharpBehaviour
 
     public void Update()
     {
-
         if (_localPlayer != null)
         {
             if (animator != null)

@@ -11,6 +11,10 @@ public class Scoreboard : UdonSharpBehaviour
 
     public UdonBehaviour gameStartBehaviour;
     public string gameStartEvent;
+    public UdonBehaviour playerRespawnBehaviour;
+    public string playerRespawnEvent;
+    public UdonBehaviour playerDieBehaviour;
+    public string playerDieEvent;
     public UdonBehaviour gameEndBehaviour;
     public string gameEndEvent;
     private bool unsorted = true;
@@ -434,5 +438,20 @@ public class Scoreboard : UdonSharpBehaviour
     {
         force_end = true;
         Sort();
+    }
+
+    public void OnPlayerDie()
+    {
+        if (playerDieBehaviour != null)
+        {
+            playerDieBehaviour.SendCustomEvent(playerDieEvent);
+        }
+    }
+    public void PlayerRespawned()
+    {
+        if (playerRespawnBehaviour != null)
+        {
+            playerRespawnBehaviour.SendCustomEvent(playerRespawnEvent);
+        }
     }
 }
