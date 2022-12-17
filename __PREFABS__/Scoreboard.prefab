@@ -941,6 +941,10 @@ MonoBehaviour:
   - {fileID: 8920322861765049550}
   gameStartBehaviour: {fileID: 0}
   gameStartEvent: 
+  playerRespawnBehaviour: {fileID: 1990556012040053565}
+  playerRespawnEvent: Leave
+  playerDieBehaviour: {fileID: 0}
+  playerDieEvent: 
   gameEndBehaviour: {fileID: 0}
   gameEndEvent: 
   winningScore: 0

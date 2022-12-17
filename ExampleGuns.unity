@@ -14014,22 +14014,22 @@ PrefabInstance:
     - target: {fileID: 4078799546221581041, guid: f315b965e59df2e4887c9b6ad2c96eb7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -70.849304
+      value: 62.20877
       objectReference: {fileID: 0}
     - target: {fileID: 4078799546221581041, guid: f315b965e59df2e4887c9b6ad2c96eb7,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.3440922
+      value: 1.3581625
       objectReference: {fileID: 0}
     - target: {fileID: 4078799546221581041, guid: f315b965e59df2e4887c9b6ad2c96eb7,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 57.519524
+      value: -4.0858397
       objectReference: {fileID: 0}
     - target: {fileID: 4078799546221581041, guid: f315b965e59df2e4887c9b6ad2c96eb7,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.09445135
       objectReference: {fileID: 0}
     - target: {fileID: 4078799546221581041, guid: f315b965e59df2e4887c9b6ad2c96eb7,
         type: 3}
@@ -14039,7 +14039,7 @@ PrefabInstance:
     - target: {fileID: 4078799546221581041, guid: f315b965e59df2e4887c9b6ad2c96eb7,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.9955295
       objectReference: {fileID: 0}
     - target: {fileID: 4078799546221581041, guid: f315b965e59df2e4887c9b6ad2c96eb7,
         type: 3}
@@ -14049,12 +14049,12 @@ PrefabInstance:
     - target: {fileID: 4078799546221581043, guid: f315b965e59df2e4887c9b6ad2c96eb7,
         type: 3}
       propertyPath: field of view
-      value: 40
+      value: 6.6666665
       objectReference: {fileID: 0}
     - target: {fileID: 4078799546221581043, guid: f315b965e59df2e4887c9b6ad2c96eb7,
         type: 3}
       propertyPath: near clip plane
-      value: 0.75
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4078799546491046313, guid: f315b965e59df2e4887c9b6ad2c96eb7,
         type: 3}
@@ -37921,6 +37921,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2586720233690046232, guid: 2f7a7e53a8fae6946bc0e44d43e56fcb,
         type: 3}
+      propertyPath: playerDieEvent
+      value: Teleport
+      objectReference: {fileID: 0}
+    - target: {fileID: 2586720233690046232, guid: 2f7a7e53a8fae6946bc0e44d43e56fcb,
+        type: 3}
       propertyPath: player_handler
       value: 
       objectReference: {fileID: 918552100}
@@ -37934,6 +37939,11 @@ PrefabInstance:
       propertyPath: gameStartBehaviour
       value: 
       objectReference: {fileID: 7238288732531468391}
+    - target: {fileID: 2586720233690046232, guid: 2f7a7e53a8fae6946bc0e44d43e56fcb,
+        type: 3}
+      propertyPath: playerDieBehaviour
+      value: 
+      objectReference: {fileID: 7238288732578882957}
     - target: {fileID: 2586720233690046232, guid: 2f7a7e53a8fae6946bc0e44d43e56fcb,
         type: 3}
       propertyPath: serializationData.Prefab
@@ -38157,7 +38167,7 @@ PrefabInstance:
     - target: {fileID: 4516535156560730708, guid: 2f7a7e53a8fae6946bc0e44d43e56fcb,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000044606626
+      value: -0.00016667694
       objectReference: {fileID: 0}
     - target: {fileID: 4516535156672438262, guid: 2f7a7e53a8fae6946bc0e44d43e56fcb,
         type: 3}
