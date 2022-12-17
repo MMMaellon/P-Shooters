@@ -130,27 +130,14 @@ public class Scoreboard : UdonSharpBehaviour
         {
             player_handler = GameObject.Find("__GUN MANAGER__").GetComponentInChildren<PlayerHandler>();
         }
-        player_handler.scores = this;
         sorted = new int[player_handler.players.Length];
         for (int i = 0; i < sorted.Length; i++)
         {
             sorted[i] = i;
         }
-        UpdateScores();
-
-
         winningName = "No Winners Yet";
         winningScore = 0;
-
-        if (winningNameText != null)
-        {
-            winningNameText.text = "";
-        }
-
-        if (winningScoreText != null)
-        {
-            winningScoreText.text = "";
-        }
+        EnableGame();
 
         world_owner_only = world_owner_only;
         max_kills = max_kills;
@@ -226,9 +213,12 @@ public class Scoreboard : UdonSharpBehaviour
 
     public void OnGameStart()
     {
+        if (player_handler.scores != this)
+        {
+            return;
+        }
         force_end = false;
         game_active = true;
-        player_handler.scores = this;
         player_handler.ResetKills();
         winningName = "Game In Progress";
         winningScore = 0;
@@ -264,21 +254,46 @@ public class Scoreboard : UdonSharpBehaviour
 
     public void DisableGame()
     {
-        player_handler.scores = null;
+        if (player_handler.scores == this)
+        {
+            player_handler.scores = null;
 
+            if (winningNameText != null)
+            {
+                winningNameText.text = "Just RP Mode";
+            }
+
+            if (winningScoreText != null)
+            {
+                winningScoreText.text = "";
+            }
+        } else
+        {
+            EnableGame();
+        }
+    }
+
+    public void EnableGame()
+    {
+        player_handler.scores = this;
+        UpdateScores();
         if (winningNameText != null)
         {
-            winningNameText.text = "Just RP Mode";
+            winningNameText.text = winningName;
         }
 
         if (winningScoreText != null)
         {
-            winningScoreText.text = "";
+            winningScoreText.text = "Total Kills: " + winningScore;
         }
     }
 
     public void Join()
     {
+        if (player_handler.scores != this)
+        {
+            return;
+        }
         if (player_handler._localPlayer != null && player_handler._localPlayer.team == 0)
         {
             player_handler._localPlayer.team = 1;
@@ -286,6 +301,10 @@ public class Scoreboard : UdonSharpBehaviour
     }
     public void Leave()
     {
+        if (player_handler.scores != this)
+        {
+            return;
+        }
         if (player_handler._localPlayer != null)
         {
             player_handler._localPlayer.team = 0;
@@ -413,6 +432,11 @@ public class Scoreboard : UdonSharpBehaviour
             winningScoreText.text = "Total Kills: " + winningScore;
         }
 
+        force_end = false;
+        if (player_handler.scores != this)
+        {
+            return;
+        }
         //Here's where you would teleport people back
         if (player_handler._localPlayer != null && player_handler._localPlayer.team > 0)
         {
@@ -423,7 +447,6 @@ public class Scoreboard : UdonSharpBehaviour
             }
         }
         
-        force_end = false;
     }
 
     public void RequestGameEnd()
@@ -436,6 +459,10 @@ public class Scoreboard : UdonSharpBehaviour
 
     public void ForceGameEnd()
     {
+        if (player_handler.scores != this)
+        {
+            return;
+        }
         force_end = true;
         Sort();
     }
@@ -447,7 +474,7 @@ public class Scoreboard : UdonSharpBehaviour
             playerDieBehaviour.SendCustomEvent(playerDieEvent);
         }
     }
-    public void PlayerRespawned()
+    public void OnPlayerRespawned()
     {
         if (playerRespawnBehaviour != null)
         {

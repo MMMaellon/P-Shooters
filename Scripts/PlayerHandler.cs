@@ -244,7 +244,7 @@ public class PlayerHandler : UdonSharpBehaviour
     {
         if (scores != null && player != null && player.isLocal)
         {
-            scores.PlayerRespawned();
+            scores.OnPlayerRespawned();
         }
     }
 
