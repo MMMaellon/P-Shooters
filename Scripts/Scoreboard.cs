@@ -341,18 +341,8 @@ public class Scoreboard : UdonSharpBehaviour
         {
             Player p = player_handler.players[sorted[i]];
             entries[i].DisplayScore(player_handler.players[sorted[i]], teams);
-            if (p != null && p.gameObject.activeSelf)
+            if (p != null && p.gameObject.activeSelf && game_active)
             {
-                if (i == 0 && game_active)
-                {
-                    int top_score = p.kills;
-                    if (top_score >= max_kills || (!teams && force_end))
-                    {
-                        winningScore = top_score;
-                        winningName = p.gameObject.activeSelf || (teams && p.team == 0) || p.Owner == null || !p.Owner.IsValid() ? "No Winner" : p.Owner.displayName + " WINS!";
-                        OnGameEnd();
-                    }
-                }
 
                 if (teams)
                 {
@@ -364,6 +354,18 @@ public class Scoreboard : UdonSharpBehaviour
                     }
 
                     teamKillCount[p.team] = teamKillCount[p.team] + p.kills;
+                } else
+                {
+                    if (i == 0)
+                    {
+                        int top_score = p.kills;
+                        if (top_score >= max_kills || force_end)
+                        {
+                            winningScore = top_score;
+                            winningName = p.gameObject.activeSelf || p.team == 0 || p.Owner == null || !p.Owner.IsValid() ? "No Winner" : p.Owner.displayName + " WINS!";
+                            OnGameEnd();
+                        }
+                    }
                 }
             }
         }
