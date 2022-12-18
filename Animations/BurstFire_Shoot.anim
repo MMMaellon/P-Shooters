@@ -887,7 +887,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0
+  - time: 0.016666668
     functionName: SendCustomEvent
     data: _ShootCallbackSingle
     objectReferenceParameter: {fileID: 0}
@@ -901,7 +901,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.083333336
+  - time: 0.1
     functionName: SendCustomEvent
     data: _ShootCallbackSingle
     objectReferenceParameter: {fileID: 0}
@@ -915,7 +915,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.16666667
+  - time: 0.18333334
     functionName: SendCustomEvent
     data: _ShootFXCallback
     objectReferenceParameter: {fileID: 0}

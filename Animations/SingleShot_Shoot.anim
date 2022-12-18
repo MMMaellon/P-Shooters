@@ -491,7 +491,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0
+  - time: 0.016666668
     functionName: SendCustomEvent
     data: _ShootCallbackSingle
     objectReferenceParameter: {fileID: 0}
