@@ -10,7 +10,16 @@ public class PickupEventsRelay : UdonSharpBehaviour
 
     override public void OnPickup()
     {
+        if(!relay_target.enabled){
+            relay_target.enabled = true;
+            SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, nameof(EnableTarget));
+        }
         relay_target.SendCustomEvent("_OnPickup");
+        
+    }
+
+    public void EnableTarget(){
+        relay_target.enabled = true;
     }
 
     override public void OnPickupUseDown()

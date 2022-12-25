@@ -60,6 +60,11 @@ public class P_Shooter : UdonSharpBehaviour
 
     private Vector3 local_rest_pickup_point_offset;
 
+
+    [Header("Objects and components in the below fields will be disabled when the gun respawns and re-enabled when it's picked back up")]
+    public GameObject[] objectsToOptimize;
+    public UdonBehaviour[] udonToOptimize;
+
     //callbacks
     public int shoot_state
     {
@@ -235,6 +240,13 @@ public class P_Shooter : UdonSharpBehaviour
             local_rest_pickup_point_offset = transform.InverseTransformPoint(smartPickup.pickup.ExactGun.position);
         }
         ran_start = true;
+        SendCustomEventDelayedSeconds(nameof(CheckDisable), 1);
+    }
+
+    public void CheckDisable(){
+        if (smartPickup != null && !smartPickup.isHeld){
+            Disable();
+        }
     }
 
     public void _Register(GunManager gunManager, int new_id)
@@ -786,6 +798,48 @@ public class P_Shooter : UdonSharpBehaviour
                 smartPickup.Respawn();
             }
             _Reset();
+        }
+    }
+
+    public void _RespawnEndCallback(){
+        SendCustomEventDelayedFrames(nameof(CheckDisable), 1);//1 frame to allow for last keyframe to play
+    }
+
+    public void Enable(){
+        enabled = true;
+    }
+
+    public void Disable(){
+        enabled = false;
+    }
+
+    public void OnEnable(){
+        animator.enabled = true;
+        
+        if(grip != null){
+            grip.gameObject.SetActive(true);
+        }
+
+        shoot_state = shoot_state;
+        foreach (GameObject o in objectsToOptimize){
+            o.SetActive(true);
+        }
+        foreach(UdonBehaviour m in udonToOptimize){
+            m.enabled = true;
+        }
+    }
+
+    public void OnDisable(){
+        animator.enabled = false;
+        if(grip != null){
+            grip.ForceDrop();
+            grip.gameObject.SetActive(false);
+        }
+        foreach (GameObject o in objectsToOptimize){
+            o.SetActive(false);
+        }
+        foreach(UdonBehaviour m in udonToOptimize){
+            m.enabled = false;
         }
     }
 

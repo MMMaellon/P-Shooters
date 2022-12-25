@@ -18,7 +18,7 @@ public class Scoreboard : UdonSharpBehaviour
     public string playerDieEvent;
     public UdonBehaviour gameEndBehaviour;
     public string gameEndEvent;
-    private bool unsorted = false;
+    [System.NonSerialized] public bool unsorted = false;
     private int[] sorted;
 
     [HideInInspector] public int winningScore = 0;
@@ -400,7 +400,14 @@ public class Scoreboard : UdonSharpBehaviour
             {
                 continue;
             }
-            if ((next.gameObject.activeSelf && !prev.gameObject.activeSelf) || (next.Owner != null && prev.Owner == null) || (next.team > 0 && prev.team == 0) || (next.kills > prev.kills) || (next.Owner != null && System.String.Compare(next.Owner.displayName, prev.Owner.displayName) < 0)){
+            if ((next.gameObject.activeSelf && !prev.gameObject.activeSelf) || (next.Owner != null && prev.Owner == null) || (next.team > 0 && prev.team == 0) || (next.kills > prev.kills) || (next.kills == prev.kills && System.String.Compare(next.Owner.displayName, prev.Owner.displayName) < 0)){
+                // Debug.LogWarning("prev: " + prev.Owner.displayName);
+                // Debug.LogWarning("next: " + next.Owner.displayName);
+                // Debug.LogWarning("(next.gameObject.activeSelf && !prev.gameObject.activeSelf) " + (next.gameObject.activeSelf && !prev.gameObject.activeSelf));
+                // Debug.LogWarning("(next.Owner != null && prev.Owner == null) " + (next.Owner != null && prev.Owner == null));
+                // Debug.LogWarning("(next.team > 0 && prev.team == 0) " + (next.team > 0 && prev.team == 0));
+                // Debug.LogWarning("(next.kills > prev.kills) " + (next.kills > prev.kills));
+                // Debug.LogWarning("System.String.Compare(next.Owner.displayName, prev.Owner.displayName) " + System.String.Compare(next.Owner.displayName, prev.Owner.displayName));
                 new_unsorted = true;
                 int temp = sorted[i];
                 sorted[i] = sorted[i - 1];
