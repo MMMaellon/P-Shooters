@@ -20,7 +20,7 @@ public class Player : UdonSharpBehaviour
     private float last_damage = -99;
     [System.NonSerialized][UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(damage))] public float _damage = 1f;
     [System.NonSerialized][UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(death_spot))] public Vector3 _death_spot = Vector3.zero;
-    [System.NonSerialized][UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(kills))] public int _kills = 0;
+    [System.NonSerialized][UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(score))] public int _score = 0;
     [System.NonSerialized][UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(team))] public int _team = 0;
     private Vector3 _local_death_spot = Vector3.zero;
     [System.NonSerialized][UdonSynced(UdonSyncMode.None)] public int left_pickup_index = -1;
@@ -70,12 +70,12 @@ public class Player : UdonSharpBehaviour
         }
     }
 
-    public int kills
+    public int score
     {
-        get => _kills;
+        get => _score;
         set
         {
-            _kills = value;
+            _score = value;
             RequestSerialization();
 
             if (player_handler != null && player_handler.scores != null)
@@ -307,7 +307,7 @@ public class Player : UdonSharpBehaviour
         {
             if (player_handler.damage_layers == (player_handler.damage_layers | (1 << other.gameObject.layer)))
             {
-                if ( player_handler.scores != null && ((player_handler.scores.teams && player_handler._localPlayer.team == team) || team == 0))
+                if ( player_handler.scores != null && ((player_handler.teams && player_handler._localPlayer.team == team) || team == 0 || !player_handler.scores.game_active))
                 {
                     return;
                 }
@@ -365,7 +365,7 @@ public class Player : UdonSharpBehaviour
     public void OnTriggerEnter(Collider other)
     {
         Debug.LogWarning("OnTriggerEnter");
-        if (player_handler == null || player_handler._localPlayer == null || other == null || (player_handler.scores != null && team == 0))
+        if (player_handler == null || player_handler._localPlayer == null || other == null || (player_handler.scores != null && (team == 0 || player_handler.scores.game_active)))
         {
             return;
         }
@@ -518,13 +518,15 @@ public class Player : UdonSharpBehaviour
         if (player_handler != null)
         {
             player_handler.KillFX();
+            if(player_handler.scores != null && player_handler.scores.game_active){
+                player_handler.scores.OnGotKill();
+            }
         }
-        kills++;
     }
 
-    public void ResetKills()
+    public void ResetScore()
     {
-        kills = 0;
+        score = 0;
     }
 
     public void ShotBy(int other_id, bool left_hand)

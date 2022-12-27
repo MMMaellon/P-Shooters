@@ -115,7 +115,82 @@ public class PlayerHandler : UdonSharpBehaviour
     public float shield_regen_delay = 5;
     public int shield_regen_rate = 10;//per second
     public float hud_hide_delay = 3;//per second
-    public Scoreboard scores;
+
+    public UnityEngine.UI.Toggle world_owner_toggle;
+    [UdonSyncedAttribute(UdonSyncMode.None), FieldChangeCallback(nameof(world_owner_only))] public bool _world_owner_only = true;
+    public bool world_owner_only
+    {
+        get => _world_owner_only;
+        set
+        {
+            _world_owner_only = value;
+            RequestSerialization();
+            if (world_owner_toggle != null)
+            {
+                world_owner_toggle.isOn = _world_owner_only;
+            }
+        }
+    }
+    public Scoreboard scores
+    {
+        get
+        {
+            if (scoreboards == null || selected_scoreboard < 0 || selected_scoreboard >= scoreboards.Length)
+            {
+                return null;
+            }
+            return scoreboards[selected_scoreboard];
+        }
+        set
+        {
+            if (value == null)
+            {
+                selected_scoreboard = -1;
+                return;
+            }
+            for (int i = 0; i < scoreboards.Length; i++)
+            {
+                if (scoreboards[i] == value)
+                {
+                    selected_scoreboard = i;
+                    break;
+                }
+            }
+        }
+    }
+    [UdonSyncedAttribute(UdonSyncMode.None), FieldChangeCallback(nameof(teams))] public bool _teams = false;
+    public bool teams
+    {
+        get => _teams;
+        set
+        {
+            _teams = value;
+            RequestSerialization();
+            if (scores != null)
+            {
+                scores.UpdateScores();
+            }
+        }
+    }
+
+    [UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(selected_scoreboard))] public int _selected_scoreboard = -1;
+    public int selected_scoreboard{
+        get => _selected_scoreboard;
+        set
+        {
+            _selected_scoreboard = value;
+
+            for (int i = 0; i < scoreboards.Length; i++)
+            {
+                if (scoreboards[i] != null)
+                {
+                    scoreboards[i].gameObject.SetActive(i == value);
+                }
+            }
+            RequestSerialization();
+        }
+    }
+    public Scoreboard[] scoreboards;
     public void _OnLocalPlayerAssigned()
     {
         // Get the local player's pool object so we can later perform operations on it.
@@ -128,7 +203,7 @@ public class PlayerHandler : UdonSharpBehaviour
         _localPlayer.Reset();
         _localPlayer.RequestSerialization();
     }
-        void Start()
+    void Start()
     {
         if (animator != null && _localPlayer != null)
         {
@@ -142,6 +217,8 @@ public class PlayerHandler : UdonSharpBehaviour
         Networking.LocalPlayer.SetStrafeSpeed(strafe_speed);
         Networking.LocalPlayer.SetWalkSpeed(walk_speed);
         Networking.LocalPlayer.SetJumpImpulse(jump_impulse);
+        selected_scoreboard = selected_scoreboard;
+        world_owner_only = world_owner_only;
     }
 
     public void _Register(GunManager guns)
@@ -149,11 +226,25 @@ public class PlayerHandler : UdonSharpBehaviour
         gun_manager = guns;
     }
 
-    public void ResetKills()
+    public void ResetScore()
     {
         if (_localPlayer != null)
         {
-            _localPlayer.ResetKills();
+            _localPlayer.ResetScore();
+        }
+    }
+
+
+
+    public void RequestToggleWorldOwner()
+    {
+        if (Networking.LocalPlayer.IsOwner(gameObject))
+        {
+            world_owner_only = !world_owner_only;
+        }
+        else
+        {
+            world_owner_only = world_owner_only;
         }
     }
 

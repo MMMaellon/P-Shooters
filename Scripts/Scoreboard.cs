@@ -3,17 +3,65 @@ using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
+
+#if !COMPILER_UDONSHARP && UNITY_EDITOR
+
+using VRC.SDKBase.Editor.BuildPipeline;
+using UnityEditor;
+using UdonSharpEditor;
+using System.Collections.Immutable;
+
+
+[CustomEditor(typeof(Scoreboard))]
+public class ScoreboardEditor : Editor
+{
+
+    public override void OnInspectorGUI()
+    {
+        EditorGUILayout.LabelField("PLAYER SETUP");
+        EditorGUILayout.HelpBox(
+@"1) Drag a 'players' prefab into your scene. There should only be one. Make sure it's players as in the plural version
+
+2) Press the setup button below or the setup button on the players object you just dragged in
+
+3) Call me if it broke. lol", MessageType.Info);
+        if (GUILayout.Button(new GUIContent("Set up ALL Scoreboards")))
+        {
+            foreach (Scoreboard score in GameObject.FindObjectsOfType(typeof(Scoreboard)) as Scoreboard[])
+            {
+                if (score != null)
+                {
+                    score.Reset();
+                }
+            }
+        }
+        EditorGUILayout.Space();
+        EditorGUILayout.Space();
+        EditorGUILayout.Space();
+        if (UdonSharpGUI.DrawDefaultUdonSharpBehaviourHeader(target)) return;
+        EditorGUILayout.Space();
+        base.OnInspectorGUI();
+    }
+}
+#endif
+
 [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
 public class Scoreboard : UdonSharpBehaviour
 {
     public PlayerHandler player_handler;
     public ScoreboardEntry[] entries;
+    public bool forceTeams = false;
+    public bool forceNoTeams = false;
+    public bool group_by_teams = false;
+    public string[] teamNames = {};
     public bool preventJoiningMidgame = true;
 
     public UdonBehaviour gameStartBehaviour;
     public string gameStartEvent;
     public UdonBehaviour playerRespawnBehaviour;
     public string playerRespawnEvent;
+    public UdonBehaviour playerGetKillBehaviour;
+    public string playerGetKillEvent;
     public UdonBehaviour playerDieBehaviour;
     public string playerDieEvent;
     public UdonBehaviour gameEndBehaviour;
@@ -25,21 +73,19 @@ public class Scoreboard : UdonSharpBehaviour
     [HideInInspector] public string winningName = "No Winners Yet";
     
 
-    [UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(max_kills))] public int _max_kills = 25;
+    [UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(max_score))] public int _max_score = 25;
 
     public TMPro.TextMeshProUGUI winningScoreText;
     public TMPro.TextMeshProUGUI winningNameText;
     public TMPro.TextMeshProUGUI maxScoreText;
-
-    public UnityEngine.UI.Toggle world_owner_toggle;
+    public TMPro.TextMeshProUGUI teamScoreText;
+    public TMPro.TextMeshProUGUI teamNamesText;
+    public GameObject end_spacer;
 
     private bool force_end = false;
     private float last_end_game = -1001f;
 
-    [UdonSyncedAttribute(UdonSyncMode.None), FieldChangeCallback(nameof(teams))] public bool _teams = false;
-    [UdonSyncedAttribute(UdonSyncMode.None), FieldChangeCallback(nameof(world_owner_only))] public bool _world_owner_only = true;
     [HideInInspector, UdonSyncedAttribute(UdonSyncMode.None), FieldChangeCallback(nameof(game_active))] public bool _game_active = false;
-    [UdonSyncedAttribute(UdonSyncMode.None), FieldChangeCallback(nameof(pause))] public bool _pause = false;
     public bool game_active
     {
         get => _game_active;
@@ -67,69 +113,17 @@ public class Scoreboard : UdonSharpBehaviour
             RequestSerialization();
         }
     }
-    public bool pause
+    public int max_score
     {
-        get => _pause;
+        get => _max_score;
         set
         {
-            _pause = value;
-            RequestSerialization();
-
-            if (value)
-            {
-                DisableGame();
-            }
-            else
-            {
-                EnableGame();
-            }
-        }
-    }
-    public bool teams
-    {
-        get => _teams;
-        set
-        {
-            _teams = value;
-            RequestSerialization();
-            UpdateScores();
-        }
-    }
-    public int max_kills
-    {
-        get => _max_kills;
-        set
-        {
-            _max_kills = value;
+            _max_score = value;
             RequestSerialization();
             if (maxScoreText != null)
             {
-                maxScoreText.text = "" + value;
+                maxScoreText.text = value.ToString();
             }
-        }
-    }
-    public bool world_owner_only
-    {
-        get => _world_owner_only;
-        set
-        {
-            _world_owner_only = value;
-            RequestSerialization();
-            if (world_owner_toggle != null)
-            {
-                world_owner_toggle.isOn = _world_owner_only;
-            }
-        }
-    }
-
-    public void RequestToggleWorldOwner()
-    {
-        if (Networking.LocalPlayer.IsOwner(gameObject))
-        {
-            world_owner_only = !world_owner_only;
-        } else
-        {
-            world_owner_only = world_owner_only;
         }
     }
 
@@ -142,7 +136,7 @@ public class Scoreboard : UdonSharpBehaviour
         if (Networking.LocalPlayer.IsOwner(gameObject))
         {
             TeamsOn();
-        } else if (!world_owner_only)
+        } else if (!player_handler.world_owner_only)
         {
             SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(TeamsOn));
         }
@@ -156,7 +150,7 @@ public class Scoreboard : UdonSharpBehaviour
         if (Networking.LocalPlayer.IsOwner(gameObject))
         {
             TeamsOff();
-        } else if (!world_owner_only)
+        } else if (!player_handler.world_owner_only)
         {
             SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(TeamsOff));
         } 
@@ -164,20 +158,27 @@ public class Scoreboard : UdonSharpBehaviour
 
     public void TeamsOn()
     {
-        teams = true;
+        if (player_handler.scores == this)
+        {
+            player_handler.teams = true;
+        }
 
     }
     public void TeamsOff()
     {
-        teams = false;
+        if (player_handler.scores == this)
+        {
+            player_handler.teams = false;
+        }
     }
     
     void Start()
     {
-        if (player_handler == null)
-        {
-            player_handler = GameObject.Find("__GUN MANAGER__").GetComponentInChildren<PlayerHandler>();
-        }
+    }
+
+    public void OnEnable()
+    {
+        game_active = false;
         sorted = new int[player_handler.players.Length];
         for (int i = 0; i < sorted.Length; i++)
         {
@@ -185,12 +186,31 @@ public class Scoreboard : UdonSharpBehaviour
         }
         winningName = "No Winner";
         winningScore = 0;
-        
-        teams = teams;
-        pause = pause;
-        world_owner_only = world_owner_only;
-        max_kills = max_kills;
+        max_score = max_score;
         game_active = game_active;
+        UpdateScores();
+
+        if (winningNameText != null)
+        {
+            winningNameText.text = winningName;
+        }
+
+        if (winningScoreText != null)
+        {
+            winningScoreText.text = "Total Score: " + winningScore;
+        }
+        if (forceTeams)
+        {
+            player_handler.teams = true;
+        } else if (forceNoTeams)
+        {
+            player_handler.teams = false;
+        }
+    }
+
+    public void OnDisable()
+    {
+        game_active = false;
     }
 
 #if !COMPILER_UDONSHARP && UNITY_EDITOR
@@ -198,12 +218,80 @@ public class Scoreboard : UdonSharpBehaviour
     {
         if (player_handler == null)
         {
-            player_handler = GameObject.FindObjectOfType<PlayerHandler>();
+            SerializedObject obj = new SerializedObject(this);
+            obj.FindProperty("player_handler").objectReferenceValue = GameObject.FindObjectOfType<PlayerHandler>();
+            obj.ApplyModifiedProperties();
+        }
+        if (player_handler != null)
+        {
+            bool missing = true;
+            foreach (Scoreboard score in player_handler.scoreboards)
+            {
+                if (score == this)
+                {
+                    missing = false;
+                    break;
+                }
+            }
+
+            if (missing)
+            {
+                SerializedObject serializedHandler = new SerializedObject(player_handler);
+                int index = player_handler.scoreboards.Length;
+                serializedHandler.FindProperty("scoreboards").InsertArrayElementAtIndex(index);
+                serializedHandler.FindProperty("scoreboards").GetArrayElementAtIndex(index).objectReferenceValue = this;
+                serializedHandler.ApplyModifiedProperties();
+            }
         }
     }
 #endif
 
-    public void RequestMaxKillsUp()
+    public void OnGotKill()
+    {
+        if (playerGetKillBehaviour != null)
+        {
+            playerGetKillBehaviour.SendCustomEvent(playerGetKillEvent);
+        }
+    }
+
+    public void IncrementScore()
+    {
+        if (player_handler != null && player_handler.scores == this && game_active)
+        {
+            player_handler._localPlayer.score++;
+        }
+    }
+    public void DecrementScore()
+    {
+        if (player_handler != null && player_handler.scores == this && game_active)
+        {
+            player_handler._localPlayer.score++;
+        }
+    }
+    public void IncrementScoreCustom(int custom)
+    {
+        if (player_handler != null && player_handler.scores == this && game_active)
+        {
+            player_handler._localPlayer.score += custom;
+        }
+    }
+    public void SetScore(int custom)
+    {
+        if (player_handler != null && player_handler.scores == this && game_active)
+        {
+            player_handler._localPlayer.score = custom;
+        }
+    }
+    
+    public void ResetScore()
+    {
+        if (player_handler != null && player_handler.scores == this)
+        {
+            player_handler.ResetScore();
+        }
+    }
+
+    public void RequestMaxScoreUp()
     {
         if (game_active)
         {
@@ -211,15 +299,15 @@ public class Scoreboard : UdonSharpBehaviour
         }
         if (Networking.LocalPlayer.IsOwner(gameObject))
         {
-            MaxKillsUp();
+            MaxScoreUp();
         }
-        else if (!world_owner_only)
+        else if (!player_handler.world_owner_only)
         {
-            SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(MaxKillsUp));
+            SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(MaxScoreUp));
         }
     }
 
-    public void RequestMaxKillsDown()
+    public void RequestMaxScoreDown()
     {
         if (game_active)
         {
@@ -227,25 +315,25 @@ public class Scoreboard : UdonSharpBehaviour
         }
         if (Networking.LocalPlayer.IsOwner(gameObject))
         {
-            MaxKillsDown();
+            MaxScoreDown();
         }
-        else if (!world_owner_only)
+        else if (!player_handler.world_owner_only)
         {
-            SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(MaxKillsDown));
+            SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(MaxScoreDown));
         }
     }
 
-    public void MaxKillsUp()
+    public void MaxScoreUp()
     {
-        max_kills += 1;
+        max_score += 1;
     }
 
-    public void MaxKillsDown()
+    public void MaxScoreDown()
     {
-        max_kills -= 1;
-        if (max_kills < 1)
+        max_score -= 1;
+        if (max_score < 1)
         {
-            max_kills = 1;
+            max_score = 1;
         }
     }
 
@@ -255,7 +343,7 @@ public class Scoreboard : UdonSharpBehaviour
         {
             return;
         }
-        if (!world_owner_only || Networking.LocalPlayer.IsOwner(gameObject))
+        if (!player_handler.world_owner_only || Networking.LocalPlayer.IsOwner(gameObject))
         {
             SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(StartGame));
         }
@@ -274,9 +362,10 @@ public class Scoreboard : UdonSharpBehaviour
         {
             return;
         }
-        player_handler.ResetKills();
+        player_handler.ResetScore();
         winningName = "Game In Progress";
         winningScore = 0;
+        UpdateScores();
 
         if (winningNameText != null)
         {
@@ -301,44 +390,56 @@ public class Scoreboard : UdonSharpBehaviour
 
     public void RequestDisableGame()
     {
-        if (!world_owner_only || Networking.LocalPlayer.IsOwner(gameObject))
+        if ((player_handler.scores != null && player_handler.scores.game_active) || (player_handler.world_owner_only && !Networking.LocalPlayer.IsOwner(gameObject)))
         {
-            SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(TogglePause));
+            return;
         }
-    }
-
-    public void TogglePause()
-    {
-        pause = !pause;
+        if (Networking.LocalPlayer.IsOwner(gameObject))
+        {
+            DisableGame();
+        }
+        else
+        {
+            SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(DisableGame));
+        }
     }
 
     public void DisableGame()
     {
-        player_handler.scores = null;
-
-        if (winningNameText != null)
+        if (player_handler.scores == this)
         {
-            winningNameText.text = "Just RP Mode";
+            player_handler.scores = null;
         }
+    }
 
-        if (winningScoreText != null)
+    public void RequestEnableGame()
+    {
+        if ((player_handler.scores != null && player_handler.scores.game_active) || (player_handler.world_owner_only && !Networking.LocalPlayer.IsOwner(gameObject)))
         {
-            winningScoreText.text = "";
+            return;
+        }
+        if (Networking.LocalPlayer.IsOwner(gameObject)){
+            EnableGame();
+        } else
+        {
+            SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(EnableGame));
         }
     }
 
     public void EnableGame()
     {
         player_handler.scores = this;
-        UpdateScores();
-        if (winningNameText != null)
-        {
-            winningNameText.text = winningName;
-        }
+    }
 
-        if (winningScoreText != null)
+    public void RequestToggleGame()
+    {
+        if (player_handler.scores == this)
         {
-            winningScoreText.text = "Total Kills: " + winningScore;
+            RequestDisableGame();
+        }
+        else
+        {
+            RequestEnableGame();
         }
     }
 
@@ -400,14 +501,37 @@ public class Scoreboard : UdonSharpBehaviour
             {
                 continue;
             }
-            if ((next.gameObject.activeSelf && !prev.gameObject.activeSelf) || (next.Owner != null && prev.Owner == null) || (next.team > 0 && prev.team == 0) || (next.kills > prev.kills) || (next.kills == prev.kills && System.String.Compare(next.Owner.displayName, prev.Owner.displayName) < 0)){
-                // Debug.LogWarning("prev: " + prev.Owner.displayName);
-                // Debug.LogWarning("next: " + next.Owner.displayName);
-                // Debug.LogWarning("(next.gameObject.activeSelf && !prev.gameObject.activeSelf) " + (next.gameObject.activeSelf && !prev.gameObject.activeSelf));
-                // Debug.LogWarning("(next.Owner != null && prev.Owner == null) " + (next.Owner != null && prev.Owner == null));
-                // Debug.LogWarning("(next.team > 0 && prev.team == 0) " + (next.team > 0 && prev.team == 0));
-                // Debug.LogWarning("(next.kills > prev.kills) " + (next.kills > prev.kills));
-                // Debug.LogWarning("System.String.Compare(next.Owner.displayName, prev.Owner.displayName) " + System.String.Compare(next.Owner.displayName, prev.Owner.displayName));
+            bool should_flip = (next.gameObject.activeSelf && !prev.gameObject.activeSelf) || (next.Owner != null && prev.Owner == null) || (next.team > 0 && prev.team == 0);
+            if (!should_flip) {
+                bool alphabetical_order = System.String.Compare(next.Owner.displayName, prev.Owner.displayName) < 0;
+                if (!player_handler.teams || !group_by_teams)
+                {
+                    if (next.score > prev.score)
+                    {
+                        should_flip = true;
+                    } else if (next.score == prev.score)
+                    {
+                        should_flip = alphabetical_order;
+                    }
+                } else if (next.team < prev.team)
+                {
+                    should_flip = true;
+                }
+                else if (next.team == prev.team)
+                {
+                    if (next.score > prev.score)
+                    {
+                        should_flip = true;
+                    }
+                    else if (next.score == prev.score)
+                    {
+                        should_flip = alphabetical_order;
+                    }
+                }
+            }
+
+            if (should_flip)
+            {
                 new_unsorted = true;
                 int temp = sorted[i];
                 sorted[i] = sorted[i - 1];
@@ -427,34 +551,34 @@ public class Scoreboard : UdonSharpBehaviour
     public void OnFinishSorting()
     {
         Debug.LogWarning("OnFinishSorting");
-        int[] teamKillCount = new int[0];
+        int[] teamTotalScore = new int[0];
         bool game_recently_ended = last_end_game + 3f > Time.timeSinceLevelLoad;//to allow for slow network connections to get their final scores in
         for (int i = 0; i < entries.Length; i++)
         {
             Player p = player_handler.players[sorted[i]];
-            entries[i].DisplayScore(player_handler.players[sorted[i]], teams);
-            if (p != null && p.gameObject.activeSelf && (game_recently_ended || game_active))
+            entries[i].DisplayScore(this, player_handler.players[sorted[i]], player_handler.teams);
+            if (p != null && p.gameObject.activeSelf)
             {
-                if (teams)
+                if (player_handler.teams)
                 {
-                    if (p.team >= teamKillCount.Length)
+                    if (p.team >= teamTotalScore.Length)
                     {
                         int[] newTeamKillCount = new int[p.team + 1];
-                        teamKillCount.CopyTo(newTeamKillCount, 0);
-                        teamKillCount = newTeamKillCount;
+                        teamTotalScore.CopyTo(newTeamKillCount, 0);
+                        teamTotalScore = newTeamKillCount;
                     }
 
-                    teamKillCount[p.team] = teamKillCount[p.team] + p.kills;
+                    teamTotalScore[p.team] = teamTotalScore[p.team] + p.score;
                 }
                 
-                if (i == 0)
+                if (i == 0 && (game_recently_ended || game_active))
                 {
-                    if (!teams)
+                    if (!player_handler.teams)
                     {
-                        int top_score = p.kills;
+                        int top_score = p.score;
                         winningScore = top_score;
                         winningName = !p.gameObject.activeSelf || p.team == 0 || p.Owner == null || !p.Owner.IsValid() ? "No Winner" : p.Owner.displayName + " WINS!";
-                        if (top_score >= max_kills || force_end)
+                        if (top_score >= max_score || force_end)
                         {
                             force_end = false;
                             if(Networking.LocalPlayer.IsOwner(gameObject)){
@@ -467,34 +591,65 @@ public class Scoreboard : UdonSharpBehaviour
             }
         }
 
-        if (teams && teamKillCount.Length > 0 && (game_recently_ended || game_active))
+        teamNamesText.text = "";
+        teamScoreText.text = "";
+        if (player_handler.teams && teamTotalScore.Length > 0)
         {
-            int topTeam = 0;
-            int topScore = teamKillCount[0];
-            int secondTopScore = -1001;
-            for (int i = 1; i < teamKillCount.Length; i++)
+            for (int i = 1; i < teamTotalScore.Length; i++)
             {
-                if (teamKillCount[i] > topScore)
+                string teamName = i <= teamNames.Length ? teamNames[i - 1] : "Team " + i;
+                if (i == 1)
                 {
-                    secondTopScore = topScore;
-                    topScore = teamKillCount[i];
-                    topTeam = i;
-                } else if (teamKillCount[i] > secondTopScore)
+                    teamNamesText.text = teamName;
+                    teamScoreText.text = teamTotalScore[i].ToString();
+                } else
                 {
-                    secondTopScore = teamKillCount[i];
+                    teamNamesText.text = teamNamesText.text + "\n" + teamName;
+                    teamScoreText.text = teamScoreText.text + "\n" + teamTotalScore[i].ToString();
                 }
             }
-            winningScore = topScore;
-            winningName = topTeam == 0 || topScore == secondTopScore ? "No Winner" : "Team " + topTeam + " WINS!";
-            if (topScore >= max_kills || force_end)
-            {
-                force_end = false;
-                if(Networking.LocalPlayer.IsOwner(gameObject)){
-                    EndGame();
+
+
+            if (game_recently_ended || game_active)
+                {
+                    int topTeam = 0;
+                    int topScore = teamTotalScore[0];
+                    int secondTopScore = -1001;
+                    for (int i = 1; i < teamTotalScore.Length; i++)
+                    {
+                        if (teamTotalScore[i] > topScore)
+                        {
+                            secondTopScore = topScore;
+                            topScore = teamTotalScore[i];
+                            topTeam = i;
+                        }
+                        else if (teamTotalScore[i] > secondTopScore)
+                        {
+                            secondTopScore = teamTotalScore[i];
+                        }
+                    }
+                    winningScore = topScore;
+                    string teamName = topTeam > 0 && topTeam <= teamNames.Length ? teamNames[topTeam - 1] : "Team " + topTeam;
+                    winningName = topTeam == 0 || topScore == secondTopScore ? "No Winner" : teamName + " WINS!";
+                    if (topScore >= max_score || force_end)
+                    {
+                        force_end = false;
+                        if (Networking.LocalPlayer.IsOwner(gameObject))
+                        {
+                            EndGame();
+                        }
+                        OnGameEnd();
+                    }
                 }
-                OnGameEnd();
-            }
         }
+
+        //forces text to update properly
+        SendCustomEventDelayedFrames(nameof(ToggleSpacer), 5);//picked an arbitrary number. 1 doesnt work
+    }
+
+    public void ToggleSpacer()
+    {
+        end_spacer.SetActive(!end_spacer.activeSelf);
     }
 
     // public void BroadcastGameEnd()
@@ -520,7 +675,7 @@ public class Scoreboard : UdonSharpBehaviour
 
         if (winningScoreText != null)
         {
-            winningScoreText.text = "Total Kills: " + winningScore;
+            winningScoreText.text = "Total Score: " + winningScore;
         }
 
         if (player_handler.scores != this)
@@ -541,7 +696,7 @@ public class Scoreboard : UdonSharpBehaviour
 
     public void RequestGameEnd()
     {
-        if (!world_owner_only || Networking.LocalPlayer.IsOwner(gameObject))
+        if (!player_handler.world_owner_only || Networking.LocalPlayer.IsOwner(gameObject))
         {
             SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(ForceGameEnd));
         }
@@ -564,6 +719,7 @@ public class Scoreboard : UdonSharpBehaviour
             playerDieBehaviour.SendCustomEventDelayedFrames(playerDieEvent, 1);
         }
     }
+
     public void OnPlayerRespawned()
     {
         if (playerRespawnBehaviour != null)

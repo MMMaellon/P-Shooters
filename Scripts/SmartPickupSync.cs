@@ -321,6 +321,15 @@ public class SmartPickupSync : UdonSharpBehaviour
             RequestSerialization();
         }
     }
+    public void Drop()
+    {
+        if (Networking.LocalPlayer.IsOwner(gameObject))
+        {
+            pickup.Drop();
+            isHeld = false;
+            RequestSerialization();
+        }
+    }
 
     // public override bool OnOwnershipRequest(VRCPlayerApi requestingPlayer, VRCPlayerApi requestedOwner)
     // {
