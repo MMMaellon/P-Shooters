@@ -303,14 +303,14 @@ public class Player : UdonSharpBehaviour
         {
             return;
         }
-        if (Utilities.IsValid(other) && player_handler != null && player_handler._localPlayer != null && Owner.IsValid() && !(Owner.isLocal))
+        if (Utilities.IsValid(other) && Owner != null && Owner.IsValid() && !(Owner.isLocal))
         {
+            if (player_handler.scores != null && ((player_handler.teams && player_handler._localPlayer.team == team) || team == 0 || player_handler._localPlayer.team == 0 || !player_handler.scores.game_active))
+            {
+                return;
+            }
             if (player_handler.damage_layers == (player_handler.damage_layers | (1 << other.gameObject.layer)))
             {
-                if ( player_handler.scores != null && ((player_handler.teams && player_handler._localPlayer.team == team) || team == 0 || !player_handler.scores.game_active))
-                {
-                    return;
-                }
                 VRC_Pickup leftPickup = Networking.LocalPlayer.GetPickupInHand(VRC_Pickup.PickupHand.Left);
                 VRC_Pickup rightPickup = Networking.LocalPlayer.GetPickupInHand(VRC_Pickup.PickupHand.Right);
                 int damage = 0;
@@ -526,7 +526,9 @@ public class Player : UdonSharpBehaviour
 
     public void ResetScore()
     {
-        score = 0;
+        if(score != 0){
+            score = 0;
+        }
     }
 
     public void ShotBy(int other_id, bool left_hand)

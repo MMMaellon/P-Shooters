@@ -53,8 +53,13 @@ public class ScopeManagerEditor : Editor
         gunSerialized.FindProperty("scope_manager").objectReferenceValue = manager;
         gunSerialized.ApplyModifiedProperties();
 
+
+        SerializedObject serializedScopeManager = new SerializedObject(manager);
+        serializedScopeManager.FindProperty("scopes").ClearArray();
         foreach (Scope scope in GameObject.FindObjectsOfType(typeof(Scope)) as Scope[])
         {
+            serializedScopeManager.FindProperty("scopes").InsertArrayElementAtIndex(count);
+            serializedScopeManager.FindProperty("scopes").GetArrayElementAtIndex(count).objectReferenceValue = scope;
             if (scope.transform.parent != null && (scope.gunObject == null || scope.gunMesh == null))
             {
                 foreach (P_Shooter shooter in scope.transform.parent.GetComponentsInChildren<P_Shooter>())
@@ -127,6 +132,7 @@ public class ScopeManagerEditor : Editor
             }
             count++;
         }
+        serializedScopeManager.ApplyModifiedProperties();
         if (count > 0)
         {
             Debug.Log($"Set up {count} scopes");
@@ -159,11 +165,14 @@ public class ScopeManagerEditor : Editor
 [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
 public class ScopeManager : UdonSharpBehaviour
 {
-    private GunManager gun;
+    public GunManager gun;
     private VRC_Pickup leftPickupCache;
     private VRC_Pickup rightPickupCache;
     private Scope leftScopeCache;
     private Scope rightScopeCache;
+
+    public Scope[] scopes;
+    public Camera scopeCam;
     public void Start()
     {
         
@@ -172,6 +181,13 @@ public class ScopeManager : UdonSharpBehaviour
     public void _Register(GunManager gunManager)
     {
         gun = gunManager;
+        foreach (Scope s in scopes)
+        {
+            if (s != null)
+            {
+                s._Register(this);
+            }
+        }
     }
     public void LateUpdate()
     {
@@ -179,7 +195,6 @@ public class ScopeManager : UdonSharpBehaviour
         VRC_Pickup rightPickup = Networking.LocalPlayer.GetPickupInHand(VRC_Pickup.PickupHand.Right);
         if (leftPickup != leftPickupCache)
         {
-            Debug.LogWarning("left pickup updated");
             leftPickupCache = leftPickup;
             if (leftPickup == null)
             {
@@ -219,11 +234,13 @@ public class ScopeManager : UdonSharpBehaviour
         float leftDist = 999;
         float rightDist = 999;
         Vector3 headPos = Networking.LocalPlayer.GetTrackingData(VRCPlayerApi.TrackingDataType.Head).position;
+        bool scopeActive = false;
         if (leftScopeCache != null)
         {
             leftScopeCache.Zoom();
             leftDist = Vector3.Distance(headPos, leftScopeCache.transform.position);
             leftScopeCache.SetCameraActive(true);
+            scopeActive = true;
         }
         if (rightScopeCache != null)
         {
@@ -234,10 +251,16 @@ public class ScopeManager : UdonSharpBehaviour
                 bool camera_active = rightDist < leftDist;
                 leftScopeCache.SetCameraActive(!camera_active);
                 rightScopeCache.SetCameraActive(camera_active);
+                scopeActive = true;
             } else
             {
                 rightScopeCache.SetCameraActive(true);
+                scopeActive = true;
             }
+        }
+        if (!scopeActive)
+        {
+            gameObject.SetActive(false);
         }
     }
 }

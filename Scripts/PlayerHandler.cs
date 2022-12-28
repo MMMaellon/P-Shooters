@@ -185,6 +185,17 @@ public class PlayerHandler : UdonSharpBehaviour
                 if (scoreboards[i] != null)
                 {
                     scoreboards[i].gameObject.SetActive(i == value);
+                    if (i == value)
+                    {
+                        if (scoreboards[i].forceTeams)
+                        {
+                            teams = true;
+                        }
+                        else if (scoreboards[i].forceNoTeams)
+                        {
+                            teams = false;
+                        }
+                    }
                 }
             }
             RequestSerialization();

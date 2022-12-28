@@ -827,9 +827,14 @@ public class P_Shooter : UdonSharpBehaviour
         foreach(UdonBehaviour m in udonToOptimize){
             m.enabled = true;
         }
+        if (particle_shooter != null)
+        {
+            particle_shooter.gameObject.SetActive(true);
+        }
     }
 
     public void OnDisable(){
+        animator.SetInteger("shoot_state", SHOOT_STATE_IDLE);
         animator.enabled = false;
         if(grip != null){
             grip.ForceDrop();
@@ -840,6 +845,10 @@ public class P_Shooter : UdonSharpBehaviour
         }
         foreach(UdonBehaviour m in udonToOptimize){
             m.enabled = false;
+        }
+        if (particle_shooter != null)
+        {
+            particle_shooter.gameObject.SetActive(false);
         }
     }
 

@@ -19,6 +19,12 @@ public class Scope : UdonSharpBehaviour
     private Quaternion last_rot = Quaternion.identity;
     private Vector3 local_rest_pos = Vector3.zero;
     private Quaternion local_rest_rot = Quaternion.identity;
+    public ScopeManager scopeManager;
+
+    public void _Register(ScopeManager scopeM)
+    {
+        scopeManager = scopeM;
+    }
     void Start()
     {
         if (scope_camera != null)
@@ -111,7 +117,14 @@ public class Scope : UdonSharpBehaviour
             scope_camera.gameObject.SetActive(camera_enable);
         }
 
-        if (!camera_enable)
+
+        if (camera_enable)
+        {
+            if (scopeManager != null)
+            {
+                scopeManager.gameObject.SetActive(true);
+            }
+        } else
         {
             ResetZoom();
         }

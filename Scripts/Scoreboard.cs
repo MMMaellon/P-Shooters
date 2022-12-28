@@ -52,7 +52,7 @@ public class Scoreboard : UdonSharpBehaviour
     public ScoreboardEntry[] entries;
     public bool forceTeams = false;
     public bool forceNoTeams = false;
-    public bool group_by_teams = false;
+    public bool group_by_teams = true;
     public string[] teamNames = {};
     public bool preventJoiningMidgame = true;
 
@@ -67,7 +67,7 @@ public class Scoreboard : UdonSharpBehaviour
     public UdonBehaviour gameEndBehaviour;
     public string gameEndEvent;
     [System.NonSerialized] public bool unsorted = false;
-    private int[] sorted;
+    private int[] sorted = { };
 
     [HideInInspector] public int winningScore = 0;
     [HideInInspector] public string winningName = "No Winners Yet";
@@ -83,6 +83,7 @@ public class Scoreboard : UdonSharpBehaviour
     public GameObject end_spacer;
 
     private bool force_end = false;
+    private bool first_onEnable = true;
     private float last_end_game = -1001f;
 
     [HideInInspector, UdonSyncedAttribute(UdonSyncMode.None), FieldChangeCallback(nameof(game_active))] public bool _game_active = false;
@@ -199,13 +200,6 @@ public class Scoreboard : UdonSharpBehaviour
         {
             winningScoreText.text = "Total Score: " + winningScore;
         }
-        if (forceTeams)
-        {
-            player_handler.teams = true;
-        } else if (forceNoTeams)
-        {
-            player_handler.teams = false;
-        }
     }
 
     public void OnDisable()
@@ -265,7 +259,7 @@ public class Scoreboard : UdonSharpBehaviour
     {
         if (player_handler != null && player_handler.scores == this && game_active)
         {
-            player_handler._localPlayer.score++;
+            player_handler._localPlayer.score--;
         }
     }
     public void IncrementScoreCustom(int custom)
@@ -445,13 +439,83 @@ public class Scoreboard : UdonSharpBehaviour
 
     public void Join()
     {
-        if (player_handler.scores != this || (preventJoiningMidgame && game_active))
+        if (player_handler.scores != this || (preventJoiningMidgame && game_active) || sorted == null)
         {
             return;
         }
-        if (player_handler._localPlayer != null && player_handler._localPlayer.team == 0)
+        if (player_handler._localPlayer != null)
         {
-            player_handler._localPlayer.team = 1;
+            int team_to_join = 1;
+            if (player_handler.teams)
+            {
+                int teamCount = 2;//assume there will be at least 2 teams
+                foreach (int index in sorted)
+                {
+                    if (index >= 0 && index < player_handler.players.Length)
+                    {
+                        if (player_handler.players[index] == player_handler._localPlayer)
+                        {
+                            continue;
+                        }
+                        if (player_handler.players[index].gameObject.activeSelf)
+                        {
+                            teamCount = teamCount < player_handler.players[index].team ? player_handler.players[index].team : teamCount;
+                        } else
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                int[] teamMemberCount = new int[teamCount];
+
+                foreach (int index in sorted)
+                {
+                    if (index >= 0 && index < player_handler.players.Length)
+                    {
+                        if (player_handler.players[index] == player_handler._localPlayer)
+                        {
+                            continue;
+                        }
+                        if (player_handler.players[index].gameObject.activeSelf && player_handler.players[index].team > 0)
+                        {
+                            teamMemberCount[player_handler.players[index].team - 1]++;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                int tiedForLowest = 0;
+                int lowestCount = 1001;
+                foreach (int count in teamMemberCount)
+                {
+                    if (lowestCount > count)
+                    {
+                        lowestCount = count;
+                        tiedForLowest = 1;
+                    } else if (lowestCount == count)
+                    {
+                        tiedForLowest++;
+                    }
+                }
+
+                int[] lowestCounts = new int[tiedForLowest];
+                int i = 0;
+                for (int teamIndex = 0; teamIndex < teamMemberCount.Length; teamIndex++)
+                {
+                    if (lowestCount == teamMemberCount[teamIndex])
+                    {
+                        lowestCounts[i] = teamIndex;
+                        i++;
+                    }
+                }
+
+                team_to_join = lowestCounts[Random.Range(0, tiedForLowest)] + 1;
+            }
+            player_handler._localPlayer.team = team_to_join;
         }
     }
     public void Leave()
@@ -486,7 +550,10 @@ public class Scoreboard : UdonSharpBehaviour
 
     public void Sort()
     {
-        Debug.LogWarning("Sort " + Time.timeSinceLevelLoad);
+        if (sorted == null)
+        {
+            return;
+        }
         if (!unsorted)
         {
             OnFinishSorting();
@@ -551,6 +618,11 @@ public class Scoreboard : UdonSharpBehaviour
     public void OnFinishSorting()
     {
         Debug.LogWarning("OnFinishSorting");
+        if (sorted == null || sorted.Length == 0)
+        {
+            // SendCustomEventDelayedFrames(nameof(OnFinishSorting), 1);
+            return;
+        }
         int[] teamTotalScore = new int[0];
         bool game_recently_ended = last_end_game + 3f > Time.timeSinceLevelLoad;//to allow for slow network connections to get their final scores in
         for (int i = 0; i < entries.Length; i++)
@@ -591,10 +663,11 @@ public class Scoreboard : UdonSharpBehaviour
             }
         }
 
-        teamNamesText.text = "";
-        teamScoreText.text = "";
         if (player_handler.teams && teamTotalScore.Length > 0)
         {
+            teamNamesText.transform.parent.gameObject.SetActive(true);
+            teamNamesText.text = "";
+            teamScoreText.text = "";
             for (int i = 1; i < teamTotalScore.Length; i++)
             {
                 string teamName = i <= teamNames.Length ? teamNames[i - 1] : "Team " + i;
@@ -641,6 +714,9 @@ public class Scoreboard : UdonSharpBehaviour
                         OnGameEnd();
                     }
                 }
+        } else
+        {
+            teamNamesText.transform.parent.gameObject.SetActive(false);
         }
 
         //forces text to update properly

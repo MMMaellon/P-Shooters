@@ -79,6 +79,10 @@ public class TacticalReload : UdonSharpBehaviour
     public void RecordHandPos()
     {
         VRCPlayerApi player = Networking.GetOwner(gameObject);
+        if (player == null || !player.IsValid())
+        {
+            return;
+        }
         if (rightHand)
         {
             VRCPlayerApi.TrackingData handTracking = player.GetTrackingData(VRCPlayerApi.TrackingDataType.RightHand);

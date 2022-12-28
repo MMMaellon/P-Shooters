@@ -5,6 +5,9 @@ using VRC.SDKBase;
 using VRC.Udon;
 using VRC.Udon.Common;
 
+#if !COMPILER_UDONSHARP && UNITY_EDITOR
+[RequireComponent(typeof(SmartPickupSyncOptimizer))]
+#endif
 [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
 public class SmartPickupSync : UdonSharpBehaviour
 {
@@ -28,11 +31,12 @@ public class SmartPickupSync : UdonSharpBehaviour
     [System.NonSerialized] public Vector3 restPos;
     [System.NonSerialized] public Quaternion restRot;
 
-    public GameObject[] hiddenUntilHeld;
+    [System.NonSerialized] public SmartPickupSyncOptimizer optimizer;
 
-    public P_Shooter linkedPShooter;
-    public float heldDisableDelay = 5f;
-    private int activeDisableTimers = 0;
+    // public GameObject[] hiddenUntilHeld;
+
+    // public P_Shooter linkedPShooter;
+    // private int activeDisableTimers = 0;
 
     public bool isHeld
     {
@@ -45,47 +49,65 @@ public class SmartPickupSync : UdonSharpBehaviour
             {
                 pickup.pickupable = !_isHeld;
             }
-            if (value)
+            // ToggleHeldObjects();
+            // if (value)
+            // {
+            //     ToggleHeldObjects();
+            // } else
+            // {
+            //     SendCustomEventDelayedSeconds(nameof(ToggleHeldObjects), heldDisableDelay);
+            //     activeDisableTimers++;
+            // }
+            if (!value)
             {
-                ToggleHeldObjects();
+                if (optimizer != null){
+                    optimizer.StartDropTimer();
+                }
             } else
             {
-                SendCustomEventDelayedSeconds(nameof(ToggleHeldObjects), heldDisableDelay);
-                activeDisableTimers++;
+                enabled = true;
             }
         }
     }
 
-    public void ToggleHeldObjects(){
-        activeDisableTimers--;
-        if (!isHeld && activeDisableTimers > 0)
-        {
-            return;
-        }
+    // public override void OnPreSerialization()
+    // {
+    //     if (!isHeld && optimizer != null)
+    //     {
+    //         optimizer.BroadcastEnable();
+    //     }
+    // }
 
-        if (linkedPShooter != null)
-        {
-            if (linkedPShooter.shoot_state != P_Shooter.SHOOT_STATE_IDLE)
-            {
-                SendCustomEventDelayedSeconds(nameof(ToggleHeldObjects), heldDisableDelay);//retry every 5 frames
-                activeDisableTimers++;
-            }
-            return;
-        }
-        
-        foreach (GameObject obj in hiddenUntilHeld)
-        {
-            if (obj != null)
-            {
-                obj.SetActive(isHeld);
-            }
-        }
-        if(linkedPShooter != null)
-        {
-            linkedPShooter.enabled = isHeld;
-            linkedPShooter.animator.enabled = isHeld;
-        }
-    }
+    // public void ToggleHeldObjects(){
+    //     // activeDisableTimers--;
+    //     // if (!isHeld && activeDisableTimers > 0)
+    //     // {
+    //     //     return;
+    //     // }
+
+    //     // if (linkedPShooter != null)
+    //     // {
+    //     //     if (linkedPShooter.shoot_state != P_Shooter.SHOOT_STATE_IDLE)
+    //     //     {
+    //     //         SendCustomEventDelayedSeconds(nameof(ToggleHeldObjects), heldDisableDelay);//retry every 5 frames
+    //     //         activeDisableTimers++;
+    //     //     }
+    //     //     return;
+    //     // }
+
+    //     foreach (GameObject obj in hiddenUntilHeld)
+    //     {
+    //         if (obj != null)
+    //         {
+    //             obj.SetActive(isHeld);
+    //         }
+    //     }
+    //     if(linkedPShooter != null)
+    //     {
+    //         linkedPShooter.enabled = isHeld;
+    //         linkedPShooter.animator.enabled = isHeld;
+    //     }
+    // }
     void Start()
     {
         if (!localTransforms)
@@ -105,6 +127,10 @@ public class SmartPickupSync : UdonSharpBehaviour
         restPos = pos;
         restRot = rot;
         start_ran = true;
+    }
+
+    public void OnEnable()
+    {
         isHeld = isHeld;
     }
 
@@ -247,7 +273,7 @@ public class SmartPickupSync : UdonSharpBehaviour
     public void Update()
     {
         sinceLastRequest += Time.deltaTime;
-        if (Networking.LocalPlayer != null)
+        if (Networking.LocalPlayer != null && enabled)
         {
             if (Networking.LocalPlayer.IsOwner(gameObject))
             {
