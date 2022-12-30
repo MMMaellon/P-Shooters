@@ -19,6 +19,15 @@ public class P_Shooter : UdonSharpBehaviour
     public bool track_ammo_mag = false;
     public bool track_ammo_reserve = false;
     public bool auto_reload = true;
+    
+    [Header("Grip Reload means you have to grab the collider in mag_parent to reload")]
+    public bool grip_reload = true;
+    
+    [Header("Up Reload means you point the gun up to reload")]
+    public bool up_reload = false;
+    
+    [Header("Down Reload means you point the gun down to reload")]
+    public bool down_reload = false;
     public bool unique_gunshot_audio_sources = false;
     public int base_damage = 10;
     public float melee_speed_boost_multiplier = 2;
@@ -433,7 +442,7 @@ public class P_Shooter : UdonSharpBehaviour
             {
                 if (tacticalReload != null)
                 {
-                    tacticalReload.ToggleCollider(local_held && track_ammo_mag && ammo_mag < ammo_mag_capacity);
+                    tacticalReload.ToggleCollider(grip_reload && local_held && track_ammo_mag && ammo_mag < ammo_mag_capacity);
                     if (tacticalReload.pickup != null && tacticalReload.pickup.IsHeld)
                     {
                         if (ammo_mag >= ammo_mag_capacity)
@@ -463,48 +472,37 @@ public class P_Shooter : UdonSharpBehaviour
                 tacticalReload.HandPos();
             }
         }
-        // if (local_held && !melee)
-        // {
-        //     if (track_ammo_mag && (ammo_mag < ammo_mag_capacity) && !local_trigger && particle_shooter != null)
-        //     {
-        //         if (!local_reload)
-        //         {
-        //             float down_angle = Vector3.Angle(Vector3.down, particle_shooter.transform.forward);
-        //             if (down_angle < 30 || down_angle > 150)
-        //             {
-        //                 local_reload = true;
-        //                 _ReloadStart();
-        //             }
-        //             if (!Networking.LocalPlayer.IsUserInVR() && Input.GetKey(KeyCode.E))
-        //             {
-        //                 local_reload = true;
-        //                 _ReloadStart();
-        //             }
-        //         }
-        //         else
-        //         {
-        //             float down_angle = Vector3.Angle(Vector3.down, particle_shooter.transform.forward);
-        //             if (down_angle >= 30 && down_angle <= 150)
-        //             {
-        //                 local_reload = false;
-        //                 _ReloadStop();
-        //             }
-        //             if (!Networking.LocalPlayer.IsUserInVR() && !Input.GetKey(KeyCode.E))
-        //             {
-        //                 local_reload = false;
-        //                 _ReloadStop();
-        //             }
-        //         }
-        //     }
-        //     else
-        //     {
-        //         if (local_reload)
-        //         {
-        //             local_reload = false;
-        //             _ReloadStop();
-        //         }
-        //     }
-        // }
+        if (local_held && !melee && (down_reload || up_reload) && Networking.LocalPlayer.IsUserInVR())
+        {
+            if (track_ammo_mag && (ammo_mag < ammo_mag_capacity) && !local_trigger && particle_shooter != null)
+            {
+                float down_angle = Vector3.Angle(Vector3.down, particle_shooter.transform.forward);
+                if (!local_reload)
+                {
+                    if ((down_angle < 30 && down_reload) || (down_angle > 150 && up_reload))
+                    {
+                        local_reload = true;
+                        _ReloadStart();
+                    }
+                }
+                else
+                {
+                    if (down_angle >= 30 && down_angle <= 150)
+                    {
+                        local_reload = false;
+                        _ReloadStop();
+                    }
+                }
+            }
+            else
+            {
+                if (local_reload)
+                {
+                    local_reload = false;
+                    _ReloadStop();
+                }
+            }
+        }
         if (grip != null && (grip.reparented || grip.smartPickup.isHeld) && ran_start)
         {
             grip.transform.parent = null;
