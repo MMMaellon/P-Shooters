@@ -31,7 +31,7 @@ public class DamageZone : UdonSharpBehaviour
 
     public void OnTriggerStay(Collider other)
     {
-        if (player_handler == null || (player_handler.scores != null && player_handler._localPlayer.team == 0) || last_damage + damage_interval > Time.timeSinceLevelLoad || !Utilities.IsValid(other) || other == null)
+        if (player_handler == null || (player_handler.scores != null && (player_handler._localPlayer.team == 0 || !player_handler.scores.game_active)) || last_damage + damage_interval > Time.timeSinceLevelLoad || !Utilities.IsValid(other) || other == null)
         {
             return;
         }

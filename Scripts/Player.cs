@@ -12,7 +12,7 @@ public class Player : UdonSharpBehaviour
     // Who is the current owner of this object. Null if object is not currently in use. 
     [PublicAPI, System.NonSerialized]
     public VRCPlayerApi Owner;
-    private int id = -1;
+    [System.NonSerialized] public int id = -1;
     [System.NonSerialized][UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(health))] public int _health = 100;
     [System.NonSerialized][UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(shield))] public int _shield = 300;
     [System.NonSerialized] public int local_health = 100;
@@ -261,7 +261,7 @@ public class Player : UdonSharpBehaviour
         id = new_id;
     }
 
-    public void Reset()
+    public void _Reset()
     {
         VRC_Pickup leftPickup = Networking.LocalPlayer.GetPickupInHand(VRC_Pickup.PickupHand.Left);
         VRC_Pickup rightPickup = Networking.LocalPlayer.GetPickupInHand(VRC_Pickup.PickupHand.Right);
@@ -274,8 +274,8 @@ public class Player : UdonSharpBehaviour
             rightPickup.Drop();
         }
         last_death = Time.timeSinceLevelLoad;
-        health = player_handler.starting_health;
-        shield = player_handler.starting_shield;
+        health = player_handler._starting_health;//use underscores to avoid any buffs or debuffs
+        shield = player_handler._starting_shield;//use underscores to avoid any buffs or debuffs
         max_shield = shield;
         // jump = 1f;
         // speed = 1f;
@@ -299,121 +299,78 @@ public class Player : UdonSharpBehaviour
 
     public void OnParticleCollision(GameObject other)
     {
-        if (player_handler == null || player_handler._localPlayer == null || other == null || other.transform.parent == null || other.transform.parent.parent == null || last_death + 3f > Time.timeSinceLevelLoad)
-        {
-            return;
-        }
-        if (Utilities.IsValid(other) && Owner != null && Owner.IsValid() && !(Owner.isLocal))
-        {
-            if (player_handler.scores != null && ((player_handler.teams && player_handler._localPlayer.team == team) || team == 0 || player_handler._localPlayer.team == 0 || !player_handler.scores.game_active))
-            {
-                return;
-            }
-            if (player_handler.damage_layers == (player_handler.damage_layers | (1 << other.gameObject.layer)))
-            {
-                VRC_Pickup leftPickup = Networking.LocalPlayer.GetPickupInHand(VRC_Pickup.PickupHand.Left);
-                VRC_Pickup rightPickup = Networking.LocalPlayer.GetPickupInHand(VRC_Pickup.PickupHand.Right);
-                int damage = 0;
-                if (leftPickup != null && (leftPickup.gameObject == other.transform.parent.parent.gameObject || (other.transform.parent.parent.parent != null && leftPickup.gameObject == other.transform.parent.parent.parent.gameObject)))
-                {
-                    if (Owner.isLocal)
-                    {
-                        P_Shooter shooter = GetLeftShooter();
-                        if (shooter != null && !shooter.self_damage)
-                        {
-                            return;
-                        }
-                    }
-                    damage = player_handler._localPlayer.CalcDamage(true);
-                    if (shield > 0)
-                    {
-                        shield -= damage;
-                    }
-                    else
-                    {
-                        health -= damage;
-                    }
-                    SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(ShotBy) + "Left" + player_handler._localPlayer.id);
-                    TriggerHitFX(damage);
-                }
-                else if (rightPickup != null && (rightPickup.gameObject == other.transform.parent.parent.gameObject || (other.transform.parent.parent.parent != null && rightPickup.gameObject == other.transform.parent.parent.parent.gameObject)))
-                {
-                    if (Owner.isLocal)
-                    {
-                        P_Shooter shooter = GetRightShooter();
-                        if (shooter != null && !shooter.self_damage)
-                        {
-                            return;
-                        }
-                    }
-                    damage = player_handler._localPlayer.CalcDamage(false);
-                    if (shield > 0)
-                    {
-                        shield -= damage;
-                    }
-                    else
-                    {
-                        health -= damage;
-                    }
-                    SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(ShotBy) + "Right" + player_handler._localPlayer.id);
-                    TriggerHitFX(damage);
-                }
-            }
-        }
+        OnHitDamageLayer(other);
     }
 
     public void OnTriggerEnter(Collider other)
     {
-        Debug.LogWarning("OnTriggerEnter");
-        if (player_handler == null || player_handler._localPlayer == null || other == null || (player_handler.scores != null && (team == 0 || player_handler.scores.game_active)))
+        OnHitDamageLayer(other.gameObject);
+    }
+    public void OnHitDamageLayer(GameObject other)
+    {
+        if (player_handler == null || player_handler._localPlayer == null || other == null || last_death + 3f > Time.timeSinceLevelLoad)
         {
             return;
         }
-
-        if (Utilities.IsValid(other) && Owner.IsValid() && !(Owner.isLocal))
+        if (player_handler.scores != null && ((player_handler.teams && player_handler._localPlayer.team == team) || team == 0 || player_handler._localPlayer.team == 0 || !player_handler.scores.game_active))
         {
-            Debug.LogWarning("other layer is " + other.gameObject.layer);
-            if (player_handler.damage_layers == (player_handler.damage_layers | (1 << other.gameObject.layer)))
+            return;
+        }
+        if (!Utilities.IsValid(other) || Owner == null || !Owner.IsValid())
+        {
+            return;
+        }
+        if (player_handler.damage_layers != (player_handler.damage_layers | (1 << other.gameObject.layer)))
+        {
+            return;
+        }
+        P_Shooter leftShooter = player_handler._localPlayer.GetLeftShooter();
+        P_Shooter rightShooter = player_handler._localPlayer.GetRightShooter();
+        VRC_Pickup otherPickup = other.GetComponent<VRC_Pickup>();
+        if (otherPickup == null)
+        {
+            otherPickup = other.GetComponentInParent<VRC_Pickup>();
+        }
+        if (otherPickup == null)
+        {
+            return;
+        }
+        int damage = 0;
+        if (leftShooter != null && leftShooter.smartPickup != null && leftShooter.smartPickup.pickup == otherPickup)
+        {
+            if (Owner.isLocal && !leftShooter.self_damage)
             {
-                Debug.LogWarning("instakill layer");
-                VRC_Pickup leftPickup = Networking.LocalPlayer.GetPickupInHand(VRC_Pickup.PickupHand.Left);
-                VRC_Pickup rightPickup = Networking.LocalPlayer.GetPickupInHand(VRC_Pickup.PickupHand.Right);
-                int damage = 0;
-                Debug.LogWarning("got pickups");
-                if (leftPickup != null && (leftPickup.gameObject == other.gameObject))
-                {
-                    damage = player_handler._localPlayer.CalcDamage(true);
-                    if (shield > 0)
-                    {
-                        shield -= damage;
-                    }
-                    else
-                    {
-                        health -= damage;
-                    }
-                    SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(ShotBy) + "Left" + player_handler._localPlayer.id);
-                    TriggerHitFX(damage);
-                }
-                else if (rightPickup != null && (rightPickup.gameObject == other.gameObject))
-                {
-                    Debug.LogWarning("right hand");
-                    damage = player_handler._localPlayer.CalcDamage(false);
-                    if (shield > 0)
-                    {
-                        shield -= damage;
-                    } else
-                    {
-                        health -= damage;
-                    }
-                    SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(ShotBy) + "Right" + player_handler._localPlayer.id);
-                    TriggerHitFX(damage);
-                }
-                // if ((leftPickup != null && leftPickup.gameObject == other.gameObject) || (rightPickup != null && rightPickup.gameObject == other.gameObject))
-                // {
-                //     SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(InstakillBy) + player_handler._localPlayer.id);
-                //     // TriggerHitFX(99999);
-                // }
+                return;
             }
+            damage = player_handler._localPlayer.CalcDamage(true);
+            if (shield > 0)
+            {
+                shield -= damage;
+            }
+            else
+            {
+                health -= damage;
+            }
+            SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(ShotBy) + "Left" + player_handler._localPlayer.id);
+            TriggerHitFX(damage);
+        }
+        else if (rightShooter != null && rightShooter.smartPickup != null && rightShooter.smartPickup.pickup == otherPickup)
+        {
+            if (Owner.isLocal && !rightShooter.self_damage)
+            {
+                return;
+            }
+            damage = player_handler._localPlayer.CalcDamage(false);
+            if (shield > 0)
+            {
+                shield -= damage;
+            }
+            else
+            {
+                health -= damage;
+            }
+            SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(ShotBy) + "Right" + player_handler._localPlayer.id);
+            TriggerHitFX(damage);
         }
     }
 
@@ -533,7 +490,7 @@ public class Player : UdonSharpBehaviour
 
     public void ShotBy(int other_id, bool left_hand)
     {
-        if (last_death + 3f > Time.timeSinceLevelLoad || last_safe + 1f > Time.timeSinceLevelLoad)//invincible for 3 seconds
+        if (last_death + 3f > Time.timeSinceLevelLoad || last_safe + 1f > Time.timeSinceLevelLoad || (player_handler.scores != null && (player_handler._localPlayer.team == 0 || !player_handler.scores.game_active)))//invincible for 3 seconds
         {
             return;
         }
@@ -558,7 +515,7 @@ public class Player : UdonSharpBehaviour
     }
     
     public void InstakillBy(int other_id){
-        if (last_death + 3f > Time.timeSinceLevelLoad || last_safe + 1f > Time.timeSinceLevelLoad)//invincible for 3 seconds
+        if (last_death + 3f > Time.timeSinceLevelLoad || last_safe + 1f > Time.timeSinceLevelLoad || (player_handler.scores != null && (player_handler._localPlayer.team == 0 || !player_handler.scores.game_active)))//invincible for 3 seconds
         {
             return;
         }

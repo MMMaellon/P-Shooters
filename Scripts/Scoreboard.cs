@@ -373,7 +373,7 @@ public class Scoreboard : UdonSharpBehaviour
 
         if (player_handler._localPlayer != null && player_handler._localPlayer.team > 0)
         {
-            player_handler._localPlayer.Reset();//Will automatically force them to drop what's in their hands
+            player_handler._localPlayer._Reset();//Will automatically force them to drop what's in their hands
             if (gameStartBehaviour != null)
             {
                 gameStartBehaviour.SendCustomEventDelayedFrames(gameStartEvent, 1);
@@ -761,7 +761,7 @@ public class Scoreboard : UdonSharpBehaviour
         //Here's where you would teleport people back
         if (player_handler._localPlayer != null && player_handler._localPlayer.team > 0)
         {
-            player_handler._localPlayer.Reset();//Will automatically force them to drop what's in their hands
+            player_handler._localPlayer._Reset();//Will automatically force them to drop what's in their hands
             if (gameEndBehaviour != null)
             {
                 gameEndBehaviour.SendCustomEventDelayedFrames(gameEndEvent, 1);

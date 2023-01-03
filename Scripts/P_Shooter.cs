@@ -31,6 +31,7 @@ public class P_Shooter : UdonSharpBehaviour
     public bool unique_gunshot_audio_sources = false;
     public int base_damage = 10;
     public float melee_speed_boost_multiplier = 2;
+    public GunUpgrade gunUpgrades;
     [System.NonSerialized] [FieldChangeCallback(nameof(ammo_mag))][UdonSynced(UdonSyncMode.None)] public int _ammo_mag = -1;
     [System.NonSerialized] [FieldChangeCallback(nameof(ammo_mag_capacity))] [UdonSynced(UdonSyncMode.None)] public int _ammo_mag_capacity = -1;
     [System.NonSerialized] [FieldChangeCallback(nameof(ammo_reserve))] [UdonSynced(UdonSyncMode.None)] public int _ammo_reserve = -1;
@@ -94,23 +95,23 @@ public class P_Shooter : UdonSharpBehaviour
                 sound_source.clip = sound_melee_boost;
                 sound_source.Play();
 
-                if (Networking.LocalPlayer.IsOwner(gameObject) && manager != null && manager.player_handler != null)
-                {
-                    Networking.LocalPlayer.SetRunSpeed(manager.player_handler.run_speed * melee_speed_boost_multiplier);
-                    Networking.LocalPlayer.SetStrafeSpeed(manager.player_handler.strafe_speed * melee_speed_boost_multiplier);
-                    Networking.LocalPlayer.SetWalkSpeed(manager.player_handler.walk_speed * melee_speed_boost_multiplier);
-                    Networking.LocalPlayer.SetJumpImpulse(manager.player_handler.jump_impulse * (1 + (1 - melee_speed_boost_multiplier) / 2));
-                }
+                // if (Networking.LocalPlayer.IsOwner(gameObject) && manager != null && manager.player_handler != null)
+                // {
+                //     Networking.LocalPlayer.SetRunSpeed(manager.player_handler.run_speed * melee_speed_boost_multiplier);
+                //     Networking.LocalPlayer.SetStrafeSpeed(manager.player_handler.strafe_speed * melee_speed_boost_multiplier);
+                //     Networking.LocalPlayer.SetWalkSpeed(manager.player_handler.walk_speed * melee_speed_boost_multiplier);
+                //     // Networking.LocalPlayer.SetJumpImpulse(manager.player_handler.jump_impulse * (1 + (1 - melee_speed_boost_multiplier) / 2));
+                // }
             } else if (melee)
             {
                 sound_source.Stop();
-                if (Networking.LocalPlayer.IsOwner(gameObject) && manager != null && manager.player_handler != null)
-                {
-                    Networking.LocalPlayer.SetRunSpeed(manager.player_handler.run_speed);
-                    Networking.LocalPlayer.SetStrafeSpeed(manager.player_handler.strafe_speed);
-                    Networking.LocalPlayer.SetWalkSpeed(manager.player_handler.walk_speed);
-                    Networking.LocalPlayer.SetJumpImpulse(manager.player_handler.jump_impulse);
-                }
+                // if (Networking.LocalPlayer.IsOwner(gameObject) && manager != null && manager.player_handler != null)
+                // {
+                //     Networking.LocalPlayer.SetRunSpeed(manager.player_handler.run_speed);
+                //     Networking.LocalPlayer.SetStrafeSpeed(manager.player_handler.strafe_speed);
+                //     Networking.LocalPlayer.SetWalkSpeed(manager.player_handler.walk_speed);
+                //     Networking.LocalPlayer.SetJumpImpulse(manager.player_handler.jump_impulse);
+                // }
             }
         }
     }

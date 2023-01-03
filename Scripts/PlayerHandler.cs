@@ -84,14 +84,106 @@ public class PlayerHandler : UdonSharpBehaviour
     public Player[] players;
     // This event is called when the local player's pool object has been assigned.
     [PublicAPI]
-    public int starting_health = 100;
-    public int starting_shield = 500;
-    public float run_speed = 6.0f;
-    public float strafe_speed = 4.0f;
-    public float walk_speed = 4.0f;
-    public float jump_impulse = 6.0f;
-    // public float starting_speed = 10f;
-    // public float starting_jump = 10f;
+    [FieldChangeCallbackAttribute(nameof(starting_health))] public int _starting_health = 100;
+    [FieldChangeCallbackAttribute(nameof(starting_shield))] public int _starting_shield = 500;
+    [FieldChangeCallbackAttribute(nameof(run_speed))] public float _run_speed = 6.0f;
+    [FieldChangeCallbackAttribute(nameof(strafe_speed))] public float _strafe_speed = 4.0f;
+    [FieldChangeCallbackAttribute(nameof(walk_speed))] public float _walk_speed = 4.0f;
+    [FieldChangeCallbackAttribute(nameof(jump_impulse))] public float _jump_impulse = 6.0f;
+
+    [FieldChangeCallback(nameof(health_multiplier))] private float _health_multiplier = 1.0f;
+    [FieldChangeCallback(nameof(shield_multiplier))] private float _shield_multiplier = 1.0f;
+    private float shield_regen_amount_multiplier = 1.0f;
+    private float speed_multiplier = 1.0f;
+    private float jump_multiplier = 1.0f;
+    public float health_multiplier
+    {
+        get
+        {
+            return _health_multiplier;
+        }
+        set
+        {
+            int multiplied_value = value <= 0 ? 0 : Mathf.CeilToInt(value * _starting_health); //with the underscore
+            if (multiplied_value != starting_health)//without the underscore
+            {
+                if (_localPlayer != null)
+                {
+                    _localPlayer.health = Mathf.Max(1, Mathf.Min(multiplied_value, Mathf.CeilToInt((_localPlayer.health * multiplied_value) / Mathf.Max(1, starting_health))));
+                    //Max of 1 to prevent from instakilling
+                }
+            }
+            _health_multiplier = value;
+        }
+    }
+    public float shield_multiplier
+    {
+        get
+        {
+            return _shield_multiplier;
+        }
+        set
+        {
+            int multiplied_value = value <= 0 ? 0 : Mathf.CeilToInt(value * _starting_shield); //with the underscore
+            if (multiplied_value != starting_shield)//without the underscore
+            {
+                if (_localPlayer != null)
+                {
+                    _localPlayer.shield = Mathf.Min(multiplied_value, Mathf.CeilToInt((_localPlayer.shield * multiplied_value) / Mathf.Max(1, starting_shield)));
+                }
+            }
+            _shield_multiplier = value;
+        }
+    }
+
+    public int starting_health{
+        get {
+            return health_multiplier <= 0 ? 0 : Mathf.CeilToInt(_starting_health * health_multiplier);
+        }
+        set {
+            _starting_health = value;
+        }
+    }
+    public int starting_shield{
+        get {
+            return shield_multiplier <= 0 ? 0 : Mathf.CeilToInt(_starting_shield * shield_multiplier);
+        }
+        set {
+            _starting_shield = value;
+        }
+    }
+    public float run_speed{
+        get {
+            return _run_speed * speed_multiplier;
+        }
+        set {
+            _run_speed = value;
+        }
+    }
+    public float strafe_speed{
+        get {
+            return _strafe_speed * speed_multiplier;
+        }
+        set {
+            _strafe_speed = value;
+        }
+    }
+    public float walk_speed{
+        get {
+            return _walk_speed * speed_multiplier;
+        }
+        set {
+            _walk_speed = value;
+        }
+    }
+    public float jump_impulse{
+        get {
+            return _jump_impulse * jump_multiplier;
+        }
+        set {
+            _jump_impulse = value;
+        }
+    }
 
     public LayerMask safety_layers;
     public LayerMask damage_layers;
@@ -113,8 +205,21 @@ public class PlayerHandler : UdonSharpBehaviour
     private float last_damage = -99;
     private float last_heal = -99;
     public float shield_regen_delay = 5;
-    public int shield_regen_rate = 10;//per second
+    public int _shield_regen_amount = 10;//per second
     public float hud_hide_delay = 3;//per second
+
+
+    public int shield_regen_amount
+    {
+        get
+        {
+            return Mathf.CeilToInt(_shield_regen_amount * shield_regen_amount_multiplier);
+        }
+        set
+        {
+            _shield_regen_amount = value;
+        }
+    }
 
     public UnityEngine.UI.Toggle world_owner_toggle;
     [UdonSyncedAttribute(UdonSyncMode.None), FieldChangeCallback(nameof(world_owner_only))] public bool _world_owner_only = true;
@@ -211,7 +316,7 @@ public class PlayerHandler : UdonSharpBehaviour
             Networking.SetOwner(Networking.LocalPlayer, _localPlayer.gameObject);
             animator.SetTrigger("loaded");
         }
-        _localPlayer.Reset();
+        _localPlayer._Reset();
         _localPlayer.RequestSerialization();
     }
     void Start()
@@ -331,11 +436,12 @@ public class PlayerHandler : UdonSharpBehaviour
         if (_localPlayer != null)
         {
             _localPlayer.death_spot = Networking.LocalPlayer.GetPosition();
-            _localPlayer.Reset();
+            _localPlayer._Reset();
             if (scores != null)
             {
                 scores.OnPlayerDie();
-            } else
+            }
+            else
             {
                 Networking.LocalPlayer.Respawn();
             }
@@ -448,6 +554,49 @@ public class PlayerHandler : UdonSharpBehaviour
     {
         if (_localPlayer != null)
         {
+            P_Shooter leftShooter = _localPlayer.GetLeftShooter();
+            P_Shooter rightShooter = _localPlayer.GetRightShooter();
+            float new_health_multiplier = 1f;
+            float new_shield_multiplier = 1f;
+            float new_shield_regen_speed_multiplier = 1f;
+            float new_speed_multiplier = 1f;
+            float new_jump_multiplier = 1f;
+            float melee_speed_boost_multiplier = 1.0f;
+            if (leftShooter != null && leftShooter.gunUpgrades != null)
+            {
+                new_health_multiplier = leftShooter.gunUpgrades.health_multiplier;
+                new_shield_multiplier = leftShooter.gunUpgrades.shield_multiplier;
+                new_shield_regen_speed_multiplier = leftShooter.gunUpgrades.shield_regen_amount_multiplier;
+                new_speed_multiplier = leftShooter.gunUpgrades.speed_multiplier;
+                new_jump_multiplier = leftShooter.gunUpgrades.jump_multiplier;
+            }
+
+            if (rightShooter != null && rightShooter.gunUpgrades != null)
+            {
+                new_health_multiplier = new_health_multiplier < 1.0f || rightShooter.gunUpgrades.health_multiplier < 1.0f ? Mathf.Min(new_health_multiplier, rightShooter.gunUpgrades.health_multiplier) : Mathf.Max(new_health_multiplier, rightShooter.gunUpgrades.health_multiplier);
+                new_shield_multiplier = new_shield_multiplier < 1.0f || rightShooter.gunUpgrades.shield_multiplier < 1.0f ? Mathf.Min(new_shield_multiplier, rightShooter.gunUpgrades.shield_multiplier) : Mathf.Max(new_shield_multiplier, rightShooter.gunUpgrades.shield_multiplier);
+                new_shield_regen_speed_multiplier = new_shield_regen_speed_multiplier < 1.0f || rightShooter.gunUpgrades.shield_regen_amount_multiplier < 1.0f ? Mathf.Min(new_shield_regen_speed_multiplier, rightShooter.gunUpgrades.shield_regen_amount_multiplier) : Mathf.Max(new_shield_regen_speed_multiplier, rightShooter.gunUpgrades.shield_regen_amount_multiplier);
+                new_speed_multiplier = new_speed_multiplier < 1.0f || rightShooter.gunUpgrades.speed_multiplier < 1.0f ? Mathf.Min(new_speed_multiplier, rightShooter.gunUpgrades.speed_multiplier) : Mathf.Max(new_speed_multiplier, rightShooter.gunUpgrades.speed_multiplier);
+                new_jump_multiplier = new_jump_multiplier < 1.0f || rightShooter.gunUpgrades.jump_multiplier < 1.0f ? Mathf.Min(new_jump_multiplier, rightShooter.gunUpgrades.jump_multiplier) : Mathf.Max(new_jump_multiplier, rightShooter.gunUpgrades.jump_multiplier);
+            }
+            
+            melee_speed_boost_multiplier = leftShooter != null && leftShooter.melee && leftShooter.shoot_state == P_Shooter.SHOOT_STATE_SHOOT ? leftShooter.melee_speed_boost_multiplier : melee_speed_boost_multiplier;
+            if (rightShooter != null && rightShooter.melee && rightShooter.shoot_state == P_Shooter.SHOOT_STATE_SHOOT)
+            {
+                melee_speed_boost_multiplier = melee_speed_boost_multiplier <= 0 ? Mathf.Min(melee_speed_boost_multiplier, rightShooter.melee_speed_boost_multiplier) : Mathf.Max(melee_speed_boost_multiplier, rightShooter.melee_speed_boost_multiplier);
+            }
+
+            health_multiplier = new_health_multiplier;
+            shield_multiplier = new_shield_multiplier;
+            shield_regen_amount_multiplier = new_shield_regen_speed_multiplier;
+            speed_multiplier = new_speed_multiplier;
+            jump_multiplier = new_jump_multiplier;
+
+            Networking.LocalPlayer.SetRunSpeed(run_speed * melee_speed_boost_multiplier);
+            Networking.LocalPlayer.SetStrafeSpeed(strafe_speed * melee_speed_boost_multiplier);
+            Networking.LocalPlayer.SetWalkSpeed(walk_speed * melee_speed_boost_multiplier);
+            Networking.LocalPlayer.SetJumpImpulse(jump_impulse);
+
             if (animator != null)
             {
                 VRCPlayerApi.TrackingData headData = Networking.LocalPlayer.GetTrackingData(VRCPlayerApi.TrackingDataType.Head);
@@ -461,7 +610,7 @@ public class PlayerHandler : UdonSharpBehaviour
                 {
                     if (Mathf.RoundToInt(Time.timeSinceLevelLoad - Time.deltaTime) < Mathf.RoundToInt(Time.timeSinceLevelLoad) && _localPlayer.shield < starting_shield)
                     {
-                        _localPlayer.shield = Mathf.Min(_localPlayer.shield + shield_regen_rate, starting_shield);
+                        _localPlayer.shield = Mathf.Min(_localPlayer.shield + shield_regen_amount, starting_shield);
                         _localPlayer.RequestSerialization();
                         last_heal = Time.timeSinceLevelLoad;
                     }
