@@ -7,6 +7,7 @@ using VRC.Udon;
 public class SmartPickupSyncSummon : UdonSharpBehaviour
 {    
     //THIS IS THE OBJECT THAT YOU WANNA TELEPORT
+    [Header("Only the owner can summon this object. Call the 'TakeOwnership' event or set ownership some other way")]
     public SmartPickupSync teleportObject;
     private bool leftTrigger = false;
     private bool rightTrigger = false;
@@ -20,6 +21,9 @@ public class SmartPickupSyncSummon : UdonSharpBehaviour
 
     public override void InputUse(bool value, VRC.Udon.Common.UdonInputEventArgs args)
     {
+        if(!Networking.LocalPlayer.IsOwner(gameObject)){
+            return;
+        }
         if (args.handType == VRC.Udon.Common.HandType.LEFT)
         {
             leftTrigger = value;
@@ -40,6 +44,9 @@ public class SmartPickupSyncSummon : UdonSharpBehaviour
 
     public void Update()
     {
+        if(!Networking.LocalPlayer.IsOwner(gameObject)){
+            return;
+        }
         if (Input.GetKeyDown(desktopShortcut))
         {
             SummonObject();
@@ -54,6 +61,10 @@ public class SmartPickupSyncSummon : UdonSharpBehaviour
 
     public void SummonObject()
     {
+        if (!Networking.LocalPlayer.IsOwner(gameObject))
+        {
+            return;
+        }
         Networking.SetOwner(Networking.LocalPlayer, teleportObject.gameObject);
         teleportObject.gameObject.SetActive(true);//turn it on
         Vector3 spawn_point = use_head_as_spawn_point ? Networking.LocalPlayer.GetTrackingData(VRCPlayerApi.TrackingDataType.Head).position : Networking.LocalPlayer.GetPosition();
@@ -61,5 +72,10 @@ public class SmartPickupSyncSummon : UdonSharpBehaviour
         teleportObject.rot = Networking.LocalPlayer.GetRotation();
         teleportObject.MoveToSyncedTransform();
         teleportObject.RequestSerialization();
+    }
+
+    public void TakeOwnership()
+    {
+        Networking.SetOwner(Networking.LocalPlayer, gameObject);
     }
 }
