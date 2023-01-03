@@ -68,10 +68,15 @@ public class SmartPickupSyncSummon : UdonSharpBehaviour
         Networking.SetOwner(Networking.LocalPlayer, teleportObject.gameObject);
         teleportObject.gameObject.SetActive(true);//turn it on
         Vector3 spawn_point = use_head_as_spawn_point ? Networking.LocalPlayer.GetTrackingData(VRCPlayerApi.TrackingDataType.Head).position : Networking.LocalPlayer.GetPosition();
+        teleportObject.isHeld = false;
         teleportObject.pos = spawn_point + (Networking.LocalPlayer.GetRotation() * spawn_point_offset);
         teleportObject.rot = Networking.LocalPlayer.GetRotation();
         teleportObject.MoveToSyncedTransform();
         teleportObject.RequestSerialization();
+        if (teleportObject.optimizer != null)
+        {
+            teleportObject.optimizer.BroadcastEnable();
+        }
     }
 
     public void TakeOwnership()
