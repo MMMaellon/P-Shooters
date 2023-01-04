@@ -53,6 +53,7 @@ public class Scoreboard : UdonSharpBehaviour
     public bool forceTeams = false;
     public bool forceNoTeams = false;
     public bool group_by_teams = true;
+    public bool team_damage = false;
     public string[] teamNames = {};
     public bool preventJoiningMidgame = true;
 

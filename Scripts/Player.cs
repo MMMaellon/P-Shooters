@@ -312,11 +312,11 @@ public class Player : UdonSharpBehaviour
         {
             return;
         }
-        if (player_handler.scores != null && ((player_handler.teams && player_handler._localPlayer.team == team) || team == 0 || player_handler._localPlayer.team == 0 || !player_handler.scores.game_active))
+        if (!Utilities.IsValid(other) || Owner == null || !Owner.IsValid())
         {
             return;
         }
-        if (!Utilities.IsValid(other) || Owner == null || !Owner.IsValid())
+        if (player_handler.scores != null && ((player_handler.teams && !player_handler.scores.team_damage && player_handler._localPlayer.team == team && !Owner.isLocal) || team == 0 || player_handler._localPlayer.team == 0 || !player_handler.scores.game_active))
         {
             return;
         }
