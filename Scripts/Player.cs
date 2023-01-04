@@ -342,17 +342,20 @@ public class Player : UdonSharpBehaviour
             {
                 return;
             }
-            damage = player_handler._localPlayer.CalcDamage(true);
-            if (shield > 0)
+            if (!Owner.isLocal)
             {
-                shield -= damage;
-            }
-            else
-            {
-                health -= damage;
+                damage = player_handler._localPlayer.CalcDamage(false);
+                if (shield > 0)
+                {
+                    shield -= damage;
+                }
+                else
+                {
+                    health -= damage;
+                }
+                TriggerHitFX(damage);
             }
             SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(ShotBy) + "Left" + player_handler._localPlayer.id);
-            TriggerHitFX(damage);
         }
         else if (rightShooter != null && rightShooter.smartPickup != null && rightShooter.smartPickup.pickup == otherPickup)
         {
@@ -360,17 +363,20 @@ public class Player : UdonSharpBehaviour
             {
                 return;
             }
-            damage = player_handler._localPlayer.CalcDamage(false);
-            if (shield > 0)
+            if (!Owner.isLocal)
             {
-                shield -= damage;
-            }
-            else
-            {
-                health -= damage;
+                damage = player_handler._localPlayer.CalcDamage(false);
+                if (shield > 0)
+                {
+                    shield -= damage;
+                }
+                else
+                {
+                    health -= damage;
+                }
+                TriggerHitFX(damage);
             }
             SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(ShotBy) + "Right" + player_handler._localPlayer.id);
-            TriggerHitFX(damage);
         }
     }
 
@@ -498,12 +504,16 @@ public class Player : UdonSharpBehaviour
         {
             int damage = 0;
             Player attacker = player_handler.players[other_id];
-            if (attacker != null && attacker.Owner != null && attacker.Owner.IsValid() && (!attacker.Owner.isLocal || (player_handler.teams && attacker.team == team)))
+            if (attacker != null && attacker.Owner != null && attacker.Owner.IsValid())
             {
                 damage = attacker.CalcDamage(left_hand);
                 if (damage > 0)
                 {
                     bool died = player_handler.LowerHealth(damage, false);
+                    if (attacker.Owner.isLocal || (player_handler.teams && attacker.team == team))
+                    {
+                        return;
+                    }
                     if (died)
                     {
                         attacker.SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(GotKill));
@@ -525,6 +535,10 @@ public class Player : UdonSharpBehaviour
             if (attacker != null && attacker.Owner != null && attacker.Owner.IsValid())
             {
                 player_handler.LowerHealth(999999, true);
+                if (attacker.Owner.isLocal || (player_handler.teams && attacker.team == team))
+                {
+                    return;
+                }
                 attacker.SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(GotKill));
             }
 
