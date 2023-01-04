@@ -498,7 +498,7 @@ public class Player : UdonSharpBehaviour
         {
             int damage = 0;
             Player attacker = player_handler.players[other_id];
-            if (attacker != null && attacker.Owner != null && attacker.Owner.IsValid() && !attacker.Owner.isLocal)
+            if (attacker != null && attacker.Owner != null && attacker.Owner.IsValid() && (!attacker.Owner.isLocal || (player_handler.teams && attacker.team == team)))
             {
                 damage = attacker.CalcDamage(left_hand);
                 if (damage > 0)
