@@ -1,6 +1,6 @@
 # MMMaellon's P-shooters
 
-# Ask questions on my Discord Server: https://discord.gg/pWtyAaYk
+# Ask questions on my Discord Server: https://discord.gg/S5sDC4PnFp
 
 This is a prefab that allows anyone to easily and quickly set up particle shooter (P-shooter) guns for VRChat worlds.
 
