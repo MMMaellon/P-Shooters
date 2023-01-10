@@ -15,6 +15,7 @@ public class P_Shooter : UdonSharpBehaviour
 
     public bool melee = false;
     public bool rare = false;
+    public bool disable_after_respawn = false;
     public bool self_damage = false;
     public bool track_ammo_mag = false;
     public bool track_ammo_reserve = false;
@@ -288,7 +289,13 @@ public class P_Shooter : UdonSharpBehaviour
     {
         if (smartPickup != null && !smartPickup.isHeld)
         {
-            Disable();
+            if (disable_after_respawn)
+            {
+                FullyDisable();
+            } else
+            {
+                Disable();
+            }
         }
     }
 
@@ -841,19 +848,28 @@ public class P_Shooter : UdonSharpBehaviour
         enabled = true;
     }
 
-    public void Disable(){
+    public void Disable()
+    {
         enabled = false;
+    }
+    public void FullyDisable()
+    {
+        smartPickup.gameObject.SetActive(false);
     }
 
     public void OnEnable(){
         Debug.LogWarning("ammo: " + ammo_mag);
         animator.enabled = true;
+
+        shoot_state = shoot_state;
+        ammo_mag = ammo_mag;
+        ammo_mag_capacity = ammo_mag_capacity;
+        ammo_reserve = ammo_reserve;
+        upgrades = upgrades;
         
         if(grip != null){
             grip.gameObject.SetActive(true);
         }
-
-        shoot_state = shoot_state;
         foreach (GameObject o in objectsToOptimize){
             o.SetActive(true);
         }
