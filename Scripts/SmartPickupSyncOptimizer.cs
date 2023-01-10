@@ -8,7 +8,7 @@ using VRC.Udon;
 public class SmartPickupSyncOptimizer : UdonSharpBehaviour
 {
     [System.NonSerialized] public SmartPickupSync pickup;
-    [Header("How long after being dropped to opimize the smart pickup sync")]
+    [Header("How long after being dropped to optimize the smart pickup sync")]
     public float optimizationTimer = 25f;
     private float last_drop = 0f;
     void Start()

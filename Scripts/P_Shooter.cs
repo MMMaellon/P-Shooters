@@ -47,13 +47,42 @@ public class P_Shooter : UdonSharpBehaviour
     public Scope scope = null;
     public TacticalReload tacticalReload;
     public AudioSource sound_source;
-    public AudioClip sound_shoot;
-    public AudioClip sound_melee_boost;
-    public AudioClip sound_empty;
-    public AudioClip sound_reload;
-    public AudioClip sound_reload_stop;
-    public AudioClip sound_upgrade;
-    public AudioClip sound_bullet_impact_environment;
+
+    // public AudioClip sound_shoot;
+    // public AudioClip sound_melee_boost;
+    // public AudioClip sound_empty;
+    // public AudioClip sound_reload;
+    // public AudioClip sound_reload_stop;
+    // public AudioClip sound_upgrade;
+    // public AudioClip sound_bullet_impact_environment;
+    public AudioClip[] sound_shoots;
+    public AudioClip[] sound_melee_boosts;
+    public AudioClip[] sound_emptys;
+    public AudioClip[] sound_reloads;
+    public AudioClip[] sound_reload_stops;
+    public AudioClip[] sound_upgrades;
+    public AudioClip[] sound_bullet_impact_environments;
+    public AudioClip sound_shoot{
+        get => sound_shoots == null || sound_shoots.Length == 0 ? null : sound_shoots[Random.Range(0, sound_shoots.Length)];
+    }
+    public AudioClip sound_melee_boost{
+        get => sound_melee_boosts == null || sound_melee_boosts.Length == 0 ? null : sound_melee_boosts[Random.Range(0, sound_melee_boosts.Length)];
+    }
+    public AudioClip sound_empty{
+        get => sound_emptys == null || sound_emptys.Length == 0 ? null : sound_emptys[Random.Range(0, sound_emptys.Length)];
+    }
+    public AudioClip sound_reload{
+        get => sound_reloads == null || sound_reloads.Length == 0 ? null : sound_reloads[Random.Range(0, sound_reloads.Length)];
+    }
+    public AudioClip sound_reload_stop{
+        get => sound_reload_stops == null || sound_reload_stops.Length == 0 ? null : sound_reload_stops[Random.Range(0, sound_reload_stops.Length)];
+    }
+    public AudioClip sound_upgrade{
+        get => sound_upgrades == null || sound_upgrades.Length == 0 ? null : sound_upgrades[Random.Range(0, sound_upgrades.Length)];
+    }
+    public AudioClip sound_bullet_impact_environment{
+        get => sound_bullet_impact_environments == null || sound_bullet_impact_environments.Length == 0 ? null : sound_bullet_impact_environments[Random.Range(0, sound_bullet_impact_environments.Length)];
+    }
 
     public GameObject[] local_held_objects;
 
@@ -212,6 +241,8 @@ public class P_Shooter : UdonSharpBehaviour
     }
     void Start()
     {
+
+        Debug.LogWarning("START FUNCTION");
         if (animator != null)
         {
             animator.SetBool("local", local_held);
@@ -253,8 +284,10 @@ public class P_Shooter : UdonSharpBehaviour
         SendCustomEventDelayedSeconds(nameof(CheckDisable), 1);
     }
 
-    public void CheckDisable(){
-        if (smartPickup != null && !smartPickup.isHeld){
+    public void CheckDisable()
+    {
+        if (smartPickup != null && !smartPickup.isHeld)
+        {
             Disable();
         }
     }
@@ -813,6 +846,7 @@ public class P_Shooter : UdonSharpBehaviour
     }
 
     public void OnEnable(){
+        Debug.LogWarning("ammo: " + ammo_mag);
         animator.enabled = true;
         
         if(grip != null){

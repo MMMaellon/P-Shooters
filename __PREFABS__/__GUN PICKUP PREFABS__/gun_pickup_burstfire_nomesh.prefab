@@ -73,6 +73,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: gun_pickup_burstfire_nomesh
       objectReference: {fileID: 0}
+    - target: {fileID: 3841777275354662106, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 3841777275354662106, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
     - target: {fileID: 6156854182014271368, guid: 699544681fafa65409131323fba01c40,
         type: 3}
       propertyPath: serializationData.Prefab
@@ -98,14 +104,90 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
         type: 3}
+      propertyPath: sound_emptys.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_shoots.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
         type: 3}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_reloads.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_upgrades.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_emptys.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: c1e31415030a1fd43b21f7dbec408de8, type: 3}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_shoots.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 433b0e48cb99e6a4995a2f322094e70a, type: 3}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_reloads.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 1b77ce50e11abe24fab8e02f608df9f1, type: 3}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_upgrades.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: c62209b053fff0b4998af16d390ef5bb, type: 3}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_melee_boosts.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_reload_stops.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_melee_boosts.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 83ce8f715832af74d8f564f7a47c27d8, type: 3}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_reload_stops.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: e8e864088d181d64ba2e84bb4deeb2c5, type: 3}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_bullet_impact_environments.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_bullet_impact_environments.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 5caf8dccb4a8e8547840597f4f94f514, type: 3}
     - target: {fileID: 7010921152858364085, guid: 699544681fafa65409131323fba01c40,
         type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: acac6d3b6fcbc724386ce0ebfda75a3c, type: 2}
+    - target: {fileID: 8858433874111355846, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 8858433874111355846, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 699544681fafa65409131323fba01c40, type: 3}

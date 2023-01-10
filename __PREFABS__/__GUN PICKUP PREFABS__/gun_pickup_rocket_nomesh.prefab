@@ -5036,6 +5036,12 @@ PrefabInstance:
       propertyPath: rolloffCustomCurve.m_Curve.Array.data[1].outWeight
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3841777275354662106, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 3841777275354662106, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
     - target: {fileID: 4172137101161184546, guid: 699544681fafa65409131323fba01c40,
         type: 3}
       propertyPath: trail_particle_system
@@ -6353,12 +6359,22 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
         type: 3}
+      propertyPath: sound_shoots.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 90341808b3f03094aa61f4757daf231f, type: 3}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
       propertyPath: _starting_ammo_mag_capacity
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
         type: 3}
       propertyPath: sound_bullet_impact_environment
+      value: 
+      objectReference: {fileID: 8300000, guid: be2a27239fb85a140b02ecbd4613bf35, type: 3}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_bullet_impact_environments.Array.data[0]
       value: 
       objectReference: {fileID: 8300000, guid: be2a27239fb85a140b02ecbd4613bf35, type: 3}
     - target: {fileID: 7121952116705641968, guid: 699544681fafa65409131323fba01c40,
@@ -6691,6 +6707,12 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 8266513124323661467, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+    - target: {fileID: 8858433874111355846, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 8858433874111355846, guid: 699544681fafa65409131323fba01c40,
         type: 3}
     - target: {fileID: 8969976055946501864, guid: 699544681fafa65409131323fba01c40,
         type: 3}

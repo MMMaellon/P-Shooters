@@ -158,7 +158,7 @@ MonoBehaviour:
       Data: 10|UnityEngine.HeaderAttribute, UnityEngine.CoreModule
     - Name: header
       Entry: 1
-      Data: How long after being dropped to opimize the smart pickup sync
+      Data: How long after being dropped to optimize the smart pickup sync
     - Name: 
       Entry: 8
       Data: 

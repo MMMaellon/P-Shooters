@@ -39,7 +39,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
+    SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -5092,11 +5092,12 @@ PrefabInstance:
         type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2184569787457151277, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
     - target: {fileID: 2184569787457151277, guid: 699544681fafa65409131323fba01c40,
         type: 3}
       propertyPath: serializationData.SerializedFormat
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2831320274595681704, guid: 699544681fafa65409131323fba01c40,
         type: 3}
@@ -5138,6 +5139,12 @@ PrefabInstance:
       propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[1].outSlope
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3841777275354662106, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 3841777275354662106, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
     - target: {fileID: 4172137101161184546, guid: 699544681fafa65409131323fba01c40,
         type: 3}
       propertyPath: serializationData.Prefab
@@ -6390,11 +6397,12 @@ PrefabInstance:
         type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 6156854182014271368, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
     - target: {fileID: 6156854182014271368, guid: 699544681fafa65409131323fba01c40,
         type: 3}
       propertyPath: serializationData.SerializedFormat
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6913206125894934046, guid: 699544681fafa65409131323fba01c40,
         type: 3}
@@ -6420,11 +6428,12 @@ PrefabInstance:
         type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 6925682527602899603, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
     - target: {fileID: 6925682527602899603, guid: 699544681fafa65409131323fba01c40,
         type: 3}
       propertyPath: serializationData.SerializedFormat
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7009986599322930338, guid: 699544681fafa65409131323fba01c40,
         type: 3}
@@ -6454,8 +6463,59 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 798858383abd875408923e6d24c796ce, type: 3}
     - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
         type: 3}
+      propertyPath: sound_emptys.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_shoots.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
       propertyPath: serializationData.Prefab
       value: 
+      objectReference: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_reloads.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_upgrades.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_emptys.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: c1e31415030a1fd43b21f7dbec408de8, type: 3}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_shoots.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 798858383abd875408923e6d24c796ce, type: 3}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_reloads.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 1b77ce50e11abe24fab8e02f608df9f1, type: 3}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_upgrades.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: c62209b053fff0b4998af16d390ef5bb, type: 3}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_melee_boosts.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_reload_stops.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
         type: 3}
@@ -6464,9 +6524,29 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: a70de60e60d56f04dab46107056e084f, type: 3}
     - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
         type: 3}
+      propertyPath: sound_melee_boosts.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 83ce8f715832af74d8f564f7a47c27d8, type: 3}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_reload_stops.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: e8e864088d181d64ba2e84bb4deeb2c5, type: 3}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
       propertyPath: serializationData.SerializedFormat
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_bullet_impact_environments.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7010921152858364084, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+      propertyPath: sound_bullet_impact_environments.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: a70de60e60d56f04dab46107056e084f, type: 3}
     - target: {fileID: 7010921152858364087, guid: 699544681fafa65409131323fba01c40,
         type: 3}
       propertyPath: serializedProgramAsset
@@ -6571,8 +6651,14 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 8858433874111355846, guid: 699544681fafa65409131323fba01c40,
         type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 8858433874111355846, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
+    - target: {fileID: 8858433874111355846, guid: 699544681fafa65409131323fba01c40,
+        type: 3}
       propertyPath: serializationData.SerializedFormat
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8969976055946501864, guid: 699544681fafa65409131323fba01c40,
         type: 3}

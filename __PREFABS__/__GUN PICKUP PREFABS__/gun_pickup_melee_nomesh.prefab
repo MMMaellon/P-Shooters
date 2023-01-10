@@ -4943,8 +4943,6 @@ MonoBehaviour:
   localTransforms: 0
   force_gun_orientation_in_vr: 0
   allow_theft_from_self: 0
-  hiddenUntilHeld: []
-  linkedPShooter: {fileID: 7010921152858364084}
 --- !u!114 &5609211717587669749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4993,6 +4991,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 3870986320829598701}
+  optimizationTimer: 25
 --- !u!114 &3870986320829598701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5271,9 +5270,13 @@ MonoBehaviour:
   track_ammo_mag: 1
   track_ammo_reserve: 0
   auto_reload: 1
+  grip_reload: 1
+  up_reload: 0
+  down_reload: 0
   unique_gunshot_audio_sources: 0
   base_damage: 1001
   melee_speed_boost_multiplier: 3
+  gunUpgrades: {fileID: 0}
   _starting_ammo_mag_capacity: 10
   _starting_ammo_reserve: -1
   _upgrades: []
@@ -5291,6 +5294,15 @@ MonoBehaviour:
   sound_reload_stop: {fileID: 0}
   sound_upgrade: {fileID: 8300000, guid: c62209b053fff0b4998af16d390ef5bb, type: 3}
   sound_bullet_impact_environment: {fileID: 0}
+  sound_shoots: []
+  sound_melee_boosts:
+  - {fileID: 8300000, guid: 83ce8f715832af74d8f564f7a47c27d8, type: 3}
+  sound_emptys: []
+  sound_reloads: []
+  sound_reload_stops: []
+  sound_upgrades:
+  - {fileID: 8300000, guid: c62209b053fff0b4998af16d390ef5bb, type: 3}
+  sound_bullet_impact_environments: []
   local_held_objects: []
   objectsToOptimize: []
   udonToOptimize:
@@ -5315,7 +5327,8 @@ MonoBehaviour:
   AllowCollisionOwnershipTransfer: 0
   Reliable: 0
   _syncMethod: 3
-  serializedProgramAsset: {fileID: 0}
+  serializedProgramAsset: {fileID: 11400000, guid: 4907faa8354199e458b857f906fdaa26,
+    type: 2}
   programSource: {fileID: 11400000, guid: 2ba1127f48170a841a12bfbe9926711f, type: 2}
   serializedPublicVariablesBytesString: Ai8AAAAAATIAAABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlAFQAYQBiAGwAZQAsACAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4AAAAAAAYBAAAAAAAAACcBBAAAAHQAeQBwAGUAAWgAAABTAHkAcwB0AGUAbQAuAEMAbwBsAGwAZQBjAHQAaQBvAG4AcwAuAEcAZQBuAGUAcgBpAGMALgBMAGkAcwB0AGAAMQBbAFsAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4ALgBJAG4AdABlAHIAZgBhAGMAZQBzAC4ASQBVAGQAbwBuAFYAYQByAGkAYQBiAGwAZQAsACAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4AXQBdACwAIABtAHMAYwBvAHIAbABpAGIAAQEJAAAAVgBhAHIAaQBhAGIAbABlAHMALwEAAAABaAAAAFMAeQBzAHQAZQBtAC4AQwBvAGwAbABlAGMAdABpAG8AbgBzAC4ARwBlAG4AZQByAGkAYwAuAEwAaQBzAHQAYAAxAFsAWwBWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAEkAbgB0AGUAcgBmAGEAYwBlAHMALgBJAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlACwAIABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgBdAF0ALAAgAG0AcwBjAG8AcgBsAGkAYgABAAAABgEAAAAAAAAAAi8CAAAAAUkAAABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlAGAAMQBbAFsAUwB5AHMAdABlAG0ALgBJAG4AdAAzADIALAAgAG0AcwBjAG8AcgBsAGkAYgBdAF0ALAAgAFYAUgBDAC4AVQBkAG8AbgAuAEMAbwBtAG0AbwBuAAIAAAAGAgAAAAAAAAAnAQQAAAB0AHkAcABlAAEXAAAAUwB5AHMAdABlAG0ALgBTAHQAcgBpAG4AZwAsACAAbQBzAGMAbwByAGwAaQBiACcBCgAAAFMAeQBtAGIAbwBsAE4AYQBtAGUAAR8AAABfAF8AXwBVAGQAbwBuAFMAaABhAHIAcABCAGUAaABhAHYAaQBvAHUAcgBWAGUAcgBzAGkAbwBuAF8AXwBfACcBBAAAAHQAeQBwAGUAARYAAABTAHkAcwB0AGUAbQAuAEkAbgB0ADMAMgAsACAAbQBzAGMAbwByAGwAaQBiABcBBQAAAFYAYQBsAHUAZQACAAAABwUHBQcF
   publicVariablesUnityEngineObjects: []

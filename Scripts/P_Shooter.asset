@@ -1589,19 +1589,19 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: sound_shoot
+      Data: sound_shoots
     - Name: $v
       Entry: 7
       Data: 89|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: sound_shoot
+      Data: sound_shoots
     - Name: <UserType>k__BackingField
       Entry: 7
       Data: 90|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: UnityEngine.AudioClip, UnityEngine.AudioModule
+      Data: UnityEngine.AudioClip[], UnityEngine.AudioModule
     - Name: 
       Entry: 8
       Data: 
@@ -1643,13 +1643,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: sound_melee_boost
+      Data: sound_melee_boosts
     - Name: $v
       Entry: 7
       Data: 92|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: sound_melee_boost
+      Data: sound_melee_boosts
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 90
@@ -1691,13 +1691,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: sound_empty
+      Data: sound_emptys
     - Name: $v
       Entry: 7
       Data: 94|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: sound_empty
+      Data: sound_emptys
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 90
@@ -1739,13 +1739,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: sound_reload
+      Data: sound_reloads
     - Name: $v
       Entry: 7
       Data: 96|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: sound_reload
+      Data: sound_reloads
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 90
@@ -1787,13 +1787,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: sound_reload_stop
+      Data: sound_reload_stops
     - Name: $v
       Entry: 7
       Data: 98|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: sound_reload_stop
+      Data: sound_reload_stops
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 90
@@ -1835,13 +1835,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: sound_upgrade
+      Data: sound_upgrades
     - Name: $v
       Entry: 7
       Data: 100|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: sound_upgrade
+      Data: sound_upgrades
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 90
@@ -1884,13 +1884,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: sound_bullet_impact_environment
+      Data: sound_bullet_impact_environments
     - Name: $v
       Entry: 7
       Data: 102|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: sound_bullet_impact_environment
+      Data: sound_bullet_impact_environments
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 90

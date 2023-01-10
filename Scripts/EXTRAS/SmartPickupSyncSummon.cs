@@ -9,6 +9,10 @@ public class SmartPickupSyncSummon : UdonSharpBehaviour
     //THIS IS THE OBJECT THAT YOU WANNA TELEPORT
     [Header("Only the owner can summon this object. Call the 'TakeOwnership' event or set ownership some other way")]
     public SmartPickupSync teleportObject;
+    public bool summon_only_if_idle = true;
+
+    [Header("VR shortcut is both triggers. Desktop shortcut is F key by default")]
+    public bool use_shortcuts = true;
     private bool leftTrigger = false;
     private bool rightTrigger = false;
     public KeyCode desktopShortcut = KeyCode.F;
@@ -21,7 +25,7 @@ public class SmartPickupSyncSummon : UdonSharpBehaviour
 
     public override void InputUse(bool value, VRC.Udon.Common.UdonInputEventArgs args)
     {
-        if(!Networking.LocalPlayer.IsOwner(gameObject)){
+        if(!Networking.LocalPlayer.IsOwner(gameObject) || !use_shortcuts){
             return;
         }
         if (args.handType == VRC.Udon.Common.HandType.LEFT)
@@ -44,10 +48,7 @@ public class SmartPickupSyncSummon : UdonSharpBehaviour
 
     public void Update()
     {
-        if(!Networking.LocalPlayer.IsOwner(gameObject)){
-            return;
-        }
-        if (Input.GetKeyDown(desktopShortcut))
+        if (use_shortcuts && Input.GetKeyDown(desktopShortcut))
         {
             SummonObject();
         }
@@ -82,5 +83,14 @@ public class SmartPickupSyncSummon : UdonSharpBehaviour
     public void TakeOwnership()
     {
         Networking.SetOwner(Networking.LocalPlayer, gameObject);
+    }
+
+    public override void Interact()
+    {
+        if (!summon_only_if_idle || teleportObject.enabled == false)
+        {
+            TakeOwnership();
+            SummonObject();
+        }
     }
 }

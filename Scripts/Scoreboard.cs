@@ -84,7 +84,6 @@ public class Scoreboard : UdonSharpBehaviour
     public GameObject end_spacer;
 
     private bool force_end = false;
-    private bool first_onEnable = true;
     private float last_end_game = -1001f;
 
     [HideInInspector, UdonSyncedAttribute(UdonSyncMode.None), FieldChangeCallback(nameof(game_active))] public bool _game_active = false;
@@ -176,6 +175,10 @@ public class Scoreboard : UdonSharpBehaviour
     
     void Start()
     {
+        for (int i = 0; i < sorted.Length; i++)
+        {
+            sorted[i] = i;
+        }
     }
 
     public void OnEnable()
