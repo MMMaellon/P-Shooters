@@ -95,7 +95,8 @@ public class P_Shooter : UdonSharpBehaviour
     private bool ran_start = false;
     [System.NonSerialized] public int id = -1;
 
-    private GunManager manager;
+    [HideInInspector]
+    public GunManager manager;
     [System.NonSerialized] [UdonSynced(UdonSyncMode.None)] public int spawn_id = -1;
 
     private Vector3 local_rest_pickup_point_offset;
@@ -511,6 +512,9 @@ public class P_Shooter : UdonSharpBehaviour
             if (tacticalReload.isHeld && local_reload)
             {
                 tacticalReload.HandPos();
+            } else
+            {
+                tacticalReload.RestPos();
             }
         }
         if (local_held && !melee && (down_reload || up_reload) && Networking.LocalPlayer.IsUserInVR())

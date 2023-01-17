@@ -69,17 +69,26 @@ public class HealUpgrade : UdonSharpBehaviour
 
     public void OnTriggerStay(Collider other)
     {
-        Debug.LogWarning("OnTriggerStay");
         if (player_handler == null || player_handler._localPlayer == null || (player_handler.scores != null && player_handler._localPlayer.team == 0) || !Utilities.IsValid(other) || other == null || on_interact)
         {
             return;
         }
-        Debug.LogWarning("OnTriggerStay 2");
         if (player_handler._localPlayer == other.GetComponent<Player>())
         {
             Heal();
         }
     }
+    // public void OnCollisionEnter(Collision other)
+    // {
+    //     if (player_handler == null || player_handler._localPlayer == null || (player_handler.scores != null && player_handler._localPlayer.team == 0) || !Utilities.IsValid(other) || other == null || on_interact || other.collider == null)
+    //     {
+    //         return;
+    //     }
+    //     if (player_handler._localPlayer == other.collider.GetComponent<Player>())
+    //     {
+    //         Heal();
+    //     }
+    // }
 
     public override void Interact()
     {

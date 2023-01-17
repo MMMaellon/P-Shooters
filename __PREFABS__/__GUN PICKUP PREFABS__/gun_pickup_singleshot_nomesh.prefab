@@ -9860,7 +9860,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2831320274595681704}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.1, z: 0.1}
@@ -15079,6 +15079,7 @@ MonoBehaviour:
   _udonSharpBackingUdonBehaviour: {fileID: 7010921152858364087}
   melee: 0
   rare: 0
+  disable_after_respawn: 0
   self_damage: 0
   track_ammo_mag: 1
   track_ammo_reserve: 0
@@ -15100,14 +15101,6 @@ MonoBehaviour:
   scope: {fileID: 0}
   tacticalReload: {fileID: 8858433874111355846}
   sound_source: {fileID: 4190991968120571087}
-  sound_shoot: {fileID: 8300000, guid: 433b0e48cb99e6a4995a2f322094e70a, type: 3}
-  sound_melee_boost: {fileID: 8300000, guid: 83ce8f715832af74d8f564f7a47c27d8, type: 3}
-  sound_empty: {fileID: 8300000, guid: c1e31415030a1fd43b21f7dbec408de8, type: 3}
-  sound_reload: {fileID: 8300000, guid: 1b77ce50e11abe24fab8e02f608df9f1, type: 3}
-  sound_reload_stop: {fileID: 8300000, guid: e8e864088d181d64ba2e84bb4deeb2c5, type: 3}
-  sound_upgrade: {fileID: 8300000, guid: c62209b053fff0b4998af16d390ef5bb, type: 3}
-  sound_bullet_impact_environment: {fileID: 8300000, guid: 5caf8dccb4a8e8547840597f4f94f514,
-    type: 3}
   sound_shoots:
   - {fileID: 8300000, guid: 433b0e48cb99e6a4995a2f322094e70a, type: 3}
   sound_melee_boosts:
@@ -24965,7 +24958,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8999688220625975221}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.05
