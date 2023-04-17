@@ -9,14 +9,21 @@ P-Shooters is a powerful, modular, and easy-to-use Unity prefab designed to help
 * **Optimized Performance**: P-Shooters is designed with VRChat's performance requirements in mind, ensuring smooth fps even in worlds with hundreds of guns.
 * **Efficient Networking**: P-Shooters ensures low latency and keeps late-joiners synced, providing a seamless multiplayer experience.
 
+## Setup
+
+Version 2 is still being actively worked on and might not function as intended yet. When version 2 is complete, the (Wiki)[https://github.com/MMMaellon/P-Shooters/wiki] will have all setup instructions.
+
+To set up version 1, download the unitypackage from the [releases page](https://github.com/MMMaellon/P-Shooters/releases/tag/1.6.2) and import it into your unity project by double-clicking it while your unity project is open.
+
+View the readme and source code of version 1 here: <https://github.com/MMMaellon/P-Shooters/tree/v1>
+
 # Ask questions on my [Discord Server](https://discord.gg/S5sDC4PnFp)
 
 Version 2 is still a work in progress. It features better performance, better network latency, and more customizable options. It also features compatibility with [SmartObjectSync](https://github.com/MMMaellon/SmartObjectSync)
 
-Click here to download the latest copy of Version 1: <https://github.com/MMMaellon/P-Shooters/releases/tag/1.6.2>
-View the source code of Version 1 here: <https://github.com/MMMaellon/P-Shooters/tree/v1>
-
 ## Dependencies
 
-[SmartObjectSync](https://github.com/MMMaellon/SmartObjectSync)
-[Silent's Magic Particle Shader](https://gitlab.com/s-ilent/magic-particles.git)
+ - [Udon 1.X (with VCC)](https://docs.vrchat.com/docs/getting-started-with-udon)
+ - [Udon Sharp](https://udonsharp.docs.vrchat.com/setup)
+ - [SmartObjectSync](https://github.com/MMMaellon/SmartObjectSync)
+ - [Silent's Magic Particle Shader](https://gitlab.com/s-ilent/magic-particles.git)
