@@ -13,7 +13,7 @@ P-Shooters is a powerful, modular, and easy-to-use Unity prefab designed to help
 
 ## Version 2 (WIP)
 
-Version 2 is still a work in progress. It features better performance, better network latency, and more customizable options. When version 2 is complete, the (Wiki)[https://github.com/MMMaellon/P-Shooters/wiki] will have all setup instructions and other documentation.
+Version 2 is still a work in progress. It features better performance, better network latency, and more customizable options. When version 2 is complete, the [Wiki](https://github.com/MMMaellon/P-Shooters/wiki) will have all setup instructions and other documentation.
 
 ## Version 1
 
