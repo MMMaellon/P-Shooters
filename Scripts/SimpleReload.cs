@@ -67,9 +67,9 @@ namespace MMMaellon
             }
         }
 
-        public override void _Register(P_Shooter shooter)
+        public override void Start()
         {
-            base._Register(shooter);
+            base.Start();
             if (startLoaded)
             {
                 chamberAmmo = chamberCapacity;

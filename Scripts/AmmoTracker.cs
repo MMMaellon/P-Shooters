@@ -4,6 +4,7 @@ using VRC.SDKBase;
 
 namespace MMMaellon
 {
+    [UdonBehaviourSyncMode(BehaviourSyncMode.Manual), RequireComponent(typeof(P_Shooter))]
     public abstract class AmmoTracker : UdonSharpBehaviour
     {
         [System.NonSerialized]
@@ -21,9 +22,10 @@ namespace MMMaellon
         public abstract bool CanReload();
         public abstract void Reload();
         public abstract void ReloadEnd();
-        public virtual void _Register(P_Shooter newShooter)
+        public virtual void Start()
         {
-            shooter = newShooter;
+            shooter = GetComponent<P_Shooter>();
+            shooter.ammo = this;
         }
         public abstract bool ChamberAmmo();
         public abstract bool ConsumeAmmo();

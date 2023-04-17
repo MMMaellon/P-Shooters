@@ -12,18 +12,30 @@ namespace MMMaellon
     {
         [System.NonSerialized]
         public MagReload magReload;
-        [System.NonSerialized, FieldChangeCallback(nameof(attachedMag))]
+        // [System.NonSerialized, FieldChangeCallback(nameof(attachedMag))]
+        [FieldChangeCallback(nameof(attachedMag))]
         public Mag _attachedMag;
-        public bool ejectExistingMagOnTap;
+        public bool ejectExistingMagOnTInteract = false;
+        public bool ejectExistingMagOnTap = true;
         [Tooltip("How the mag gets ejected")]
         public Vector3 ejectVelocity = Vector3.down;
         [Tooltip("How long we have to wait after ejecting to insert a new mag")]
         public float ejectCooldown = 0.5f;
         float lastEject = -1001f;
 
+        public void Start()
+        {
+            DisableInteractive = !ejectExistingMagOnTInteract;
+        }
+
         public void OnTriggerEnter(Collider other)
         {
             if ((lastEject + ejectCooldown > Time.realtimeSinceStartup) || !Utilities.IsValid(other) || !Utilities.IsValid(magReload) || !Utilities.IsValid(magReload.shooter) || !magReload.shooter.sync.IsLocalOwner())
+            {
+                return;
+            }
+            Mag otherMag = other.GetComponent<Mag>();
+            if (!Utilities.IsValid(otherMag) || otherMag == attachedMag || otherMag.childState.IsActiveState())
             {
                 return;
             }
@@ -35,29 +47,23 @@ namespace MMMaellon
                 }
                 return;
             }
-            attachedMag = other.GetComponent<Mag>();
-            if (Utilities.IsValid(attachedMag))
-            {
-                if (!attachedMag.childState.IsActiveState())
-                {
-                    attachedMag.Attach(transform);
-                }
-                else
-                {
-                    attachedMag = null;
-                }
-            }
+            otherMag.Attach(transform);
+        }
+
+        public override void Interact()
+        {
+            Eject();
         }
 
         public void Eject()
         {
+            Debug.LogWarning("EJECT");
             lastEject = Time.realtimeSinceStartup;
             if (Utilities.IsValid(attachedMag) && attachedMag.childState.IsActiveState())
             {
                 attachedMag.childState.sync.rigid.velocity = attachedMag.transform.rotation * ejectVelocity;
-                attachedMag.childState.ExitState();
                 attachedMag.childState.sync.vel = attachedMag.childState.sync.rigid.velocity;
-                attachedMag = null;
+                attachedMag.childState.ExitState();
             }
         }
         
@@ -65,6 +71,7 @@ namespace MMMaellon
             get => _attachedMag;
             set
             {
+                Debug.LogWarning("ATTACHED MAG IS REASSIGNED");
                 _attachedMag = value;
                 if (Utilities.IsValid(magReload))
                 {
@@ -74,6 +81,7 @@ namespace MMMaellon
                     }
                     magReload.SetMagParameter();
                 }
+                DisableInteractive = !ejectExistingMagOnTInteract || value == null;
             }
         }
     }

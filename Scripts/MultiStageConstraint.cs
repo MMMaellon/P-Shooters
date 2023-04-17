@@ -8,7 +8,7 @@ namespace MMMaellon
 {
     public class MultiStageConstraint : SmartObjectSyncListener
     {
-        [System.NonSerialized, UdonSynced(UdonSyncMode.None)]
+        [System.NonSerialized, UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(stage))]
         public int _stage = -1001;
         
         public int stage{
@@ -111,10 +111,10 @@ namespace MMMaellon
 
         public override void OnChangeOwner(SmartObjectSync sync, VRCPlayerApi oldOwner, VRCPlayerApi newOwner)
         {
-            if (Utilities.IsValid(newOwner))
-            {
-                Networking.SetOwner(newOwner, gameObject);
-            }
+            // if (Utilities.IsValid(newOwner))
+            // {
+            //     Networking.SetOwner(newOwner, gameObject);
+            // }
         }
     }
 }

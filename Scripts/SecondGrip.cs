@@ -12,17 +12,17 @@ using System.Collections.Immutable;
 
 namespace MMMaellon
 {
-    [RequireComponent(typeof(VRC.SDK3.Components.VRCPickup)), RequireComponent(typeof(SmartObjectSync)), DefaultExecutionOrder(5)]//slightly after everything else
+    [RequireComponent(typeof(VRC.SDK3.Components.VRCPickup)), RequireComponent(typeof(SmartObjectSync))]//slightly after everything else
     public class SecondGrip : SmartObjectSyncListener
     {
+        [System.NonSerialized] public Vector3 localSyncOffset;
         public SmartObjectSync sync;
         public SmartObjectSync parentSync;
         public Transform constrainedObject;
-        public bool stabilizeOnly = false;
-        public float stabilizationFactor = 0.5f;
+        [Tooltip("Forces the gun to point directly forward no matter how you're holding the second grip")]
+        public bool lockAim = false;
+        public float horizontalLeewayWhileLocked = 0.5f;
         public Transform stabilizationPoint;
-        [System.NonSerialized, UdonSynced(UdonSyncMode.Smooth)]
-        public Vector3 localOffset;
         [System.NonSerialized]
         public Vector3 restPos;
         [System.NonSerialized]
@@ -40,14 +40,7 @@ namespace MMMaellon
             if (s == sync)
             {
                 enabled = sync.IsHeld();
-                if (enabled)
-                {
-                    localOffset = Quaternion.Inverse(parentSync.transform.rotation) * (GetSyncedPos(sync) - GetGrabPos(parentSync));
-                    if (sync.IsLocalOwner())
-                    {
-                        RequestSerialization();
-                    }
-                } else
+                if (!enabled)
                 {
                     sync.transform.localPosition = restPos;
                     sync.transform.localRotation = restRot;
@@ -63,7 +56,10 @@ namespace MMMaellon
 
         public override void OnChangeOwner(SmartObjectSync s, VRCPlayerApi oldPlayer, VRCPlayerApi newPlayer)
         {
-            Networking.SetOwner(newPlayer, gameObject);
+            // if (s == parentSync)
+            // {
+            //     Networking.SetOwner(newPlayer, gameObject);
+            // }
         }
 
 #if !COMPILER_UDONSHARP && UNITY_EDITOR
@@ -95,6 +91,7 @@ namespace MMMaellon
             startRot = constrainedObject.localRotation;
             restPos = sync.transform.localPosition;
             restRot = sync.transform.localRotation;
+            startOffset = Quaternion.Inverse(parentSync.transform.rotation) * (sync.transform.position - GetGrabPos(parentSync));
             enabled = sync.IsHeld();
             sync.pickup.pickupable = (parentSync.IsHeld() && !sync.IsHeld());
         }
@@ -143,19 +140,20 @@ namespace MMMaellon
             }
             return pickup.transform.position;
         }
+        Vector3 startOffset;
         Vector3 newLocalOffset;
         Vector3 worldOffset;
         Vector3 newWorldOffset;
         Quaternion adjustmentRotation;
         Vector3 axis;
         float angle;
-        public void Update()
+        public override void PostLateUpdate()
         {
             if (!Utilities.IsValid(sync) || !sync.IsHeld())
             {
                 return;
             }
-            if (stabilizeOnly)
+            if (lockAim)
             {
                 AlignToView();
             } else
@@ -164,7 +162,33 @@ namespace MMMaellon
             }
         }
 
+        // public override void OnPreSerialization()
+        // {
+        //     if (!sync.IsHeld())
+        //     {
+        //         return;
+        //     }
+        //     sync.pos = sync.startPos;
+        //     sync.generic_Interpolate(1.0f);
+        // }
+        // public override void OnPostSerialization(VRC.Udon.Common.SerializationResult result)
+        // {
+        //     if (!sync.IsHeld())
+        //     {
+        //         return;
+        //     }
+        //     if (sync.pos != sync.startPos)
+        //     {
+        //         RequestSerialization();
+        //     }
+        //     sync.pos = sync.startPos;
+        //     sync.generic_Interpolate(1.0f);
+        // }
+
         Vector3 stabilizationRotationPoint;
+        Vector3 upVector;
+        Vector3 forwardVector;
+        Vector3 squashedForwardVector;
         public void AlignToView()
         {
             if (!Utilities.IsValid(sync.owner))
@@ -173,6 +197,7 @@ namespace MMMaellon
             }
             constrainedObject.localPosition = startPos;
             constrainedObject.localRotation = startRot;
+            forwardVector = constrainedObject.rotation * Vector3.forward;
             if (Utilities.IsValid(stabilizationPoint))
             {
                 stabilizationRotationPoint = Vector3.Lerp(stabilizationPoint.position, Vector3.Project(GetGrabPos(parentSync) - stabilizationPoint.position, stabilizationPoint.rotation * Vector3.forward) + stabilizationPoint.position, 0.5f);
@@ -183,39 +208,36 @@ namespace MMMaellon
                 adjustmentRotation = Quaternion.FromToRotation(constrainedObject.rotation * Vector3.forward, constrainedObject.position - sync.owner.GetTrackingData(VRCPlayerApi.TrackingDataType.Head).position);
             }
             adjustmentRotation.ToAngleAxis(out angle, out axis);
-            constrainedObject.RotateAround(stabilizationRotationPoint, axis, angle * stabilizationFactor);
+            constrainedObject.RotateAround(stabilizationRotationPoint, axis, angle);
+            if (horizontalLeewayWhileLocked > 0)
+            {
+                upVector = constrainedObject.rotation * Vector3.up;
+                squashedForwardVector = Vector3.ProjectOnPlane(forwardVector, upVector);
+                constrainedObject.RotateAround(stabilizationRotationPoint, upVector, -Vector3.SignedAngle(squashedForwardVector, constrainedObject.rotation * Vector3.forward, upVector) * horizontalLeewayWhileLocked);
+            }
         }
 
         public void AlignToGrip()
         {
-            newLocalOffset = Quaternion.Inverse(parentSync.transform.rotation) * (GetSyncedPos(sync) - GetGrabPos(parentSync));
-            worldOffset = parentSync.transform.rotation * localOffset;
+            if (sync.IsLocalOwner())
+            {
+                if (sync.state == SmartObjectSync.STATE_NO_HAND_HELD)
+                {
+                    sync.noHand_CalcParentTransform();
+                } else
+                {
+                    sync.bone_CalcParentTransform();
+                }
+                sync.generic_Interpolate(1.0f);
+            }
+            newLocalOffset = Quaternion.Inverse(parentSync.transform.rotation) * (sync.transform.position - GetGrabPos(parentSync));
+            worldOffset = parentSync.transform.rotation * startOffset;
             newWorldOffset = parentSync.transform.rotation * newLocalOffset;
             adjustmentRotation = Quaternion.FromToRotation(worldOffset, newWorldOffset);
             adjustmentRotation.ToAngleAxis(out angle, out axis);
             constrainedObject.localPosition = startPos;
             constrainedObject.localRotation = startRot;
             constrainedObject.RotateAround(GetGrabPos(parentSync), axis, angle);
-        }
-
-        public Vector3 GetSyncedPos(SmartObjectSync gripSync)
-        {
-            switch (gripSync.state)
-            {
-                case (SmartObjectSync.STATE_LEFT_HAND_HELD):
-                    {
-                        return CalcGripPosFromBone(gripSync, HumanBodyBones.LeftHand);
-                    }
-                case (SmartObjectSync.STATE_RIGHT_HAND_HELD):
-                    {
-                        return CalcGripPosFromBone(gripSync, HumanBodyBones.RightHand);
-                    }
-                case (SmartObjectSync.STATE_NO_HAND_HELD):
-                    {
-                        return CalcGripPosFromOwner(gripSync);
-                    }
-            }
-            return gripSync.transform.position;
         }
         public Vector3 CalcGripPosFromBone(SmartObjectSync gripSync, HumanBodyBones bone)
         {

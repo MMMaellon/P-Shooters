@@ -16,6 +16,8 @@ namespace MMMaellon
     [UdonBehaviourSyncMode(BehaviourSyncMode.Manual), RequireComponent(typeof(ChildAttachmentState))]
     public class Mag : SmartObjectSyncListener
     {
+        [System.NonSerialized]
+        public MagReceiver receiver;
         [UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(ammo))]
         public int _ammo = 6;
         [UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(maxAmmo))]
@@ -32,7 +34,6 @@ namespace MMMaellon
                 }
                 if (Utilities.IsValid(childState.parentTransform))
                 {
-                    MagReceiver receiver = childState.parentTransform.GetComponent<MagReceiver>();
                     if (Utilities.IsValid(receiver) && Utilities.IsValid(receiver.magReload))
                     {
                         receiver.magReload.SetMagParameter();
@@ -86,7 +87,6 @@ namespace MMMaellon
             {
                 return;
             }
-            MagReceiver receiver = transform.parent.GetComponent<MagReceiver>();
             if (!Utilities.IsValid(receiver) || !Utilities.IsValid(receiver.magReload) || !Utilities.IsValid(receiver.magReload.shooter))
             {
                 return;
@@ -125,20 +125,37 @@ namespace MMMaellon
 
         public override void OnChangeState(SmartObjectSync sync, int oldState, int newState)
         {
-            if (!hideAfterThrow)
+            // sync.pickup.pickupable = !childState.IsActiveState();
+
+            if (childState.IsActiveState() && Utilities.IsValid(childState.parentTransform))
             {
-                return;
+                receiver = childState.parentTransform.GetComponent<MagReceiver>();
+                if (Utilities.IsValid(receiver))
+                {
+                    receiver.attachedMag = this;
+                }
             }
+            else if (Utilities.IsValid(receiver))
+            {
+                if (receiver.attachedMag == this)
+                {
+                    receiver.attachedMag = null;
+                }
+                receiver = null;
+            }
+            
             if (sync.IsHeld())
             {
                 lastDrop = -1001f;
             } else
             {
-                sync.pickup.pickupable = childState.IsActiveState();
                 if (oldState == SmartObjectSync.STATE_LEFT_HAND_HELD || oldState == SmartObjectSync.STATE_RIGHT_HAND_HELD || oldState == SmartObjectSync.STATE_NO_HAND_HELD)
                 {
                     lastDrop = Time.realtimeSinceStartup;
-                    if (sync.IsLocalOwner())
+                    if (Utilities.IsValid(receiver) && Utilities.IsValid(receiver.magReload) && Utilities.IsValid(receiver.magReload.shooter))
+                    {
+                        receiver.magReload.shooter.EnableAnimator();
+                    } else if (hideAfterThrow && sync.IsLocalOwner())
                     {
                         SendCustomEventDelayedSeconds(nameof(Respawn), hideTimer + 0.1f);
                     }
@@ -148,10 +165,10 @@ namespace MMMaellon
 
         public override void OnChangeOwner(SmartObjectSync sync, VRCPlayerApi oldOwner, VRCPlayerApi newOwner)
         {
-            if (sync.IsLocalOwner())
-            {
-                Networking.SetOwner(sync.owner, gameObject);
-            }
+            // if (!sync.IsLocalOwner())
+            // {
+            //     Networking.SetOwner(sync.owner, gameObject);
+            // }
         }
     }
 }

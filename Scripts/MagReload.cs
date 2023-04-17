@@ -37,9 +37,9 @@ namespace MMMaellon
                 shooter.animator.SetInteger("chamber", value);
             }
         }
-        public override void _Register(P_Shooter shooter)
+        public override void Start()
         {
-            base._Register(shooter);
+            base.Start();
             magReceiver.magReload = this;
             magReceiver.attachedMag = magReceiver.GetComponentInChildren<Mag>();
             if (Utilities.IsValid(magReceiver.attachedMag))
@@ -115,7 +115,7 @@ namespace MMMaellon
             }
             if (!wasteAmmoOnRechamber)
             {
-                if (chamberAmmo < chamberAmmo && Utilities.IsValid(magReceiver.attachedMag))
+                if (chamberAmmo < chamberCapacity && Utilities.IsValid(magReceiver.attachedMag))
                 {
                     actualChamberAmmoAmount = Mathf.Min(chamberCapacity - chamberAmmo, magReceiver.attachedMag.ammo, ammoPerShot);
                     chamberAmmo += actualChamberAmmoAmount;
@@ -123,9 +123,15 @@ namespace MMMaellon
                 }
             } else if (Utilities.IsValid(magReceiver.attachedMag))
             {
-                actualChamberAmmoAmount = Mathf.Min(magReceiver.attachedMag.ammo, ammoPerShot);
-                chamberAmmo = Mathf.Min(chamberCapacity, chamberAmmo + actualChamberAmmoAmount);
-                magReceiver.attachedMag.ammo -= actualChamberAmmoAmount;
+                if (magReceiver.attachedMag.ammo <= 0)
+                {
+                    chamberAmmo = Mathf.Max(0, chamberAmmo - ammoPerShot);
+                } else
+                {
+                    actualChamberAmmoAmount = Mathf.Min(magReceiver.attachedMag.ammo, ammoPerShot);
+                    chamberAmmo = Mathf.Min(chamberCapacity, chamberAmmo + actualChamberAmmoAmount);
+                    magReceiver.attachedMag.ammo -= actualChamberAmmoAmount;
+                }
             } else
             {
                 chamberAmmo = Mathf.Max(0, chamberAmmo - ammoPerShot);
@@ -143,7 +149,8 @@ namespace MMMaellon
             {
                 if (chamberCapacity <= 0 || (autoChamber && Utilities.IsValid(magReceiver.attachedMag) && magReceiver.attachedMag.ammo >= ammoPerShot))
                 {
-                    SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, nameof(ChamberFX));
+                    // SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, nameof(ChamberFX));
+                    ChamberFX();
                     magReceiver.attachedMag.ammo -= ammoPerShot;
                 }
                 else

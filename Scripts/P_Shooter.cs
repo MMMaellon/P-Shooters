@@ -13,7 +13,7 @@ using System.Collections.Immutable;
 namespace MMMaellon
 {
 #if !COMPILER_UDONSHARP && UNITY_EDITOR
-    [CustomEditor(typeof(P_Shooter))]
+    [CustomEditor(typeof(P_Shooter)), CanEditMultipleObjects]
     public class P_ShooterEditor : Editor
     {
         public static void SetupShooter(P_Shooter shooter)
@@ -36,17 +36,23 @@ namespace MMMaellon
             }
             SerializedObject serialized = new SerializedObject(shooter);
             serialized.FindProperty("assigner").objectReferenceValue = assigner;
-            serialized.FindProperty("sync").objectReferenceValue = shooter.GetComponent<SmartObjectSync>();
+            serialized.FindProperty("sync").objectReferenceValue = shooter.GetComponent<SmartObjectSync>();//must exist because we depend on it
+            serialized.FindProperty("_animator").objectReferenceValue = shooter.GetComponent<Animator>();
             serialized.ApplyModifiedProperties();
         }
         public override void OnInspectorGUI()
         {
-            P_Shooter shooter = target as P_Shooter;
-            if (!Utilities.IsValid(shooter))
+            bool hasIssue = false;
+            foreach (var t in targets)
             {
-                return;
+                P_Shooter shooter = t as P_Shooter;
+                hasIssue = !Utilities.IsValid(shooter.assigner) || !Utilities.IsValid(shooter._animator) || !Utilities.IsValid(shooter.sync);
+                if (hasIssue)
+                {
+                    break;
+                }
             }
-            if (!Utilities.IsValid(shooter.assigner))
+            if (hasIssue)
             {
                 EditorGUILayout.LabelField("Setup Required");
                 EditorGUILayout.HelpBox(
@@ -57,7 +63,10 @@ namespace MMMaellon
 
                 if (GUILayout.Button(new GUIContent("Setup")))
                 {
-                    P_ShooterEditor.SetupShooter(target as P_Shooter);
+                    foreach (var t in targets)
+                    {
+                        P_ShooterEditor.SetupShooter(t as P_Shooter);
+                    }
                 }
                 EditorGUILayout.Space();
             }
@@ -67,7 +76,7 @@ namespace MMMaellon
         }
     }
 #endif
-    [UdonBehaviourSyncMode(BehaviourSyncMode.Manual), RequireComponent(typeof(SmartObjectSync))]
+    [UdonBehaviourSyncMode(BehaviourSyncMode.Manual), RequireComponent(typeof(SmartObjectSync)), RequireComponent(typeof(VRC_Pickup)), RequireComponent(typeof(Animator))]
     public class P_Shooter : SmartObjectSyncListener
     {
         public bool printDebugMessages = true;
@@ -120,14 +129,22 @@ namespace MMMaellon
         public ParticleSystem shootParticles;
         public Cyan.PlayerObjectPool.CyanPlayerObjectAssigner assigner;
         public SmartObjectSync sync;
-        public Animator animator;
+        public Animator _animator;
+        public Animator animator{
+            get
+            {
+                _animator.enabled = true;
+                return _animator;
+            }
+            set
+            {
+                _animator = value;
+            }
+        }
         public Transform gunParent;
 
-        [Header("Optional Components")]
+        [System.NonSerialized]
         public AmmoTracker ammo;
-        public GameObject scope;
-        public float zoomInTime = 0.25f;
-        public float zoomOutTime = 0.1f;
 
         [Header("Sounds")]
         public AudioSource gunshotSource;
@@ -150,15 +167,15 @@ namespace MMMaellon
 
         public override void OnChangeState(SmartObjectSync s, int oldState, int newState)
         {
-            _print("OnChangeState");
-            if (s == sync)
-            {
-                animator.SetInteger("pickup_state", newState);
-                if (newState == SmartObjectSync.STATE_TELEPORTING)
-                {
-                    animator.SetTrigger("teleport");
-                }
-            }
+            // _print("OnChangeState");
+            // if (s == sync)
+            // {
+            //     animator.SetInteger("pickup_state", newState);
+            //     if (newState == SmartObjectSync.STATE_TELEPORTING)
+            //     {
+            //         animator.SetTrigger("teleport");
+            //     }
+            // }
         } 
 
         public override void OnChangeOwner(SmartObjectSync s, VRCPlayerApi oldPlayer, VRCPlayerApi newPlayer)
@@ -166,12 +183,6 @@ namespace MMMaellon
             if (s == sync)
             {
                 animator.SetBool("local", sync.IsLocalOwner());
-            }
-            if (newPlayer.IsValid() && newPlayer.isLocal){
-                if (Utilities.IsValid(scope))
-                {
-                    Networking.SetOwner(newPlayer, scope.gameObject);
-                }
             }
         }
 
@@ -189,14 +200,6 @@ namespace MMMaellon
             _localPlayer = Networking.LocalPlayer;
             sync = GetComponent<SmartObjectSync>();
             sync.AddListener(this);
-            if (Utilities.IsValid(scope))
-            {
-                scope.gameObject.SetActive(false);
-            }
-            if (Utilities.IsValid(ammo))
-            {
-                ammo._Register(this);
-            }
         }
 
         public int calcDamage()
@@ -204,9 +207,19 @@ namespace MMMaellon
             return 1;
         }
 
+        public void EnableAnimator()
+        {
+            _animator.enabled = true;
+        }
+
+        public void DisableAnimator()
+        {
+            _animator.enabled = false;
+        }
+
         public void ShootFX()
         {
-            if (Utilities.IsValid(ammo))
+            if (Utilities.IsValid(ammo) && sync.IsLocalOwner())
             {
                 if (!ammo.ConsumeAmmo())
                 {
@@ -233,142 +246,7 @@ namespace MMMaellon
                 }
             }
         }
-        private bool ADS = false;
-        private Vector3 zoomStartPos;
-        private Vector3 zoomStopPos;
-        private Quaternion zoomStartRot;
-        private Quaternion zoomStopRot;
-        private float zoomStart;
 
-        public void recordStartZoomTransforms()
-        {
-            zoomStartPos = zoomStopPos;
-            zoomStartRot = zoomStopRot;
-            float incompleteZoom = 0;
-            float currentZoomTime = (Time.realtimeSinceStartup - zoomStart);
-            if (!ADS)
-            {
-                if (zoomInTime == 0)
-                {
-                    zoomStart = Time.realtimeSinceStartup;
-                    return;
-                }
-                incompleteZoom = 1 - (currentZoomTime / zoomInTime);
-                incompleteZoom = Mathf.Lerp(0, Mathf.Lerp(0, incompleteZoom, incompleteZoom), incompleteZoom);
-            }
-            else
-            {
-                if (zoomOutTime == 0)
-                {
-                    zoomStart = Time.realtimeSinceStartup;
-                    return;
-                }
-                incompleteZoom = 1 - (currentZoomTime / zoomOutTime);
-                incompleteZoom = Mathf.Lerp(0, Mathf.Lerp(0, incompleteZoom, incompleteZoom), incompleteZoom);
-            }
-            if (incompleteZoom < 0)
-            {
-                zoomStart = Time.realtimeSinceStartup;
-                return;
-            }
-            if (!ADS)
-            {
-                incompleteZoom *= zoomOutTime;
-            }
-            else
-            {
-                incompleteZoom *= zoomInTime;
-            }
-            zoomStart = Time.realtimeSinceStartup - incompleteZoom;
-        }
-        public void zoomIn()
-        {
-            VRCPlayerApi.TrackingData headData = _localPlayer.GetTrackingData(VRCPlayerApi.TrackingDataType.Head);
-            if (!Utilities.IsValid(scope))
-            {
-                zoomStopPos = Vector3.ProjectOnPlane((transform.position - headData.position), headData.rotation * Vector3.left) + headData.position;
-                zoomStopPos = transform.InverseTransformPoint(zoomStopPos);
-            } else
-            {
-                zoomStopPos = Quaternion.Inverse(transform.rotation) * (headData.position - scope.transform.position);
-                zoomStopRot = scope.transform.localRotation;
-            }
-
-            if (zoomInTime <= 0)
-            {
-                gunParent.localPosition = zoomStopPos;
-                gunParent.localRotation = zoomStopRot;
-            }
-            else
-            {
-                float lerp = (Time.realtimeSinceStartup - zoomStart) / zoomInTime;
-                float smoothedLerp = Mathf.Lerp(lerp, 1, lerp);
-                gunParent.localPosition = Vector3.Lerp(zoomStartPos, zoomStopPos, smoothedLerp);
-                gunParent.localRotation = Quaternion.Lerp(zoomStartRot, zoomStopRot, smoothedLerp);
-            }
-        }
-
-        public void zoomOut()
-        {
-            zoomStopPos = Vector3.zero;
-            zoomStopRot = Quaternion.identity;
-            
-            if (zoomOutTime <= 0)
-            {
-                gunParent.localPosition = zoomStopPos;
-                gunParent.localRotation = zoomStopRot;
-            } else
-            {
-                float lerp = (Time.realtimeSinceStartup - zoomStart) / zoomOutTime;
-                float smoothedLerp = Mathf.Lerp(lerp, 1,lerp);
-                gunParent.localPosition = Vector3.Lerp(zoomStartPos, zoomStopPos, smoothedLerp);
-                gunParent.localRotation = Quaternion.Lerp(zoomStartRot, zoomStopRot, smoothedLerp);
-            }
-        }
-
-        public void Update()
-        {
-            if (!sync.pickup.IsHeld)
-            {
-                if (ADS)
-                {
-                    ADS = false;
-                    recordStartZoomTransforms();
-                    zoomOut();
-                } else if (Time.realtimeSinceStartup - zoomStart < zoomOutTime)
-                {
-                    zoomOut();
-                }
-                return;
-            }
-
-            if (Input.GetKeyDown(KeyCode.LeftAlt))
-            {
-                ADS = true;
-                recordStartZoomTransforms();
-            } else if (Input.GetKeyUp(KeyCode.LeftAlt))
-            {
-                ADS = false;
-                recordStartZoomTransforms();
-            }
-
-            if (Input.GetKey(KeyCode.LeftAlt))
-            {
-                zoomIn();
-            }
-            else
-            {
-                zoomOut();
-            }
-        }
-
-        public override void OnPickup()
-        {
-            if (Utilities.IsValid(scope))
-            {
-                scope.gameObject.SetActive(true);
-            }
-        }
         public override void OnPickupUseDown()
         {
             if (state != STATE_IDLE)
@@ -390,13 +268,6 @@ namespace MMMaellon
             if (state == STATE_SHOOT || state == STATE_EMPTY)
             {
                 state = STATE_IDLE;
-            }
-        }
-        public override void OnDrop()
-        {
-            if (Utilities.IsValid(scope))
-            {
-                scope.gameObject.SetActive(false);
             }
         }
 

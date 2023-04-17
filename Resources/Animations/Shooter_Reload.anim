@@ -65,7 +65,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: gunParent/recoil/models/magParent/magPickup/place_mag_in_here
+    path: gunParent/recoil/magParent/magPickup/place_mag_in_here
   - curve:
       serializedVersion: 2
       m_Curve:
@@ -153,7 +153,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: gunParent/recoil/models/magParent/magPickup
+    path: gunParent/recoil/magParent/magPickup
   - curve:
       serializedVersion: 2
       m_Curve:
@@ -303,7 +303,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: gunParent/recoil/models/magParent/magPickup
+    path: gunParent/recoil/magParent/magPickup
   - curve:
       serializedVersion: 2
       m_Curve:
@@ -475,7 +475,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.x
-    path: gunParent/recoil/models/magParent/magPickup/place_mag_in_here
+    path: gunParent/recoil/magParent/magPickup/place_mag_in_here
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -521,7 +521,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.y
-    path: gunParent/recoil/models/magParent/magPickup/place_mag_in_here
+    path: gunParent/recoil/magParent/magPickup/place_mag_in_here
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -567,7 +567,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.z
-    path: gunParent/recoil/models/magParent/magPickup/place_mag_in_here
+    path: gunParent/recoil/magParent/magPickup/place_mag_in_here
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -631,7 +631,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.x
-    path: gunParent/recoil/models/magParent/magPickup
+    path: gunParent/recoil/magParent/magPickup
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -704,7 +704,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.y
-    path: gunParent/recoil/models/magParent/magPickup
+    path: gunParent/recoil/magParent/magPickup
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -777,7 +777,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.z
-    path: gunParent/recoil/models/magParent/magPickup
+    path: gunParent/recoil/magParent/magPickup
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -823,7 +823,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.x
-    path: gunParent/recoil/models/magParent/magPickup
+    path: gunParent/recoil/magParent/magPickup
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -869,7 +869,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.y
-    path: gunParent/recoil/models/magParent/magPickup
+    path: gunParent/recoil/magParent/magPickup
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -924,7 +924,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.z
-    path: gunParent/recoil/models/magParent/magPickup
+    path: gunParent/recoil/magParent/magPickup
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -1223,7 +1223,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: gunParent/recoil/models/magParent/magPickup/place_mag_in_here
+    path: gunParent/recoil/magParent/magPickup/place_mag_in_here
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -1233,7 +1233,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: gunParent/recoil/models/magParent/magPickup/place_mag_in_here
+    path: gunParent/recoil/magParent/magPickup/place_mag_in_here
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -1243,7 +1243,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: gunParent/recoil/models/magParent/magPickup/place_mag_in_here
+    path: gunParent/recoil/magParent/magPickup/place_mag_in_here
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -1253,7 +1253,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: gunParent/recoil/models/magParent/magPickup
+    path: gunParent/recoil/magParent/magPickup
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -1263,7 +1263,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: gunParent/recoil/models/magParent/magPickup
+    path: gunParent/recoil/magParent/magPickup
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -1273,7 +1273,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: gunParent/recoil/models/magParent/magPickup
+    path: gunParent/recoil/magParent/magPickup
     classID: 4
     script: {fileID: 0}
   m_HasGenericRootTransform: 0
