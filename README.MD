@@ -1,4 +1,4 @@
-# P_Shooters v2: Udon Prefab for VRChat Particle Shooters
+# P_Shooters v2: Udon Prefab for VRChat Particle Shooter Guns
 
 # Ask questions on my [Discord Server](https://discord.gg/S5sDC4PnFp)
 
