@@ -4,29 +4,32 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
 
-public class CTFCapturePoint : UdonSharpBehaviour
+namespace MMMaellon
 {
-    public Collider flag;
-    
-    [Header("If team is set to 0 or a negative number, teams are ignored")]
-    public int team = 0;
-    public PlayerHandler playerHandler;
-    public UdonBehaviour eventTarget;
-    public string eventName = "IncrementScore";
-    public void OnTriggerEnter(Collider other)
+    public class CTFCapturePoint : UdonSharpBehaviour
     {
-        if (flag != null && other == flag && Networking.LocalPlayer.IsOwner(flag.gameObject))
+        public Collider flag;
+
+        [Header("If team is set to 0 or a negative number, teams are ignored")]
+        public int team = 0;
+        public PlayerHandler playerHandler;
+        public UdonBehaviour eventTarget;
+        public string eventName = "IncrementScore";
+        public void OnTriggerEnter(Collider other)
         {
-            if (team > 0 && playerHandler != null && playerHandler.teams && playerHandler._localPlayer.team != team)//you scored for the wrong team lmao
+            if (flag != null && other == flag && Networking.LocalPlayer.IsOwner(flag.gameObject))
             {
-                return;
+                if (team > 0 && playerHandler != null && playerHandler.teams && playerHandler._localPlayer.team != team)//you scored for the wrong team lmao
+                {
+                    return;
+                }
+                SmartPickupSync pickup = flag.GetComponent<SmartPickupSync>();
+                if (pickup != null)
+                {
+                    pickup.Respawn();
+                }
+                eventTarget.SendCustomEvent(eventName);
             }
-            SmartPickupSync pickup = flag.GetComponent<SmartPickupSync>();
-            if (pickup != null)
-            {
-                pickup.Respawn();
-            }
-            eventTarget.SendCustomEvent(eventName);
         }
     }
 }

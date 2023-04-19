@@ -21,7 +21,7 @@ MonoBehaviour:
   compiledVersion: 2
   behaviourSyncMode: 4
   hasInteractEvent: 0
-  scriptID: 3371872199569195841
+  scriptID: -4727135999016746226
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
@@ -62,7 +62,7 @@ MonoBehaviour:
       Data: 3|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: P_Shooter[], Assembly-CSharp
+      Data: MMMaellon.P_Shooter[], Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 
@@ -133,7 +133,7 @@ MonoBehaviour:
       Data: 8|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: GunSpawn[], Assembly-CSharp
+      Data: MMMaellon.GunSpawn[], Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 
@@ -199,7 +199,7 @@ MonoBehaviour:
       Data: 12|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: PlayerHandler, Assembly-CSharp
+      Data: MMMaellon.PlayerHandler, Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 
@@ -259,7 +259,7 @@ MonoBehaviour:
       Data: 16|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: ScopeManager, Assembly-CSharp
+      Data: MMMaellon.ScopeManager, Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 

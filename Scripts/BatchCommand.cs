@@ -4,30 +4,33 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
 
-public class BatchCommand : UdonSharpBehaviour
+namespace MMMaellon
 {
-    public UdonBehaviour[] eventTargets;
-    public string eventName;
-    public UdonBehaviour chainEventTarget;
-    public string chainEventName;
-    void Start()
+    public class BatchCommand : UdonSharpBehaviour
     {
-        
-    }
-
-    public void Trigger()
-    {
-        foreach(UdonBehaviour udon in eventTargets)
+        public UdonBehaviour[] eventTargets;
+        public string eventName;
+        public UdonBehaviour chainEventTarget;
+        public string chainEventName;
+        void Start()
         {
-            if (udon != null)
-            {
-                udon.SendCustomEvent(eventName);
-            }
+
         }
 
-        if (chainEventTarget != null)
+        public void Trigger()
         {
-            chainEventTarget.SendCustomEvent(chainEventName);
+            foreach (UdonBehaviour udon in eventTargets)
+            {
+                if (udon != null)
+                {
+                    udon.SendCustomEvent(eventName);
+                }
+            }
+
+            if (chainEventTarget != null)
+            {
+                chainEventTarget.SendCustomEvent(chainEventName);
+            }
         }
     }
 }

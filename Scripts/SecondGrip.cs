@@ -12,143 +12,146 @@ using System.Collections.Immutable;
 #endif
 
 
-#if !COMPILER_UDONSHARP && UNITY_EDITOR
-[CustomEditor(typeof(SecondGrip))]
-public class SecondGripEditor : Editor
+namespace MMMaellon
 {
-    public static void SetupGrips()
+#if !COMPILER_UDONSHARP && UNITY_EDITOR
+    [CustomEditor(typeof(SecondGrip))]
+    public class SecondGripEditor : Editor
     {
-        int count = 0;
-        foreach (SecondGrip grip in GameObject.FindObjectsOfType(typeof(SecondGrip)) as SecondGrip[])
+        public static void SetupGrips()
         {
-            if (grip.transform.parent != null)
+            int count = 0;
+            foreach (SecondGrip grip in GameObject.FindObjectsOfType(typeof(SecondGrip)) as SecondGrip[])
             {
-                foreach (P_Shooter shooter in grip.transform.parent.GetComponentsInChildren<P_Shooter>())
+                if (grip.transform.parent != null)
                 {
-                    SerializedObject serializedShooter = new SerializedObject(shooter);
-                    serializedShooter.FindProperty("grip").objectReferenceValue = grip;
-                    serializedShooter.ApplyModifiedProperties();
+                    foreach (P_Shooter shooter in grip.transform.parent.GetComponentsInChildren<P_Shooter>())
+                    {
+                        SerializedObject serializedShooter = new SerializedObject(shooter);
+                        serializedShooter.FindProperty("grip").objectReferenceValue = grip;
+                        serializedShooter.ApplyModifiedProperties();
 
-                    SerializedObject serializedGrip = new SerializedObject(grip);
-                    serializedGrip.FindProperty("gunModel").objectReferenceValue = shooter.transform.Find("model");
-                    serializedGrip.ApplyModifiedProperties();
-                    break;
+                        SerializedObject serializedGrip = new SerializedObject(grip);
+                        serializedGrip.FindProperty("gunModel").objectReferenceValue = shooter.transform.Find("model");
+                        serializedGrip.ApplyModifiedProperties();
+                        break;
+                    }
                 }
+                count++;
             }
-            count++;
+            if (count > 0)
+            {
+                Debug.Log($"Set up {count} grips");
+            }
+            else
+            {
+                Debug.Log($"No guns were set up");
+            }
         }
-        if (count > 0)
+        public override void OnInspectorGUI()
         {
-            Debug.Log($"Set up {count} grips");
-        }
-        else
-        {
-            Debug.Log($"No guns were set up");
+            EditorGUILayout.LabelField("SECONDARY GRIPS SETUP");
+            EditorGUILayout.HelpBox(
+    @"Look at your GunManager Object for instructions", MessageType.Info);
+            if (GUILayout.Button(new GUIContent("Set up ALL Grips")))
+            {
+                SecondGripEditor.SetupGrips();
+            }
+            EditorGUILayout.Space();
+            EditorGUILayout.Space();
+            EditorGUILayout.Space();
+            if (UdonSharpGUI.DrawDefaultUdonSharpBehaviourHeader(target)) return;
+            EditorGUILayout.Space();
+            base.OnInspectorGUI();
         }
     }
-    public override void OnInspectorGUI()
-    {
-        EditorGUILayout.LabelField("SECONDARY GRIPS SETUP");
-        EditorGUILayout.HelpBox(
-@"Look at your GunManager Object for instructions", MessageType.Info);
-        if (GUILayout.Button(new GUIContent("Set up ALL Grips")))
-        {
-            SecondGripEditor.SetupGrips();
-        }
-        EditorGUILayout.Space();
-        EditorGUILayout.Space();
-        EditorGUILayout.Space();
-        if (UdonSharpGUI.DrawDefaultUdonSharpBehaviourHeader(target)) return;
-        EditorGUILayout.Space();
-        base.OnInspectorGUI();
-    }
-}
 #endif
 
-[UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
-public class SecondGrip : UdonSharpBehaviour
-{
-    public Collider pickup_collider;
-    public SmartPickupSync smartPickup;
-    public Transform gunModel;
-
-    [System.NonSerialized] public Vector3 rest_local_pos = Vector3.zero;
-    [System.NonSerialized] public Quaternion rest_local_rot = Quaternion.identity;
-    [System.NonSerialized] public bool reparented = false;
-    void Start()
+    [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
+    public class SecondGrip : UdonSharpBehaviour
     {
-        RecordRestTransforms();
-    }
+        public Collider pickup_collider;
+        public SmartPickupSync smartPickup;
+        public Transform gunModel;
 
-    public void RecordRestTransforms()
-    {
-        rest_local_pos = transform.localPosition;
-        rest_local_rot = transform.localRotation;
-    }
-
-    public void ApplyRestTransforms()
-    {
-        transform.localPosition = rest_local_pos;
-        transform.localRotation = rest_local_rot;
-    }
-
-    override public void OnPickup()
-    {
-        reparented = true;
-    }
-
-    override public void OnDrop()
-    {
-        reparented = false;
-        Reset();
-    }
-
-    public void GlobalReset()
-    {
-        SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, "Reset");
-    }
-
-    public void Reset()
-    {
-        // if (!Networking.LocalPlayer.IsOwner(gameObject))
-        // {
-        //     Networking.SetOwner(Networking.LocalPlayer, gameObject);
-        // }
-        transform.localPosition = Vector3.zero;
-        transform.localRotation = Quaternion.identity;
-        if (Networking.LocalPlayer.IsOwner(gameObject))
+        [System.NonSerialized] public Vector3 rest_local_pos = Vector3.zero;
+        [System.NonSerialized] public Quaternion rest_local_rot = Quaternion.identity;
+        [System.NonSerialized] public bool reparented = false;
+        void Start()
         {
-            smartPickup.SendCustomEventDelayedFrames("OnDrop_Delayed", 1);
+            RecordRestTransforms();
+        }
+
+        public void RecordRestTransforms()
+        {
+            rest_local_pos = transform.localPosition;
+            rest_local_rot = transform.localRotation;
+        }
+
+        public void ApplyRestTransforms()
+        {
+            transform.localPosition = rest_local_pos;
+            transform.localRotation = rest_local_rot;
+        }
+
+        override public void OnPickup()
+        {
+            reparented = true;
+        }
+
+        override public void OnDrop()
+        {
+            reparented = false;
+            Reset();
+        }
+
+        public void GlobalReset()
+        {
+            SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, "Reset");
+        }
+
+        public void Reset()
+        {
+            // if (!Networking.LocalPlayer.IsOwner(gameObject))
+            // {
+            //     Networking.SetOwner(Networking.LocalPlayer, gameObject);
+            // }
+            transform.localPosition = Vector3.zero;
+            transform.localRotation = Quaternion.identity;
+            if (Networking.LocalPlayer.IsOwner(gameObject))
+            {
+                smartPickup.SendCustomEventDelayedFrames("OnDrop_Delayed", 1);
+            }
+        }
+
+        public void ForceDrop()
+        {
+            if (smartPickup != null && smartPickup.pickup != null)
+            {
+                smartPickup.pickup.Drop();
+            }
+            // pickup.DisallowTheft = true;
+            // pickup.pickupable = false;
+        }
+
+        public void AllowPickup()
+        {
+            if (smartPickup != null && smartPickup.pickup != null)
+            {
+                smartPickup.pickup.pickupable = true;
+                pickup_collider.enabled = true;
+            }
+        }
+
+        public void DisablePickup()
+        {
+            if (smartPickup != null && smartPickup.pickup != null)
+            {
+                smartPickup.pickup.Drop();
+                smartPickup.pickup.pickupable = false;
+                pickup_collider.enabled = false;
+            }
         }
     }
 
-    public void ForceDrop()
-    {
-        if (smartPickup != null && smartPickup.pickup != null)
-        {
-            smartPickup.pickup.Drop();
-        }
-        // pickup.DisallowTheft = true;
-        // pickup.pickupable = false;
-    }
-
-    public void AllowPickup()
-    {
-        if (smartPickup != null && smartPickup.pickup != null)
-        {
-            smartPickup.pickup.pickupable = true;
-            pickup_collider.enabled = true;
-        }
-    }
-
-    public void DisablePickup()
-    {
-        if (smartPickup != null && smartPickup.pickup != null)
-        {
-            smartPickup.pickup.Drop();
-            smartPickup.pickup.pickupable = false;
-            pickup_collider.enabled = false;
-        }
-    }
 }
-

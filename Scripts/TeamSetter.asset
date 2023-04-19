@@ -21,7 +21,7 @@ MonoBehaviour:
   compiledVersion: 2
   behaviourSyncMode: 0
   hasInteractEvent: 0
-  scriptID: -1120823516606622707
+  scriptID: 5233929532825231744
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
@@ -62,7 +62,7 @@ MonoBehaviour:
       Data: 3|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: Scoreboard, Assembly-CSharp
+      Data: MMMaellon.Scoreboard, Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 

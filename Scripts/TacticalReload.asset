@@ -21,7 +21,7 @@ MonoBehaviour:
   compiledVersion: 2
   behaviourSyncMode: 4
   hasInteractEvent: 0
-  scriptID: 4722539321763368806
+  scriptID: 597125230110132682
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
@@ -62,7 +62,7 @@ MonoBehaviour:
       Data: 3|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: P_Shooter, Assembly-CSharp
+      Data: MMMaellon.P_Shooter, Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 
@@ -224,13 +224,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: isHeld
+      Data: _isHeld
     - Name: $v
       Entry: 7
       Data: 13|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: isHeld
+      Data: _isHeld
     - Name: <UserType>k__BackingField
       Entry: 7
       Data: 14|System.RuntimeType, mscorlib

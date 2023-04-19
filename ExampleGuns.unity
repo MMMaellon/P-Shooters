@@ -42015,7 +42015,7 @@ PrefabInstance:
     - target: {fileID: 4078799546221581041, guid: f315b965e59df2e4887c9b6ad2c96eb7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 48.7607
+      value: -70.849304
       objectReference: {fileID: 0}
     - target: {fileID: 4078799546221581041, guid: f315b965e59df2e4887c9b6ad2c96eb7,
         type: 3}
@@ -89646,7 +89646,6 @@ MonoBehaviour:
   useAssignedLayers: 0
   DynamicPrefabs: []
   DynamicMaterials:
-  - {fileID: 2100000, guid: ecebdb06514d9d8498606be4809b4810, type: 2}
   - {fileID: 2100000, guid: 198c7fe42d9d09341a308e49df6c05d5, type: 2}
   - {fileID: 2100000, guid: 92510b7a8cb4f9244a9aeb9417b2271f, type: 2}
   - {fileID: 2100000, guid: 707f25dc5a13b954bb5de16ab30e4e8a, type: 2}
@@ -89681,6 +89680,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 4276bb3e557016d449c6daa84e7f396c, type: 2}
   - {fileID: 2100000, guid: aa349fbaa5c23c54d8c9750641577d84, type: 2}
   - {fileID: 10308, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: ecebdb06514d9d8498606be4809b4810, type: 2}
   - {fileID: 2100000, guid: 0117b0d959e44164eb4ee572e643b145, type: 2}
   - {fileID: 2100000, guid: b5e13aa0df32f824fb749de8d4065a93, type: 2}
   LightMapsNear: []
@@ -100774,12 +100774,12 @@ PrefabInstance:
     - target: {fileID: 4516535156560730708, guid: 2f7a7e53a8fae6946bc0e44d43e56fcb,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.0011003795
+      value: 0.000677824
       objectReference: {fileID: 0}
     - target: {fileID: 4516535156560730708, guid: 2f7a7e53a8fae6946bc0e44d43e56fcb,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00016667694
+      value: 0.0001880899
       objectReference: {fileID: 0}
     - target: {fileID: 4516535156672438262, guid: 2f7a7e53a8fae6946bc0e44d43e56fcb,
         type: 3}

@@ -21,7 +21,7 @@ MonoBehaviour:
   compiledVersion: 2
   behaviourSyncMode: 4
   hasInteractEvent: 0
-  scriptID: -5549127608783031164
+  scriptID: -130393728821848497
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
@@ -116,7 +116,7 @@ MonoBehaviour:
       Data: 6|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: SmartPickupSync, Assembly-CSharp
+      Data: MMMaellon.SmartPickupSync, Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 

@@ -21,7 +21,7 @@ MonoBehaviour:
   compiledVersion: 2
   behaviourSyncMode: 4
   hasInteractEvent: 0
-  scriptID: 5830744734730058904
+  scriptID: -1673986758035248712
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
@@ -797,7 +797,7 @@ MonoBehaviour:
       Data: 40|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: GunUpgrade, Assembly-CSharp
+      Data: MMMaellon.GunUpgrade, Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 
@@ -1325,7 +1325,7 @@ MonoBehaviour:
       Data: 74|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: SmartPickupSync, Assembly-CSharp
+      Data: MMMaellon.SmartPickupSync, Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 
@@ -1433,7 +1433,7 @@ MonoBehaviour:
       Data: 80|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: SecondGrip, Assembly-CSharp
+      Data: MMMaellon.SecondGrip, Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 
@@ -1487,7 +1487,7 @@ MonoBehaviour:
       Data: 83|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: Scope, Assembly-CSharp
+      Data: MMMaellon.Scope, Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 
@@ -1541,7 +1541,7 @@ MonoBehaviour:
       Data: 86|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: TacticalReload, Assembly-CSharp
+      Data: MMMaellon.TacticalReload, Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 
@@ -2367,7 +2367,7 @@ MonoBehaviour:
       Data: 126|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: GunManager, Assembly-CSharp
+      Data: MMMaellon.GunManager, Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 

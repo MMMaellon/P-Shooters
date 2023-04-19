@@ -4,15 +4,18 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
 
-public class TakeOwnershipOnClick : UdonSharpBehaviour
+namespace MMMaellon
 {
-    public GameObject[] objects;
-
-    public override void Interact()
+    public class TakeOwnershipOnClick : UdonSharpBehaviour
     {
-        foreach (GameObject obj in objects)
+        public GameObject[] objects;
+
+        public override void Interact()
         {
-            Networking.SetOwner(Networking.LocalPlayer, obj);
+            foreach (GameObject obj in objects)
+            {
+                Networking.SetOwner(Networking.LocalPlayer, obj);
+            }
         }
     }
 }
