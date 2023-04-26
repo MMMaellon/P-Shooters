@@ -43,24 +43,24 @@ AnimationClip:
         tangentMode: 0
         weightedMode: 3
         inWeight: {x: 0.21971478, y: 0.33333334, z: 0.33333334}
-        outWeight: {x: 0.4075514, y: 0.33333334, z: 0.33333334}
+        outWeight: {x: 0.4259882, y: 0.33333334, z: 0.33333334}
       - serializedVersion: 3
         time: 0.083333336
-        value: {x: -3.4555042, y: 0, z: 0}
-        inSlope: {x: 75.654526, y: 0, z: 0}
-        outSlope: {x: 75.654526, y: 0, z: 0}
+        value: {x: -3.1241012, y: 0, z: 0}
+        inSlope: {x: 88.077095, y: 0, z: 0}
+        outSlope: {x: 88.077095, y: 0, z: 0}
         tangentMode: 0
         weightedMode: 3
-        inWeight: {x: 0.28607288, y: 0.33333334, z: 0.33333334}
-        outWeight: {x: 0.18741204, y: 0.33333334, z: 0.33333334}
+        inWeight: {x: 0.29540595, y: 0.33333334, z: 0.33333334}
+        outWeight: {x: 0.17453538, y: 0.33333334, z: 0.33333334}
       - serializedVersion: 3
-        time: 0.25
+        time: 0.2
         value: {x: 0, y: 0, z: 0}
         inSlope: {x: 0.76997536, y: 0, z: 0}
         outSlope: {x: 0.76997536, y: 0, z: 0}
         tangentMode: 0
         weightedMode: 1
-        inWeight: {x: 0.6687436, y: 0.33333334, z: 0.33333334}
+        inWeight: {x: 0.6304031, y: 0.33333334, z: 0.33333334}
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -96,29 +96,63 @@ AnimationClip:
         tangentMode: 0
         weightedMode: 3
         inWeight: {x: 0.33333334, y: 0.42198035, z: 0.33481303}
-        outWeight: {x: 0.33333334, y: 0.46182725, z: 0.39058694}
+        outWeight: {x: 0.33333334, y: 0.41015723, z: 0.39058694}
       - serializedVersion: 3
         time: 0.083333336
-        value: {x: 0, y: 0.014051885, z: -0.041052185}
-        inSlope: {x: 0, y: -0.45469794, z: 0.3597703}
-        outSlope: {x: 0, y: -0.45469794, z: 0.3597703}
+        value: {x: 0, y: 0.011568664, z: -0.041052185}
+        inSlope: {x: 0, y: -0.41605884, z: 0.3597703}
+        outSlope: {x: 0, y: -0.41605884, z: 0.3597703}
         tangentMode: 0
         weightedMode: 3
-        inWeight: {x: 0.33333334, y: 0.505911, z: 0.23318374}
-        outWeight: {x: 0.33333334, y: 0.11638042, z: 0.44156194}
+        inWeight: {x: 0.33333334, y: 0.6314477, z: 0.23318374}
+        outWeight: {x: 0.33333334, y: 0.14718336, z: 0.44156194}
       - serializedVersion: 3
-        time: 0.25
+        time: 0.2
         value: {x: 0, y: 0, z: 0}
-        inSlope: {x: 0, y: 0.012813037, z: 0.023719862}
-        outSlope: {x: 0, y: 0.012813037, z: 0.023719862}
+        inSlope: {x: 0, y: 0.012813037, z: -0.071847856}
+        outSlope: {x: 0, y: 0.012813037, z: -0.071847856}
         tangentMode: 0
         weightedMode: 1
-        inWeight: {x: 0.33333334, y: 0.641914, z: 0.3195331}
+        inWeight: {x: 0.33333334, y: 0.57764804, z: 0.9101264}
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
     path: gunParent/recoil
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 0, y: 0.02429986, z: -0.0976}
+        inSlope: {x: 0, y: 0, z: -8.552272}
+        outSlope: {x: 0, y: 0, z: -8.552272}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
+        outWeight: {x: 0.33333334, y: 0.33333334, z: 0.13574132}
+      - serializedVersion: 3
+        time: 0.033333335
+        value: {x: 0, y: 0.0243, z: -0.1903}
+        inSlope: {x: 0, y: 0, z: -0.010288254}
+        outSlope: {x: 0, y: 0, z: -0.010288254}
+        tangentMode: 0
+        weightedMode: 3
+        inWeight: {x: 0.33333334, y: 0.33333334, z: 0.9030419}
+        outWeight: {x: 0.33333334, y: 0.33333334, z: 0.5522172}
+      - serializedVersion: 3
+        time: 0.13333334
+        value: {x: 0, y: 0.02429986, z: -0.0976}
+        inSlope: {x: 0, y: 0, z: 0.9637065}
+        outSlope: {x: 0, y: 0, z: 0.9637065}
+        tangentMode: 0
+        weightedMode: 3
+        inWeight: {x: 0.33333334, y: 0.33333334, z: 0.9875161}
+        outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: gunParent/recoil/models/slide
   m_ScaleCurves: []
   m_FloatCurves: []
   m_PPtrCurves: []
@@ -137,6 +171,13 @@ AnimationClip:
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
+      path: 3025019702
+      attribute: 1
+      script: {fileID: 0}
+      typeID: 4
+      customType: 0
+      isPPtrCurve: 0
+    - serializedVersion: 2
       path: 2033599114
       attribute: 4
       script: {fileID: 0}
@@ -149,7 +190,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.25
+    m_StopTime: 0.2
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -196,7 +237,7 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.25
+        time: 0.2
         value: 0
         inSlope: 0
         outSlope: 0
@@ -233,7 +274,7 @@ AnimationClip:
         inWeight: 0.71475756
         outWeight: 0.16550398
       - serializedVersion: 3
-        time: 0.25
+        time: 0.2
         value: 0
         inSlope: 0.012813037
         outSlope: 0.012813037
@@ -270,13 +311,13 @@ AnimationClip:
         inWeight: 0.26420987
         outWeight: 0.44156194
       - serializedVersion: 3
-        time: 0.25
+        time: 0.2
         value: 0
-        inSlope: 0.023719862
-        outSlope: 0.023719862
+        inSlope: -0.071847856
+        outSlope: -0.071847856
         tangentMode: 0
         weightedMode: 1
-        inWeight: 0.3195331
+        inWeight: 0.9101264
         outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -307,7 +348,7 @@ AnimationClip:
         inWeight: 0.20136335
         outWeight: 0.29042098
       - serializedVersion: 3
-        time: 0.25
+        time: 0.2
         value: 0
         inSlope: 0.76997536
         outSlope: 0.76997536
@@ -353,7 +394,7 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.25
+        time: 0.2
         value: 0
         inSlope: 0
         outSlope: 0
@@ -399,7 +440,7 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.25
+        time: 0.2
         value: 0
         inSlope: 0
         outSlope: 0
@@ -412,6 +453,117 @@ AnimationClip:
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.z
     path: gunParent/recoil
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.033333335
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.13333334
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalPosition.x
+    path: gunParent/recoil/models/slide
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0.02429986
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.033333335
+        value: 0.0243
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.13333334
+        value: 0.02429986
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalPosition.y
+    path: gunParent/recoil/models/slide
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: -0.0976
+        inSlope: -8.552272
+        outSlope: -8.552272
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.13574132
+      - serializedVersion: 3
+        time: 0.033333335
+        value: -0.1903
+        inSlope: -0.010288254
+        outSlope: -0.010288254
+        tangentMode: 0
+        weightedMode: 3
+        inWeight: 0.9030419
+        outWeight: 0.5522172
+      - serializedVersion: 3
+        time: 0.13333334
+        value: -0.0976
+        inSlope: 0.9637065
+        outSlope: 0.9637065
+        tangentMode: 0
+        weightedMode: 3
+        inWeight: 0.9875161
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalPosition.z
+    path: gunParent/recoil/models/slide
     classID: 4
     script: {fileID: 0}
   m_EulerEditorCurves:

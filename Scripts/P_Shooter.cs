@@ -23,22 +23,15 @@ namespace MMMaellon
                 Debug.LogError("<color=red>[P-Shooter AUTOSETUP]: FAILED</color> No P-Shooter Found");
                 return;
             }
-            Cyan.PlayerObjectPool.CyanPlayerObjectAssigner assigner = GameObject.FindObjectOfType<Cyan.PlayerObjectPool.CyanPlayerObjectAssigner>();
-            if (!Utilities.IsValid(assigner))
-            {
-                Debug.LogError("<color=red>[P-Shooter AUTOSETUP]: FAILED</color> Could not find player object pool. Please set up a player object pool");
-                return;
-            }
-            if (!Utilities.IsValid(assigner.GetComponentInChildren<Player>()))
-            {
-                Debug.LogError("<color=red>[P-Shooter AUTOSETUP]: FAILED</color> Could not find players in player object pool. Please make sure your player prefab uses a Player script on the root object");
-                return;
-            }
             SerializedObject serialized = new SerializedObject(shooter);
-            serialized.FindProperty("assigner").objectReferenceValue = assigner;
             serialized.FindProperty("sync").objectReferenceValue = shooter.GetComponent<SmartObjectSync>();//must exist because we depend on it
             serialized.FindProperty("_animator").objectReferenceValue = shooter.GetComponent<Animator>();
             serialized.ApplyModifiedProperties();
+        }
+
+        public static bool RequiresSetup(P_Shooter shooter)
+        {
+            return !Utilities.IsValid(shooter.sync) || !Utilities.IsValid(shooter.animator);
         }
         public override void OnInspectorGUI()
         {
@@ -46,7 +39,7 @@ namespace MMMaellon
             foreach (var t in targets)
             {
                 P_Shooter shooter = t as P_Shooter;
-                hasIssue = !Utilities.IsValid(shooter.assigner) || !Utilities.IsValid(shooter._animator) || !Utilities.IsValid(shooter.sync);
+                hasIssue = RequiresSetup(shooter);
                 if (hasIssue)
                 {
                     break;
@@ -74,9 +67,37 @@ namespace MMMaellon
             EditorGUILayout.Space();
             base.OnInspectorGUI();
         }
+
+
+        [InitializeOnLoadMethod]
+        public static void Initialize()
+        {
+            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+        }
+
+        public static void OnPlayModeStateChanged(PlayModeStateChange change)
+        {
+            if (change != PlayModeStateChange.ExitingEditMode) return;
+            SetupAllPShooters();
+        }
+
+        public static void SetupAllPShooters()
+        {
+            foreach (P_Shooter shooter in Resources.FindObjectsOfTypeAll<P_Shooter>())
+            {
+                if (!EditorUtility.IsPersistent(shooter.transform.root.gameObject) && !(shooter.gameObject.hideFlags == HideFlags.NotEditable || shooter.gameObject.hideFlags == HideFlags.HideAndDontSave))
+                {
+
+                    if (RequiresSetup(shooter))
+                    {
+                        SetupShooter(shooter);
+                    }
+                }
+            }
+        }
     }
 #endif
-    [UdonBehaviourSyncMode(BehaviourSyncMode.Manual), RequireComponent(typeof(SmartObjectSync)), RequireComponent(typeof(VRC_Pickup)), RequireComponent(typeof(Animator))]
+    [UdonBehaviourSyncMode(BehaviourSyncMode.Manual), RequireComponent(typeof(SmartObjectSync)), RequireComponent(typeof(Animator))]
     public class P_Shooter : SmartObjectSyncListener
     {
         public bool printDebugMessages = true;
@@ -85,29 +106,6 @@ namespace MMMaellon
             if (printDebugMessages)
             {
                 Debug.Log("<color=yellow>[P-Shooters P_Shooter.cs] " + name + ": </color>" + message);
-            }
-        }
-        [System.NonSerialized, FieldChangeCallback(nameof(localPlayerObject))]
-        public Player _localPlayerObject;
-
-        public Player localPlayerObject
-        {
-            get
-            {
-                if (!Utilities.IsValid(_localPlayerObject))
-                {
-                    GameObject playerObj = assigner._GetPlayerPooledObject(_localPlayer);
-                    if (!Utilities.IsValid(playerObj))
-                    {
-                        return _localPlayerObject;
-                    }
-                    _localPlayerObject = playerObj.GetComponent<Player>();
-                }
-                return _localPlayerObject;
-            }
-            set
-            {
-                _localPlayerObject = value;
             }
         }
 
@@ -127,7 +125,6 @@ namespace MMMaellon
 
         [Header("Required Components")]
         public ParticleSystem shootParticles;
-        public Cyan.PlayerObjectPool.CyanPlayerObjectAssigner assigner;
         public SmartObjectSync sync;
         public Animator _animator;
         public Animator animator{
@@ -155,10 +152,33 @@ namespace MMMaellon
             get => _state;
             set
             {
-                _state = value;
-                if (sync.IsLocalOwner())
+                if (_state != value)
                 {
-                    RequestSerialization();
+                    if (Utilities.IsValid(ammo))
+                    {
+                        switch (_state)
+                        {
+                            case (STATE_RELOAD):
+                                {
+                                    ammo.ReloadEndFX();
+                                    break;
+                                }
+                        }
+
+                        switch (value)
+                        {
+                            case (STATE_RELOAD):
+                                {
+                                    ammo.ReloadFX();
+                                    break;
+                                }
+                        }
+                    }
+                    _state = value;
+                    if (sync.IsLocalOwner())
+                    {
+                        RequestSerialization();
+                    }
                 }
                 animator.SetInteger("state", _state);
                 _print("STATE: " + StateToString(state));
@@ -167,23 +187,21 @@ namespace MMMaellon
 
         public override void OnChangeState(SmartObjectSync s, int oldState, int newState)
         {
-            // _print("OnChangeState");
-            // if (s == sync)
-            // {
-            //     animator.SetInteger("pickup_state", newState);
-            //     if (newState == SmartObjectSync.STATE_TELEPORTING)
-            //     {
-            //         animator.SetTrigger("teleport");
-            //     }
-            // }
+            _print("OnChangeState");
+            animator.SetInteger("pickup_state", newState);
+            if (newState == SmartObjectSync.STATE_TELEPORTING)
+            {
+                animator.SetTrigger("teleport");
+            }
+            if (Utilities.IsValid(ammo))
+            {
+                ammo.loop = sync.IsHeld();
+            }
         } 
 
         public override void OnChangeOwner(SmartObjectSync s, VRCPlayerApi oldPlayer, VRCPlayerApi newPlayer)
         {
-            if (s == sync)
-            {
-                animator.SetBool("local", sync.IsLocalOwner());
-            }
+            animator.SetBool("local", sync.IsLocalOwner());
         }
 
 
@@ -198,7 +216,6 @@ namespace MMMaellon
         void Start()
         {
             _localPlayer = Networking.LocalPlayer;
-            sync = GetComponent<SmartObjectSync>();
             sync.AddListener(this);
         }
 
@@ -300,6 +317,16 @@ namespace MMMaellon
                         return "INVALID STATE";
                     }
             }
+        }
+
+        public void EmptyEnd()
+        {
+            if (!sync.IsLocalOwner() || state != STATE_EMPTY)
+            {
+                return;
+            }
+
+            state = STATE_IDLE;
         }
     }
 }

@@ -8,34 +8,24 @@ namespace MMMaellon
 {
     public class ResourceReload : SimpleReload
     {
-        [System.NonSerialized]
-        public int _ammoResourceId = -1001;
         [Tooltip("Define a resource on the player objects and write it's name here to use it as ammo.")]
-        public string ammoResource = "ammo";
+        public ResourceManager resource;
         [Tooltip("If this is true, then reloading the gun when the magazine isn't empty wastes ammo.")]
         public bool wasteAmmoOnReload = false;
         [Tooltip("If this is true, then chambering the gun while a round was already chambered will waste ammo.")]
         public bool wasteAmmoOnRechamber = false;
 
         bool ammoResourceIdAssigned;
-        public int ammoResourceId
-        {
-            get
-            {
-                if (!ammoResourceIdAssigned && Utilities.IsValid(shooter) && Utilities.IsValid(shooter.localPlayerObject))
-                {
-                    ammoResourceIdAssigned = true;
-                    _ammoResourceId = shooter.localPlayerObject.GetResourceId(ammoResource);
-                }
-                return _ammoResourceId;
-            }
-        }
 
         public override bool CanReload()
         {
-            if (ammoResourceId >= 0)
+            if (!Utilities.IsValid(resource.localPlayerObject))
             {
-                if (shooter.localPlayerObject.GetResourceValueById(ammoResourceId) <= 0)
+                return false;
+            }
+            if (resource.id >= 0)
+            {
+                if (resource.localPlayerObject.GetResourceValueById(resource.id) <= 0)
                 {
                     return false;
                 }
@@ -45,14 +35,14 @@ namespace MMMaellon
 
         public override void ReloadEnd()
         {
-            if (!Utilities.IsValid(shooter) || !shooter.sync.IsLocalOwner() || shooter.state == P_Shooter.STATE_DISABLED)
+            if (!Utilities.IsValid(shooter) || !shooter.sync.IsLocalOwner() || shooter.state == P_Shooter.STATE_DISABLED || !Utilities.IsValid(resource.localPlayerObject))
             {
                 return;
             }
 
-            if (ammoResourceId >= 0)
+            if (resource.id >= 0)
             {
-                int reloadAmount = Mathf.Min(magCapacity, shooter.localPlayerObject.GetResourceValueById(ammoResourceId));
+                int reloadAmount = Mathf.Min(magCapacity, resource.localPlayerObject.GetResourceValueById(resource.id));
                 if (wasteAmmoOnRechamber)
                 {
                     magAmmo = magCapacity;
@@ -62,7 +52,7 @@ namespace MMMaellon
                     reloadAmount -= magAmmo;
                     magAmmo += reloadAmount;
                 }
-                shooter.localPlayerObject.ChangeResourceValueById(ammoResourceId, -reloadAmount);
+                resource.localPlayerObject.ChangeResourceValueById(resource.id, -reloadAmount);
             }
             else
             {
@@ -79,7 +69,10 @@ namespace MMMaellon
                 return false;
             }
             shooter._print("ChamberAmmo");
-            ChamberFX();
+            if (chamberAmmo > 0)
+            {
+                SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, nameof(EjectEmptyFX));
+            }
             actualChamberAmmoAmount = Mathf.Min(magAmmo, Mathf.Min(ammoPerShot, chamberCapacity - chamberAmmo));
             if (chamberAmmo >= chamberCapacity && !wasteAmmoOnRechamber)
             {

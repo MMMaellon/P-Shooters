@@ -211,7 +211,7 @@ namespace MMMaellon
             constrainedObject.RotateAround(stabilizationRotationPoint, axis, angle);
             if (horizontalLeewayWhileLocked > 0)
             {
-                upVector = constrainedObject.rotation * Vector3.up;
+                upVector = Vector3.up;
                 squashedForwardVector = Vector3.ProjectOnPlane(forwardVector, upVector);
                 constrainedObject.RotateAround(stabilizationRotationPoint, upVector, -Vector3.SignedAngle(squashedForwardVector, constrainedObject.rotation * Vector3.forward, upVector) * horizontalLeewayWhileLocked);
             }

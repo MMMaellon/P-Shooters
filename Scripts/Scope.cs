@@ -3,6 +3,12 @@ using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
+#if !COMPILER_UDONSHARP && UNITY_EDITOR
+using VRC.SDKBase.Editor.BuildPipeline;
+using UnityEditor;
+using UdonSharpEditor;
+using System.Collections.Immutable;
+#endif
 
 namespace MMMaellon
 {
@@ -33,6 +39,20 @@ namespace MMMaellon
         float smoothedLerp;
         Vector3 leftPos;
         Vector3 rightPos;
+        [System.NonSerialized]
+        public bool _loop = false;
+        public bool loop
+        {
+            get => _loop;
+            set
+            {
+                if (!_loop && value)
+                {
+                    SendCustomEventDelayedFrames(nameof(UpdateLoop), 0);
+                }
+                _loop = value;
+            }
+        }
         void Start()
         {
             _localPlayer = Networking.LocalPlayer;
@@ -41,11 +61,10 @@ namespace MMMaellon
             {
                 scopeCam.SetActive(false);
             }
-            enabled = false;
         }
         public override void OnPickup()
         {
-            enabled = true;
+            loop = true;
         }
         public void recordStartZoomTransforms()
         {
@@ -135,8 +154,13 @@ namespace MMMaellon
             }
         }
 
-        public void Update()
+        public void UpdateLoop()
         {
+            if (!loop)
+            {
+                return;
+            }
+            SendCustomEventDelayedFrames(nameof(UpdateLoop), 0);
             if (!Utilities.IsValid(shooter) || !Utilities.IsValid(_localPlayer))
             {
                 return;
@@ -154,7 +178,7 @@ namespace MMMaellon
                     zoomOut();
                 } else
                 {
-                    enabled = false;
+                    loop = false;
                     if (Utilities.IsValid(scopeCam))
                     {
                         scopeCam.SetActive(false);

@@ -1547,7 +1547,7 @@ MonoBehaviour:
       Data: 98|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: MMMaellon.Resource[], Assembly-CSharp
+      Data: MMMaellon.ResourceManager[], Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 

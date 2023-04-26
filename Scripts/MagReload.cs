@@ -6,6 +6,7 @@ using VRC.Udon;
 
 namespace MMMaellon
 {
+    [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
     public class MagReload : AmmoTracker
     {
         public MagReceiver magReceiver;
@@ -25,6 +26,10 @@ namespace MMMaellon
             get => _chamberAmmo;
             set
             {
+                if (autoChamber && _chamberAmmo > value)
+                {
+                    EjectEmptyFX();
+                }
                 _chamberAmmo = value;
                 if (!Utilities.IsValid(shooter))
                 {
@@ -70,17 +75,22 @@ namespace MMMaellon
 
         public override void Shoot()
         {
+            Debug.LogWarning("Start of Shoot");
             if (shooter.state == P_Shooter.STATE_IDLE)
             {
+                Debug.LogWarning("we were idle");
                 if (CanShoot())
                 {
+                    Debug.LogWarning("we can shoot");
                     shooter.state = P_Shooter.STATE_SHOOT;
                 }
                 else
                 {
+                    Debug.LogWarning("we cannot shoot");
                     shooter.state = P_Shooter.STATE_EMPTY;
                 }
             }
+            Debug.LogWarning("End of Shoot");
         }
 
         public override void Reload()
@@ -91,11 +101,11 @@ namespace MMMaellon
 
         public override void ReloadEnd()
         {
-            if (chamberCapacity <= 0 || chamberAmmo >= ammoPerShot)
+            if (!Utilities.IsValid(shooter) || !shooter.sync.IsLocalOwner() || shooter.state == P_Shooter.STATE_DISABLED)
             {
-                shooter.state = P_Shooter.STATE_IDLE;
+                return;
             }
-            SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, nameof(ReloadFX));
+            shooter.state = P_Shooter.STATE_IDLE;
         }
 
         int actualChamberAmmoAmount;
@@ -104,14 +114,6 @@ namespace MMMaellon
             if (chamberCapacity <= 0 || !Utilities.IsValid(shooter) || !shooter.sync.IsLocalOwner() || shooter.state == P_Shooter.STATE_DISABLED)
             {
                 return false;
-            }
-            if ((Utilities.IsValid(magReceiver.attachedMag) && magReceiver.attachedMag.ammo > 0) || (chamberAmmo > 0))
-            {
-                SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, nameof(ChamberFX));
-            }
-            if (chamberAmmo > 0)
-            {
-                SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, nameof(ChamberParticleFX));
             }
             if (!wasteAmmoOnRechamber)
             {
@@ -149,8 +151,6 @@ namespace MMMaellon
             {
                 if (chamberCapacity <= 0 || (autoChamber && Utilities.IsValid(magReceiver.attachedMag) && magReceiver.attachedMag.ammo >= ammoPerShot))
                 {
-                    // SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, nameof(ChamberFX));
-                    ChamberFX();
                     magReceiver.attachedMag.ammo -= ammoPerShot;
                 }
                 else
@@ -172,6 +172,15 @@ namespace MMMaellon
                 shooter.animator.SetInteger("mag", 0);
             }
             shooter.animator.SetInteger("chamber", chamberCapacity > 0 ? chamberAmmo : 1);
+        }
+
+        public override void ReloadFX()
+        {
+            base.ReloadFX();
+            if (!autoChamber)
+            {
+                EjectEmptyFX();
+            }
         }
     }
 }

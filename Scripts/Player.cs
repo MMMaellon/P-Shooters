@@ -205,10 +205,10 @@ namespace MMMaellon
         public int[] _syncedResources = { };
         [System.NonSerialized, FieldChangeCallback(nameof(localResources))]
         public int[] _localResources = { };
+        int oldValue;
         public int[] syncedResources{
             get => _syncedResources;
             set{
-                int[] oldValues = _syncedResources;
                 _syncedResources = value;
                 if (!Utilities.IsValid(value) || value.Length == 0)
                 {
@@ -216,67 +216,61 @@ namespace MMMaellon
                 }
                 for (int i = 0; i < value.Length; i++)
                 {
-                    Resource resource = resources[reverseSyncResourceIdMap[i]];
-                    int oldValue = i < oldValues.Length ? oldValues[i] : resource.defaultValue;
+                    ResourceManager resource = resources[reverseSyncResourceIdMap[i]];
+                    oldValue = i < _syncedResources.Length ? _syncedResources[i] : resource.defaultValue;
                     if (value[i] > oldValue)
                     {
-                        _OnIncreaseResource(resource, value[i]);
                         if (value[i] >= resource.maxValue)
                         {
                             if (!resource.allowOverflow)
                             {
                                 _syncedResources[i] = resource.maxValue;
                             }
-                            _OnMaxResource(resource, value[i]);
                         }
                     }
                     else if (value[i] < oldValue)
                     {
-                        _OnDecreaseResource(resource, value[i]);
                         if (value[i] <= resource.minValue)
                         {
                             if (!resource.allowOverflow)
                             {
                                 _syncedResources[i] = resource.minValue;
                             }
-                            _OnMinResource(resource, value[i]);
                         }
                     }
+                    resource.OnChange(this, oldValue, value[i]);
+
                 }
             }
         }
         public int[] localResources{
             get => _localResources;
             set{
-                int[] oldValues = _localResources;
                 _localResources = value;
                 for(int i = 0; i < value.Length; i++){
-                    Resource resource = resources[reverseLocalResourceIdMap[i]];
-                    int oldValue = i < oldValues.Length ? oldValues[i] : resource.defaultValue;
+                    ResourceManager resource = resources[reverseLocalResourceIdMap[i]];
+                    oldValue = i < _localResources.Length ? _localResources[i] : resource.defaultValue;
                     if(value[i] > oldValue){
-                        _OnIncreaseResource(resource, value[i]);
                         if (value[i] >= resource.maxValue)
                         {
                             if(!resource.allowOverflow){
                                 _localResources[i] = resource.maxValue;
                             }
-                            _OnMaxResource(resource, value[i]);
                         }
                     } else if (value[i] < oldValue){
-                        _OnDecreaseResource(resource, value[i]);
                         if (value[i] <= resource.minValue)
                         {
                             if(!resource.allowOverflow){
                                 _localResources[i] = resource.minValue;
                             }
-                            _OnMinResource(resource, value[i]);
                         }
                     }
+                    resource.OnChange(this, oldValue, value[i]);
                 }
             }
         }
         [HideInInspector]
-        public Resource[] resources;
+        public ResourceManager[] resources;
         [System.NonSerialized]
         public int[] resourceIdMap;
         [System.NonSerialized]
@@ -380,7 +374,7 @@ namespace MMMaellon
                 shield = defaultShield;
                 health = defaultHealth;
             }
-            foreach (Resource resource in resources)
+            foreach (ResourceManager resource in resources)
             {
                 if (!resource.synced || IsOwnerLocal())
                 {
@@ -419,7 +413,7 @@ namespace MMMaellon
         {
             if (Utilities.IsValid(statsAnimator))
             {
-                foreach (Resource resource in resources)
+                foreach (ResourceManager resource in resources)
                 {
                     statsAnimator.SetInteger(resource.resourceName, GetResourceValueById(resource.id));
                 }
@@ -586,7 +580,7 @@ namespace MMMaellon
                 listener.OnMinShield(this, shield);
             }
         }
-        public void _SetStatAnimatorForResource(Resource resource, int value)
+        public void _SetStatAnimatorForResource(ResourceManager resource, int value)
         {
             if (resource.setAnimationParameterAsRatio)
             {
@@ -604,53 +598,8 @@ namespace MMMaellon
                 statsAnimator.SetInteger(resource.resourceName, resource.maxValue);
             }
         }
-        public void _OnIncreaseResource(Resource resource, int value)
+        public void _OnChangeResource(ResourceManager resource, int oldValue, int newValue)
         {
-            if (Utilities.IsValid(eventAnimator) && resource.setAnimationParameterOnPlayers)
-            {
-                eventAnimator.SetTrigger("OnIncrease" + resource.resourceName);
-                _SetStatAnimatorForResource(resource, value);
-            }
-            foreach (PlayerListener listener in listeners)
-            {
-                listener.OnIncreaseResource(this, resource, value);
-            }
-        }
-
-        public void _OnDecreaseResource(Resource resource, int value)
-        {
-            if (Utilities.IsValid(eventAnimator) && resource.setAnimationParameterOnPlayers)
-            {
-                eventAnimator.SetTrigger("OnDecrease" + resource.resourceName);
-                _SetStatAnimatorForResource(resource, value);
-            }
-            foreach (PlayerListener listener in listeners)
-            {
-                listener.OnDecreaseResource(this, resource, value);
-            }
-        }
-        public void _OnMaxResource(Resource resource, int value)
-        {
-            if (Utilities.IsValid(eventAnimator) && resource.setAnimationParameterOnPlayers)
-            {
-                eventAnimator.SetTrigger("OnMax" + resource.resourceName);
-            }
-            foreach (PlayerListener listener in listeners)
-            {
-                listener.OnMaxResource(this, resource, value);
-            }
-        }
-
-        public void _OnMinResource(Resource resource, int value)
-        {
-            if (Utilities.IsValid(eventAnimator) && resource.setAnimationParameterOnPlayers)
-            {
-                eventAnimator.SetTrigger("OnMin" + resource.resourceName);
-            }
-            foreach (PlayerListener listener in listeners)
-            {
-                listener.OnMinResource(this, resource, value);
-            }
         }
 
         public void OnParticleCollision(GameObject other)

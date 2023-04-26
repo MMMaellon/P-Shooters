@@ -1,6 +1,12 @@
 ﻿using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
+#if !COMPILER_UDONSHARP && UNITY_EDITOR
+using VRC.SDKBase.Editor.BuildPipeline;
+using UnityEditor;
+using UdonSharpEditor;
+using System.Collections.Immutable;
+#endif
 
 namespace MMMaellon
 {
@@ -12,9 +18,11 @@ namespace MMMaellon
 
         public AudioSource reloadSource;
         public AudioClip[] reloads;
-        public AudioSource chamberSource;
-        public AudioClip[] chambers;
-        public ParticleSystem chamberParticles;
+        public AudioSource reloadEndSource;
+        public AudioClip[] reloadEnds;
+        public AudioSource ejectEmptySource;
+        public AudioClip[] ejectEmptys;
+        public ParticleSystem ejectEmptyParticles;
         public AudioSource outOfAmmoSource;
         public AudioClip[] outOfAmmos;
         public abstract bool CanShoot();
@@ -24,8 +32,11 @@ namespace MMMaellon
         public abstract void ReloadEnd();
         public virtual void Start()
         {
-            shooter = GetComponent<P_Shooter>();
-            shooter.ammo = this;
+            if (!Utilities.IsValid(shooter))
+            {
+                shooter = GetComponent<P_Shooter>();
+                shooter.ammo = this;
+            }
         }
         public abstract bool ChamberAmmo();
         public abstract bool ConsumeAmmo();
@@ -38,6 +49,14 @@ namespace MMMaellon
                 reloadSource.Play();
             }
         }
+        public virtual void ReloadEndFX()
+        {
+            if (Utilities.IsValid(reloadEndSource) && reloadEnds.Length > 0)
+            {
+                reloadEndSource.clip = reloadEnds[Random.Range(0, reloadEnds.Length)];
+                reloadEndSource.Play();
+            }
+        }
         public virtual void OutOfAmmoFX()
         {
             if (Utilities.IsValid(outOfAmmoSource) && outOfAmmos.Length > 0)
@@ -47,21 +66,45 @@ namespace MMMaellon
             }
         }
 
-        public virtual void ChamberFX()
+        public virtual void EjectEmptyFX()
         {
-            if (Utilities.IsValid(chamberSource) && chambers.Length > 0)
+            if (Utilities.IsValid(ejectEmptySource) && ejectEmptys.Length > 0)
             {
-                chamberSource.clip = chambers[Random.Range(0, chambers.Length)];
-                chamberSource.Play();
+                ejectEmptySource.clip = ejectEmptys[Random.Range(0, ejectEmptys.Length)];
+                ejectEmptySource.Play();
+            }
+            if (Utilities.IsValid(ejectEmptyParticles))
+            {
+                ejectEmptyParticles.Play();
             }
         }
 
-        public virtual void ChamberParticleFX()
+
+        [System.NonSerialized]
+        public bool _loop = false;
+        public bool loop
         {
-            if (Utilities.IsValid(chamberParticles))
+            get => _loop;
+            set
             {
-                chamberParticles.Play();
+                if (!_loop && value)
+                {
+                    SendCustomEventDelayedFrames(nameof(UpdateLoop), 0, VRC.Udon.Common.Enums.EventTiming.LateUpdate);
+                }
+                _loop = value;
             }
         }
+        public virtual void UpdateLoop()
+        {
+        }
+
+#if !COMPILER_UDONSHARP && UNITY_EDITOR
+        public void Reset()
+        {
+            SerializedObject obj = new SerializedObject(GetComponent<P_Shooter>());
+            obj.FindProperty("ammo").objectReferenceValue = this;
+            obj.ApplyModifiedProperties();
+        }
+#endif
     }
 }

@@ -27,6 +27,10 @@ namespace MMMaellon
             get => _ammo;
             set
             {
+                if (_ammo > value && Utilities.IsValid(receiver) && Utilities.IsValid(receiver.magReload))
+                {
+                    receiver.magReload.EjectEmptyFX();
+                }
                 _ammo = value;
                 if (childState.sync.IsLocalOwner())
                 {

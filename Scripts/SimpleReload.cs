@@ -6,6 +6,7 @@ using VRC.Udon;
 
 namespace MMMaellon
 {
+    [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
     public class SimpleReload : AmmoTracker
     {
         public KeyCode desktopReloadShortcut = KeyCode.E;
@@ -34,6 +35,10 @@ namespace MMMaellon
             get => _magAmmo;
             set
             {
+                if (_magAmmo > value)
+                {
+                    EjectEmptyFX();
+                }
                 _magAmmo = value;
                 if (!Utilities.IsValid(shooter))
                 {
@@ -54,6 +59,10 @@ namespace MMMaellon
             get => _chamberAmmo;
             set
             {
+                if (_chamberAmmo > value)
+                {
+                    EjectEmptyFX();
+                }
                 _chamberAmmo = value;
                 if (!Utilities.IsValid(shooter))
                 {
@@ -84,7 +93,7 @@ namespace MMMaellon
                 if (CanShoot())
                 {
                     shooter.state = P_Shooter.STATE_SHOOT;
-                } else if (autoReload && magAmmo <= 0 && magCapacity > 0)
+                } else if (autoReload)
                 {
                     Reload();
                 } else
@@ -96,12 +105,18 @@ namespace MMMaellon
 
         public override bool CanReload()
         {
-            return (chamberCapacity <= 0) ? magCapacity > 0 && magAmmo < magCapacity : chamberCapacity > 0 && chamberAmmo < chamberCapacity;
+            return (chamberCapacity <= 0) ? magCapacity > 0 && magAmmo < magCapacity : chamberAmmo < chamberCapacity;
         }
 
         Vector3 pointVector;
-        public override void PostLateUpdate()
+        public override void UpdateLoop()
         {
+            if (!loop)
+            {
+                return;
+            }
+            SendCustomEventDelayedFrames(nameof(UpdateLoop), 0, VRC.Udon.Common.Enums.EventTiming.LateUpdate);
+            
             if (!Utilities.IsValid(shooter))
             {
                 return;
@@ -122,9 +137,9 @@ namespace MMMaellon
                     Reload();
                 }
             }
-            if (Utilities.IsValid(vrReloadPickup) && vrReloadPickup.IsHeld() && Utilities.IsValid(vrReloadPickup.owner))
+            if (Utilities.IsValid(vrReloadPickup) && vrReloadPickup.IsHeld())
             {
-                if (vrReloadPickup.owner.isLocal)
+                if (vrReloadPickup.IsLocalOwner())
                 {
                     if (vrReloadPickup.pickup.currentHand == VRC_Pickup.PickupHand.Left)
                     {
@@ -154,7 +169,6 @@ namespace MMMaellon
                 return false;
             }
             shooter._print("ChamberAmmo");
-            SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, nameof(ChamberFX));
             actualChamberAmmoAmount = Mathf.Min(magAmmo, Mathf.Min(ammoPerShot, chamberCapacity - chamberAmmo));
             if (magCapacity > 0)
             {
@@ -173,15 +187,19 @@ namespace MMMaellon
         }
         public override bool CanShoot()
         {
-            if (ammoPerShot <= 0 || ((chamberCapacity <= 0) && magCapacity <= 0) || (!(chamberCapacity <= 0) && chamberCapacity <= 0))
+            if (chamberCapacity > 0 && chamberAmmo >= ammoPerShot)
             {
                 return true;
             }
-            if (!(chamberCapacity <= 0) && chamberAmmo >= ammoPerShot)
+            if (Utilities.IsValid(vrReloadPickup) && vrReloadPickup.IsHeld())
+            {
+                return false;
+            }
+            if (ammoPerShot <= 0 || magCapacity <= 0)
             {
                 return true;
             }
-            else if ((chamberCapacity <= 0) && magAmmo >= ammoPerShot)
+            if (chamberCapacity <= 0 && magAmmo >= ammoPerShot)
             {
                 return true;
             }
@@ -218,9 +236,7 @@ namespace MMMaellon
                 shooter.state = P_Shooter.STATE_RELOAD;
             } else
             {
-                //trigger the animation and then go back to idle
                 shooter.state = P_Shooter.STATE_EMPTY;
-                shooter.state = P_Shooter.STATE_IDLE;
             }
         }
 
@@ -249,9 +265,9 @@ namespace MMMaellon
             }
         }
 
-        public override void ReloadFX()
+        public override void ReloadEndFX()
         {
-            base.ReloadFX();
+            base.ReloadEndFX();
             if (Utilities.IsValid(vrReloadPickup))
             {
                 vrReloadPickup.pickup.Drop();
