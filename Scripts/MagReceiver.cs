@@ -57,7 +57,6 @@ namespace MMMaellon
 
         public void Eject()
         {
-            Debug.LogWarning("EJECT");
             lastEject = Time.realtimeSinceStartup;
             if (Utilities.IsValid(attachedMag) && attachedMag.childState.IsActiveState())
             {
@@ -71,7 +70,6 @@ namespace MMMaellon
             get => _attachedMag;
             set
             {
-                Debug.LogWarning("ATTACHED MAG IS REASSIGNED");
                 _attachedMag = value;
                 if (Utilities.IsValid(magReload))
                 {

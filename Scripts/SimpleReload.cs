@@ -26,6 +26,12 @@ namespace MMMaellon
         public bool startLoaded = true;
         [Tooltip("If this is true, then the gun automatically reloads if the player pulls the trigger while it's empty.")]
         public bool autoReload = true;
+        public AudioClip[] magInsertSounds;
+        [Range(0.0f, 1.0f)]
+        public float magInsertVol = 1.0f;
+        public AudioClip[] chamberSounds;
+        [Range(0.0f, 1.0f)]
+        public float chamberVol = 1.0f;
 
         
         [System.NonSerialized, UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(magAmmo))]
@@ -62,6 +68,9 @@ namespace MMMaellon
                 if (_chamberAmmo > value)
                 {
                     EjectEmptyFX();
+                } else if (_chamberAmmo < value)
+                {
+                    ChamberFX();
                 }
                 _chamberAmmo = value;
                 if (!Utilities.IsValid(shooter))
@@ -72,7 +81,7 @@ namespace MMMaellon
                 {
                     RequestSerialization();
                 }
-                shooter.animator.SetInteger("chamber", value);
+                shooter.animator.SetInteger("chamber", chamberCapacity > 0 ? value : -1001);
             }
         }
 
@@ -265,13 +274,17 @@ namespace MMMaellon
             }
         }
 
-        public override void ReloadEndFX()
+        public void MagInsert()
         {
-            base.ReloadEndFX();
+            RandomOneShot(magInsertSounds, magInsertVol);
             if (Utilities.IsValid(vrReloadPickup))
             {
                 vrReloadPickup.pickup.Drop();
             }
+        }
+        public void ChamberFX()
+        {
+            RandomOneShot(chamberSounds, chamberVol);
         }
     }
 }

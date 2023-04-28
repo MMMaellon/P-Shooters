@@ -21,14 +21,21 @@ namespace MMMaellon
         public int _chamberAmmo = 0;
         [Tooltip("After shooting, the next round automatically gets chambered.")]
         public bool autoChamber;
+        public AudioClip[] chamberSounds;
+        [Range(0.0f, 1.0f)]
+        public float chamberVol = 1.0f;
         public int chamberAmmo
         {
             get => _chamberAmmo;
             set
             {
-                if (autoChamber && _chamberAmmo > value)
+                if (_chamberAmmo > value)
                 {
                     EjectEmptyFX();
+                }
+                else if (_chamberAmmo < value)
+                {
+                    ChamberFX();
                 }
                 _chamberAmmo = value;
                 if (!Utilities.IsValid(shooter))
@@ -39,7 +46,7 @@ namespace MMMaellon
                 {
                     RequestSerialization();
                 }
-                shooter.animator.SetInteger("chamber", value);
+                shooter.animator.SetInteger("chamber", chamberCapacity > 0 ? value : -1001);
             }
         }
         public override void Start()
@@ -50,9 +57,6 @@ namespace MMMaellon
             if (Utilities.IsValid(magReceiver.attachedMag))
             {
                 magReceiver.attachedMag.Attach(magReceiver.transform);
-            } else
-            {
-                shooter.state = P_Shooter.STATE_RELOAD;
             }
         }
         public override bool CanReload()
@@ -131,8 +135,9 @@ namespace MMMaellon
                 } else
                 {
                     actualChamberAmmoAmount = Mathf.Min(magReceiver.attachedMag.ammo, ammoPerShot);
-                    chamberAmmo = Mathf.Min(chamberCapacity, chamberAmmo + actualChamberAmmoAmount);
+                    //we must subtract first
                     magReceiver.attachedMag.ammo -= actualChamberAmmoAmount;
+                    chamberAmmo = Mathf.Min(chamberCapacity, chamberAmmo + actualChamberAmmoAmount);
                 }
             } else
             {
@@ -171,7 +176,6 @@ namespace MMMaellon
             {
                 shooter.animator.SetInteger("mag", 0);
             }
-            shooter.animator.SetInteger("chamber", chamberCapacity > 0 ? chamberAmmo : 1);
         }
 
         public override void ReloadFX()
@@ -181,6 +185,10 @@ namespace MMMaellon
             {
                 EjectEmptyFX();
             }
+        }
+        public void ChamberFX()
+        {
+            RandomOneShot(chamberSounds, chamberVol);
         }
     }
 }

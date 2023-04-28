@@ -172,6 +172,11 @@ namespace MMMaellon
                                     ammo.ReloadFX();
                                     break;
                                 }
+                            case (STATE_EMPTY):
+                                {
+                                    ammo.OutOfAmmoFX();
+                                    break;
+                                }
                         }
                     }
                     _state = value;

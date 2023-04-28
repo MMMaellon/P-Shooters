@@ -16,15 +16,20 @@ namespace MMMaellon
         [System.NonSerialized]
         public P_Shooter shooter;
 
-        public AudioSource reloadSource;
+        public AudioSource audioSource;
         public AudioClip[] reloads;
-        public AudioSource reloadEndSource;
+        [Range(0.0f, 1.0f)]
+        public float reloadVol = 1.0f;
         public AudioClip[] reloadEnds;
-        public AudioSource ejectEmptySource;
-        public AudioClip[] ejectEmptys;
-        public ParticleSystem ejectEmptyParticles;
-        public AudioSource outOfAmmoSource;
+        [Range(0.0f, 1.0f)]
+        public float reloadEndVol = 1.0f;
         public AudioClip[] outOfAmmos;
+        [Range(0.0f, 1.0f)]
+        public float outOfAmmoVol = 1.0f;
+        public AudioClip[] ejectEmptys;
+        [Range(0.0f, 1.0f)]
+        public float ejectEmptyVol = 1.0f;
+        public ParticleSystem ejectEmptyParticles;
         public abstract bool CanShoot();
         public abstract void Shoot();
         public abstract bool CanReload();
@@ -43,39 +48,31 @@ namespace MMMaellon
 
         public virtual void ReloadFX()
         {
-            if (Utilities.IsValid(reloadSource) && reloads.Length > 0)
-            {
-                reloadSource.clip = reloads[Random.Range(0, reloads.Length)];
-                reloadSource.Play();
-            }
+            RandomOneShot(reloads, reloadVol);
         }
         public virtual void ReloadEndFX()
         {
-            if (Utilities.IsValid(reloadEndSource) && reloadEnds.Length > 0)
-            {
-                reloadEndSource.clip = reloadEnds[Random.Range(0, reloadEnds.Length)];
-                reloadEndSource.Play();
-            }
+            RandomOneShot(reloadEnds, reloadEndVol);
         }
         public virtual void OutOfAmmoFX()
         {
-            if (Utilities.IsValid(outOfAmmoSource) && outOfAmmos.Length > 0)
-            {
-                outOfAmmoSource.clip = outOfAmmos[Random.Range(0, outOfAmmos.Length)];
-                outOfAmmoSource.Play();
-            }
+            RandomOneShot(outOfAmmos, outOfAmmoVol);
         }
 
         public virtual void EjectEmptyFX()
         {
-            if (Utilities.IsValid(ejectEmptySource) && ejectEmptys.Length > 0)
-            {
-                ejectEmptySource.clip = ejectEmptys[Random.Range(0, ejectEmptys.Length)];
-                ejectEmptySource.Play();
-            }
+            RandomOneShot(ejectEmptys, ejectEmptyVol);
             if (Utilities.IsValid(ejectEmptyParticles))
             {
                 ejectEmptyParticles.Play();
+            }
+        }
+
+        public void RandomOneShot(AudioClip[] clips, float volume)
+        {
+            if (Utilities.IsValid(audioSource) && clips.Length > 0)
+            {
+                audioSource.PlayOneShot(clips[Random.Range(0, clips.Length)], volume);
             }
         }
 

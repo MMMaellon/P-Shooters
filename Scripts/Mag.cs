@@ -27,7 +27,7 @@ namespace MMMaellon
             get => _ammo;
             set
             {
-                if (_ammo > value && Utilities.IsValid(receiver) && Utilities.IsValid(receiver.magReload))
+                if (_ammo > value && Utilities.IsValid(receiver) && Utilities.IsValid(receiver.magReload) && (receiver.magReload.chamberCapacity <= 0 || receiver.magReload.chamberAmmo > 0))
                 {
                     receiver.magReload.EjectEmptyFX();
                 }
