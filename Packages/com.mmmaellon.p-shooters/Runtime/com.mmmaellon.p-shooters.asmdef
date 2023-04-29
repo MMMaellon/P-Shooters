@@ -1,0 +1,20 @@
+{
+  "name": "com.mmmaellon.p-shooters",
+  "references": [
+    "VRC.SDK3",
+    "VRC.SDKBase",
+    "VRC.Udon",
+    "UdonSharp.Runtime",
+    "UdonSharp.Editor",
+    "Unity.TextMeshPro",
+    "com.mmmaellon.smartobjectsync"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "autoReferenced": true,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "defineConstraints": [],
+  "optionalUnityReferences": []
+}

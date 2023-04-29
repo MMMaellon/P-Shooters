@@ -1,0 +1,8 @@
+s_mainOptions	Main Options	Settings that control the basic appearance of the shader, which affect all subsequent settings.
+s_unusedOptions	Unused Options	(For debugging)  Options not specified in the data file.
+_Stencil	Stencil Test	Raising this enables reading or writing a stencil. When set, contains calue to compare against (if Comparison is anything but Always) and/or the value to be written to the buffer (if wither Pass, Fail or ZFail is set to Replace)
+_StencilComp	Comparison	The operation to be performed when reading the stencil value.
+_StencilOp	Operation	The operation to be performed when the stencil test passes.
+_StencilFail	Fail	The operation to be performed when the stencil test fails.
+_StencilZFail	ZFail	The operation to be performed when the stencil test passes, but the geometry is occluded.
+_RenderQueueOverride	Render Queue Override	Manually set the render queue.

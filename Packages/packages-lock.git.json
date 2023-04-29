@@ -1,0 +1,9 @@
+{
+    "dependencies": [
+        {
+            "name": "com.mmmaellon.smartobjectsync",
+            "hash": "cc89fe746921534c35ce932e92e5c3e5fc30633b",
+            "url": "https://github.com/MMMaellon/SmartObjectSync.git"
+        }
+    ]
+}

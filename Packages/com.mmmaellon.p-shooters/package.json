@@ -1,0 +1,29 @@
+{
+    "name": "com.mmmaellon.p-shooters",
+    "displayName": "P-Shooters",
+    "version": "2.0.0",
+    "description": "P-Shooters is a powerful, modular, and easy-to-use Unity prefab designed to help developers create immersive and engaging gun games in VRChat. With a focus on customizability, performance, and low latency, P-Shooters provides a fully-featured foundation for creating a wide range of VRChat shooting games, from simple arcade-style PvPs to complex simulations with realistic bullet counting and reload mechanics.",
+    "url": "https://github.com/MMMaellon/P-Shooters.git",
+    "dependencies": {},
+    "gitDependencies": {},
+    "author": {
+        "name": "MMMaellon",
+        "email": "mmmaellon@gmail.com",
+        "url": "https://twitter.com/MMMaellon"
+    },
+    "vpmDependencies": {
+        "com.vrchat.udonsharp": "1.1.X",
+        "com.mmmaellon.smartobjectsync": "3.0.X"
+    },
+    "legacyFolders": {
+        "Assets\\MMMaellon\\P-Shooters": "",
+        "Assets\\MMMaellon\\P-Shooters2": ""
+    },
+    "samples": [
+        {
+            "displayName": "P-Shooters Example Scene",
+            "description": "An example scene showing off the capabilities of P-Shooters.",
+            "path": "Samples~/Example"
+        }
+    ]
+}

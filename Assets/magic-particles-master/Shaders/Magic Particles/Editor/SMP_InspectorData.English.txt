@@ -1,0 +1,34 @@
+s_mainOptions	Main Options	Settings that control the basic appearance of the shader, which affect all subsequent settings.
+s_unusedOptions	Unused Options	(For debugging)  Options not specified in the data file.
+_MainTex	Main Texture	Main colour texture (RGBA), which controls the basic appearance of the shader. The colour channels and alpha channels are used.
+_TintColor	Tint Colour	A colour applied to the main texture as a multiplicative tint.
+_HDRIntensity	Intensity	The overall intensity of the final output, multiplied onto the tint colour. 
+_TimePow	Scroll Parameters	Controls the speed at which the main texture scrolls. Depending on the texture settings, the texture will wrap around, useful for different affects. The X and Y field control the X and Y axis speed respectively.
+_ParticleSrcBlend	Source Blend Factor	The blend mode to use for the newly calculated colour.
+_ParticleDstBlend	Destination Blend Factor	The blend mode to use for the existing colour.
+_MultiplyAlpha	Multiply by Alpha	When set, this multiplies the final output by the value in the alpha channel. This is useful for alpha blending. 
+_ParticleCutoffEnable	Enable Cutoff	Allows you to use the cutoff controls to tweak how the alpha channel of the particle is interpreted for transparency. Using a harsh cutoff can create cool melting effects. 
+_ParticleCutoff	Cutoff	The point at which the transparency cuts off.
+_ParticleCutoffSoftness	Cutoff Softness	The range of the cutoff. Higher means a softer edge, while lower means a sharper one.
+_UseBicubic	Use Bicubic Filtering	Only use this with simple particles. It uses a more complex sampling method which takes extra texture samples to smooth out visible pixellation.
+_ApplyFog	Apply Fog	Allows you to set whether fog will be applied and how. When using additive blending, blending towards the fog colour in fog will just make the material glow. Use "To Black" when blending additively.
+_SoftParticles	Use Soft Particle	If available, softens the edge of the material against the world.
+_InvFade	Soft Particles Sharpness	Sets the sharpness of the fading when the material intersects the world. Higher is sharper.
+_VanishingStart	Camera Fade Start	Sets the point at which the material starts becoming opaque. If this value is lower than the end point, the material will begin fading when it's close to the camera, and vice versa.
+_VanishingEnd	Camera Fade End	Sets the point at which the material is fully opaque. If this value is lower than the start point, the material will fade when it gets further from the camera, and vice versa. 
+_ViewOffset	View Offset	When greater than 0, pushes the material closer to the camera in world space to simulate a more volumetric shape.
+_ZEdge	Render at Clip Plane	These options push the material over or under everything else. This is great for skybox details. Please use this responsibly.
+_VisDistance	Visibility Range	Hides the material when not within this distance of the mesh origin.
+_UseGradient	Use Gradient Maps	These ramp textures remap the main texture from greyscale to their own colouring. This allows you to have cool colour shift effects across both the colour and alpha. You can create them with the gradient editor in SCSS.
+_Detail	Use Second Multiply Layer	Applies a second layer of texture over the main texture. This second layer can be scrolled seperately.
+_DetailTimePow	Detail Power Parameters	X/Y controls the scroll speed, and Z/W control the strength the detail map is applied with.
+_UseDistortion	Use Distortion	Warps the texture sampling position with a normal map, which can add big and small details to an otherwise simple effect.
+_WarpPow	Warp Power Parameters	X/Y controls the scroll speed, and Z/W control the strength the warp is applied with.
+_UseCustom	Use Custom Vertex Streams (TEXCOORD1)	When enabled, this allows you to send parameters to the shader with the Custom Vertex Streams of a Particle System. They must be sent through TEXCOORD1. When enabled, the parameters will specify what channel affects what parameter.
+_Offset	Depth Offset	Specifies the material's offset when testing its depth. For more details, please see the Unity documentation. 
+_Stencil	Stencil Test	Raising this enables reading or writing a stencil. When set, contains calue to compare against (if Comparison is anything but Always) and/or the value to be written to the buffer (if wither Pass, Fail or ZFail is set to Replace)
+_StencilComp	Comparison	The operation to be performed when reading the stencil value.
+_StencilOp	Operation	The operation to be performed when the stencil test passes.
+_StencilFail	Fail	The operation to be performed when the stencil test fails.
+_StencilZFail	ZFail	The operation to be performed when the stencil test passes, but the geometry is occluded.
+_RenderQueueOverride	Render Queue Override	Manually set the render queue. 

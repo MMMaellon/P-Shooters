@@ -58,7 +58,8 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
-.idea/.idea.vpm-package-maker/.idea
-Assets/PackageMakerWindowData.asset*
-.idea
-.vscode
+# Git files
+.mailmap
+
+/Assets/Shaders/Fake Light/Old*
+/Assets/Shaders/Fake Light/Materials*
