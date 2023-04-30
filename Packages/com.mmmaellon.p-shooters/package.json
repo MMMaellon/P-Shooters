@@ -5,7 +5,9 @@
     "description": "P-Shooters is a powerful, modular, and easy-to-use Unity prefab designed to help developers create immersive and engaging gun games in VRChat. With a focus on customizability, performance, and low latency, P-Shooters provides a fully-featured foundation for creating a wide range of VRChat shooting games, from simple arcade-style PvPs to complex simulations with realistic bullet counting and reload mechanics.",
     "url": "https://github.com/MMMaellon/P-Shooters.git",
     "dependencies": {},
-    "gitDependencies": {},
+    "gitDependencies": {
+        "com.cyan.playerobjectpool": "https://github.com/CyanLaser/CyanPlayerObjectPool/tree/vpm"
+    },
     "author": {
         "name": "MMMaellon",
         "email": "mmmaellon@gmail.com",
