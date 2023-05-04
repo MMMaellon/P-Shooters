@@ -1,10 +1,11 @@
 {
   "dependencies": {
     "com.cyan.playerobjectpool": {
-      "version": "file:com.cyan.playerobjectpool",
+      "version": "https://github.com/CyanLaser/CyanPlayerObjectPool.git?path=/com.cyan.playerobjectpool",
       "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
+      "source": "git",
+      "dependencies": {},
+      "hash": "496e392b4ea87805c2640f6e3702195774795126"
     },
     "com.mmmaellon.p-shooters": {
       "version": "file:com.mmmaellon.p-shooters",
