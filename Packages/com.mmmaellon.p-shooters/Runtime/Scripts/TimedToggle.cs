@@ -8,13 +8,28 @@ public class TimedToggle : UdonSharpBehaviour
 {
     public GameObject[] objs;
     public float time = 15f;
+    bool[] startState;
+    bool toggledOff = false;
+    public void Start()
+    {
+        startState = new bool[objs.Length];
+        for (int i = 0; i < objs.Length; i++)
+        {
+            startState[i] = objs[i].activeSelf;
+        }
+    }
     public void Toggle()
     {
-        foreach (GameObject obj in objs)
+        if (toggledOff)
         {
-            if (Utilities.IsValid(obj))
+            return;
+        }
+        toggledOff = true;
+        for (int i = 0; i < objs.Length; i++)
+        {
+            if (Utilities.IsValid(objs[i]))
             {
-                obj.SetActive(false);
+                objs[i].SetActive(!startState[i]);
             }
         }
         SendCustomEventDelayedSeconds(nameof(ResetToggle), time);
@@ -22,11 +37,12 @@ public class TimedToggle : UdonSharpBehaviour
 
     public void ResetToggle()
     {
-        foreach (GameObject obj in objs)
+        toggledOff = false;
+        for (int i = 0; i < objs.Length; i++)
         {
-            if (Utilities.IsValid(obj))
+            if (Utilities.IsValid(objs[i]))
             {
-                obj.SetActive(true);
+                objs[i].SetActive(startState[i]);
             }
         }
     }

@@ -100,6 +100,29 @@ namespace MMMaellon
     [UdonBehaviourSyncMode(BehaviourSyncMode.Manual), RequireComponent(typeof(SmartObjectSync)), RequireComponent(typeof(Animator))]
     public class P_Shooter : SmartObjectSyncListener
     {
+        public int damage = 15;
+        [FieldChangeCallback(nameof(shootSpeed))]
+        public float _shootSpeed = 1.0f;
+        [FieldChangeCallback(nameof(reloadSpeed))]
+        public float _reloadSpeed = 1.0f;
+        public float shootSpeed {
+            get => _shootSpeed;
+            set {
+                    _shootSpeed = value;
+                    if(Utilities.IsValid(animator)){
+                        animator.SetFloat("shoot_speed", value);
+                    }
+                }
+            }
+        public float reloadSpeed {
+            get => _reloadSpeed;
+            set {
+                    _reloadSpeed = value;
+                    if(Utilities.IsValid(animator)){
+                        animator.SetFloat("reload_speed", value);
+                    }
+                }
+            }
         public bool printDebugMessages = true;
         public void _print(string message)
         {
@@ -222,11 +245,13 @@ namespace MMMaellon
         {
             _localPlayer = Networking.LocalPlayer;
             sync.AddListener(this);
+            shootSpeed = shootSpeed;
+            reloadSpeed = reloadSpeed;
         }
 
         public int calcDamage()
         {
-            return 1;
+            return damage;
         }
 
         public void EnableAnimator()
