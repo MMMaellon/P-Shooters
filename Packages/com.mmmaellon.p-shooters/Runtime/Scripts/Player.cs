@@ -2,7 +2,7 @@
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
-using VRC.Udon;
+using VRC.Udon.Serialization;
 
 namespace MMMaellon
 {
@@ -27,14 +27,18 @@ namespace MMMaellon
         public CapsuleCollider capsuleCollider = null;
         void Start()
         {
-            id = transform.GetSiblingIndex();
+            lastHealer = this;
+            lastAttacker = this;
+            if (id < 0)
+            {
+                id = transform.GetSiblingIndex();
+            }
             parent = transform.parent;
             _localPlayer = Networking.LocalPlayer;
             capsuleCollider = GetComponent<CapsuleCollider>();
-            BuildResourceIdMap();
         }
         [System.NonSerialized]
-        public int id = -1;
+        public int id = -1001;
         [System.NonSerialized, UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(team))]
         public int _team = TEAM_NONE;
         [System.NonSerialized]
@@ -146,6 +150,7 @@ namespace MMMaellon
             get => _health;
             set
             {
+                _print("set health from " + _health + " to " + value);
                 if (value > _health)
                 {
                     _health = value;
@@ -197,13 +202,13 @@ namespace MMMaellon
 
         [Tooltip("Will automatically set event parameters on this animator for the following events: \"OnIncreaseHealth\", \"OnDecreaseHealth\", \"OnMaxHealth\", \"OnMinHealth\", \"OnIncreaseShield\", \"OnDecreaseShield\", \"OnMaxShield\", and \"OnMinShield\". Similar parameters will also be set for your resources, but with the resource name in place of \"Health\" and \"Shield\"")]
         public Animator eventAnimator = null;
-        public PlayerListener[] listeners;
+        public P_ShootersPlayerHandler playerHandler;
 
         [Tooltip("How tall do we assume a player is if they don't have a head bone on their avatar")]
         public float defaultHeight = 2f;
-        [System.NonSerialized, FieldChangeCallback(nameof(syncedResources)), UdonSynced(UdonSyncMode.None)]
+        [HideInInspector, FieldChangeCallback(nameof(syncedResources)), UdonSynced(UdonSyncMode.None)]
         public int[] _syncedResources = { };
-        [System.NonSerialized, FieldChangeCallback(nameof(localResources))]
+        [HideInInspector, FieldChangeCallback(nameof(localResources))]
         public int[] _localResources = { };
         int oldValue;
         public int[] syncedResources{
@@ -271,11 +276,11 @@ namespace MMMaellon
         }
         [HideInInspector]
         public ResourceManager[] resources;
-        [System.NonSerialized]
+        [HideInInspector]
         public int[] resourceIdMap;
-        [System.NonSerialized]
+        [HideInInspector]
         public int[] reverseSyncResourceIdMap;
-        [System.NonSerialized]
+        [HideInInspector]
         public int[] reverseLocalResourceIdMap;
 
         public override void _OnOwnerSet()
@@ -291,6 +296,10 @@ namespace MMMaellon
                 foreach (Player p in parent.GetComponentsInChildren<Player>(true))
                 {
                     p._localPlayerObject = this;
+                }
+                if (Utilities.IsValid(playerHandler))
+                {
+                    playerHandler.localPlayer = this;
                 }
             }
         }
@@ -321,49 +330,6 @@ namespace MMMaellon
             } else if (Utilities.IsValid(_localPlayerObject))
             {
                 damageMatrix[_localPlayerObject.id] = 0;
-            }
-        }
-
-        public void BuildResourceIdMap()
-        {
-            if (resources.Length != syncedResources.Length + localResources.Length)
-            {
-                int syncedRCount = 0;
-                int localRCount = 0;
-                resourceIdMap = new int[resources.Length];
-                for (int i = 0; i < resources.Length; i++)
-                {
-                    if (resources[i].synced)
-                    {
-                        resourceIdMap[i] = syncedRCount;
-                        syncedRCount++;
-                    }
-                    else
-                    {
-                        resourceIdMap[i] = localRCount;
-                        localRCount++;
-                    }
-                }
-                reverseSyncResourceIdMap = new int[syncedRCount];
-                syncedResources = new int[syncedRCount];
-                reverseLocalResourceIdMap = new int[localRCount];
-                localResources = new int[localRCount];
-
-                syncedRCount = 0;
-                localRCount = 0;
-                for (int i = 0; i < resources.Length; i++)
-                {
-                    if (resources[i].synced)
-                    {
-                        reverseSyncResourceIdMap[syncedRCount] = i;
-                        syncedRCount++;
-                    }
-                    else
-                    {
-                        reverseLocalResourceIdMap[localRCount] = i;
-                        localRCount++;
-                    }
-                }
             }
         }
 
@@ -488,15 +454,18 @@ namespace MMMaellon
             }
         }
 
+        [System.NonSerialized] public Player lastHealer = null;
+        [System.NonSerialized] public Player lastAttacker = null;
+
         public void _OnIncreaseHealth()
         {
             if (Utilities.IsValid(eventAnimator))
             {
                 eventAnimator.SetTrigger("OnIncreaseHealth");
             }
-            foreach (PlayerListener listener in listeners)
+            foreach (PlayerListener listener in playerHandler.playerListeners)
             {
-                listener.OnIncreaseHealth(this, health);
+                listener.OnIncreaseHealth(lastHealer, this, health);
             }
         }
 
@@ -506,9 +475,9 @@ namespace MMMaellon
             {
                 eventAnimator.SetTrigger("OnDecreaseHealth");
             }
-            foreach (PlayerListener listener in listeners)
+            foreach (PlayerListener listener in playerHandler.playerListeners)
             {
-                listener.OnDecreaseHealth(this, health);
+                listener.OnDecreaseHealth(lastAttacker, this, health);
             }
         }
         public void _OnMaxHealth()
@@ -517,9 +486,9 @@ namespace MMMaellon
             {
                 eventAnimator.SetTrigger("OnMaxHealth");
             }
-            foreach (PlayerListener listener in listeners)
+            foreach (PlayerListener listener in playerHandler.playerListeners)
             {
-                listener.OnMaxHealth(this, health);
+                listener.OnMaxHealth(lastHealer, this, health);
             }
         }
 
@@ -529,9 +498,9 @@ namespace MMMaellon
             {
                 eventAnimator.SetTrigger("OnMinHealth");
             }
-            foreach (PlayerListener listener in listeners)
+            foreach (PlayerListener listener in playerHandler.playerListeners)
             {
-                listener.OnMinHealth(this, health);
+                listener.OnMinHealth(lastAttacker, this, health);
             }
         }
         public void _OnIncreaseShield()
@@ -540,9 +509,9 @@ namespace MMMaellon
             {
                 eventAnimator.SetTrigger("OnShieldIncrease");
             }
-            foreach (PlayerListener listener in listeners)
+            foreach (PlayerListener listener in playerHandler.playerListeners)
             {
-                listener.OnIncreaseShield(this, shield);
+                listener.OnIncreaseShield(lastHealer, this, shield);
             }
         }
 
@@ -552,9 +521,9 @@ namespace MMMaellon
             {
                 eventAnimator.SetTrigger("OnShieldDecrease");
             }
-            foreach (PlayerListener listener in listeners)
+            foreach (PlayerListener listener in playerHandler.playerListeners)
             {
-                listener.OnDecreaseShield(this, shield);
+                listener.OnDecreaseShield(lastAttacker, this, shield);
             }
         }
         public void _OnMaxShield()
@@ -563,9 +532,9 @@ namespace MMMaellon
             {
                 eventAnimator.SetTrigger("OnMaxShield");
             }
-            foreach (PlayerListener listener in listeners)
+            foreach (PlayerListener listener in playerHandler.playerListeners)
             {
-                listener.OnMaxShield(this, shield);
+                listener.OnMaxShield(lastHealer, this, shield);
             }
         }
 
@@ -575,9 +544,9 @@ namespace MMMaellon
             {
                 eventAnimator.SetTrigger("OnMinShield");
             }
-            foreach (PlayerListener listener in listeners)
+            foreach (PlayerListener listener in playerHandler.playerListeners)
             {
-                listener.OnMinShield(this, shield);
+                listener.OnMinShield(lastAttacker, this, shield);
             }
         }
         public void _SetStatAnimatorForResource(ResourceManager resource, int value)
@@ -657,11 +626,27 @@ namespace MMMaellon
         {
             _print("ReceiveOtherPlayerDamage " + damage);
             //here maybe we do a ping or something to show where the damage came from
+            if (Utilities.IsValid(playerHandler))
+            {
+                Player attacker = playerHandler.players[attackerId];
+                foreach (PlayerListener listener in playerHandler.playerListeners)
+                {
+                    if (!listener.CanDealDamage(attacker, this))
+                    {
+                        return;
+                    }
+                }
+                lastAttacker = playerHandler.players[attackerId];
+            } else
+            {
+                lastAttacker = this;
+            }
             ReceiveDamage(damage, false);
         }
 
         public void ReceiveDamage(int damage, bool ignoreInvincibleAndSpectator)
         {
+            _print("ReceiveDamage " + damage);
             if (damage == 0 || !IsOwnerLocal() || (!ignoreInvincibleAndSpectator && !CanTakeDamage()))
             {
                 return;
@@ -671,11 +656,54 @@ namespace MMMaellon
                 health -= damage;
             } else if (damage > shield)
             {
-                health = shield - damage;
+                health -= damage - shield;
                 shield = 0;
             } else
             {
                 shield -= damage;
+            }
+        }
+
+
+        public void ReceiveOtherPlayerHeal(int heal, int healerId)
+        {
+            _print("ReceiveOtherPlayerHeal " + heal);
+            //here maybe we do a ping or something to show where the damage came from
+            if (Utilities.IsValid(playerHandler))
+            {
+                Player healer = playerHandler.players[healerId];
+                foreach (PlayerListener listener in playerHandler.playerListeners)
+                {
+                    if (!listener.CanDealHeal(healer, this))
+                    {
+                        return;
+                    }
+                }
+                lastHealer = playerHandler.players[healerId];
+            }
+            else
+            {
+                lastHealer = this;
+            }
+            ReceiveHealth(heal, false);
+        }
+
+        public void ReceiveHealth(int heal, bool ignoreInvincibleAndSpectator)
+        {
+            if (heal == 0 || !IsOwnerLocal() || (!ignoreInvincibleAndSpectator && !CanTakeDamage()))
+            {
+                return;
+            }
+            if (health >= maxHealth)
+            {
+                shield += heal;
+            } else if (heal > maxHealth - health)
+            {
+                shield += heal - (maxHealth - health);
+                health = maxHealth;
+            } else
+            {
+                health += heal;
             }
         }
 
@@ -703,15 +731,73 @@ namespace MMMaellon
                 }
                 if (damageTargetId[i] == _localPlayerObject.id)//don't send damage messages if we were just resetting our damage messages
                 {
-                    _localPlayerObject.ReceiveOtherPlayerDamage(damageDealt[i] - damageMatrix[_localPlayerObject.id], id);
-                    damageMatrix[_localPlayerObject.id] = damageDealt[i];
-                    if (!IsOwnerLocal())
+                    int damage = damageDealt[i] - damageMatrix[_localPlayerObject.id];
+                    if (damage < 0)
                     {
-                        return;
+                        _localPlayerObject.ReceiveOtherPlayerHeal(-damage, id);
+                    } else
+                    {
+                        _localPlayerObject.ReceiveOtherPlayerDamage(damage, id);
                     }
+                    damageMatrix[_localPlayerObject.id] = damageDealt[i];
                 } else if (IsOwnerLocal())
                 {
                     damageMatrix[damageTargetId[i]] = damageDealt[i];
+                }
+            }
+        }
+
+        public void ConfirmNormalKill()
+        {
+            if (Utilities.IsValid(Owner))
+            {
+                SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(OnNormalKillConfirmed));
+            }
+        }
+
+        public void ConfirmCriticalKill()
+        {
+            if (Utilities.IsValid(Owner))
+            {
+                SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(OnCriticalKillConfirmed));
+            }
+        }
+
+        public void ConfirmTeamKill()
+        {
+            if (Utilities.IsValid(Owner))
+            {
+                SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, nameof(OnTeamKillConfirmed));
+            }
+        }
+
+        public void OnNormalKillConfirmed()
+        {
+            if (Utilities.IsValid(playerHandler))
+            {
+                foreach (PlayerListener listener in playerHandler.playerListeners)
+                {
+                    listener.OnReceiveNormalKillConfirmation(this);
+                }
+            }
+        }
+        public void OnCriticalKillConfirmed()
+        {
+            if (Utilities.IsValid(playerHandler))
+            {
+                foreach (PlayerListener listener in playerHandler.playerListeners)
+                {
+                    listener.OnReceiveCriticalKillConfirmation(this);
+                }
+            }
+        }
+        public void OnTeamKillConfirmed()
+        {
+            if (Utilities.IsValid(playerHandler))
+            {
+                foreach (PlayerListener listener in playerHandler.playerListeners)
+                {
+                    listener.OnReceiveTeamKillConfirmation(this);
                 }
             }
         }

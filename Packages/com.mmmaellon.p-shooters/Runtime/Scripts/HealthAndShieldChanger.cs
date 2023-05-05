@@ -118,11 +118,25 @@ namespace MMMaellon
             {
                 return;
             }
+            if (value > 0)
+            {
+                player.lastHealer = player;
+            } else
+            {
+                player.lastAttacker = player;
+            }
             if (incrementByValue)
             {
                 if (affectHealth && affectShield)
                 {
-                    player.ReceiveDamage(-value, true);
+                    if (value > 0)
+                    {
+                        player.ReceiveHealth(value, false);
+                    }
+                    else
+                    {
+                        player.ReceiveDamage(-value, false);
+                    }
                 }
                 else if (affectShield)
                 {

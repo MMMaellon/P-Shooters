@@ -20,8 +20,9 @@ namespace MMMaellon
 
         public static bool SetupResources()
         {
-            Player[] players = Resources.FindObjectsOfTypeAll<Player>();
-            ResourceManager[] resources = Resources.FindObjectsOfTypeAll<ResourceManager>();
+            Player[] players = GameObject.FindObjectsOfType<Player>();
+            resources = GameObject.FindObjectsOfType<ResourceManager>();
+            BuildResourceIdMap();
             Cyan.PlayerObjectPool.CyanPlayerObjectAssigner sceneAssigner = GameObject.FindObjectOfType<Cyan.PlayerObjectPool.CyanPlayerObjectAssigner>();
             if (!Utilities.IsValid(sceneAssigner))
             {
@@ -52,26 +53,105 @@ namespace MMMaellon
                     continue;
                 }
                 SerializedObject serialized = new SerializedObject(player);
-                serialized.FindProperty("resources").ClearArray();
+                serialized.FindProperty(nameof(resources)).ClearArray();
                 for (int i = 0; i < resources.Length; i++)
                 {
-                    serialized.FindProperty("resources").InsertArrayElementAtIndex(i);
-                    serialized.FindProperty("resources").GetArrayElementAtIndex(i).objectReferenceValue = resources[i];
+                    serialized.FindProperty(nameof(resources)).InsertArrayElementAtIndex(i);
+                    serialized.FindProperty(nameof(resources)).GetArrayElementAtIndex(i).objectReferenceValue = resources[i];
                 }
+
+                serialized.FindProperty(nameof(resourceIdMap)).ClearArray();
+                for (int i = 0; i < resourceIdMap.Length; i++)
+                {
+                    serialized.FindProperty(nameof(resourceIdMap)).InsertArrayElementAtIndex(i);
+                    serialized.FindProperty(nameof(resourceIdMap)).GetArrayElementAtIndex(i).intValue = resourceIdMap[i];
+                }
+                serialized.FindProperty(nameof(reverseSyncResourceIdMap)).ClearArray();
+                for (int i = 0; i < reverseSyncResourceIdMap.Length; i++)
+                {
+                    serialized.FindProperty(nameof(reverseSyncResourceIdMap)).InsertArrayElementAtIndex(i);
+                    serialized.FindProperty(nameof(reverseSyncResourceIdMap)).GetArrayElementAtIndex(i).intValue = reverseSyncResourceIdMap[i];
+                }
+                serialized.FindProperty(nameof(reverseLocalResourceIdMap)).ClearArray();
+                for (int i = 0; i < reverseLocalResourceIdMap.Length; i++)
+                {
+                    serialized.FindProperty(nameof(reverseLocalResourceIdMap)).InsertArrayElementAtIndex(i);
+                    serialized.FindProperty(nameof(reverseLocalResourceIdMap)).GetArrayElementAtIndex(i).intValue = reverseLocalResourceIdMap[i];
+                }
+                serialized.FindProperty("_syncedResources").ClearArray();
+                for (int i = 0; i < syncedResources.Length; i++)
+                {
+                    serialized.FindProperty("_syncedResources").InsertArrayElementAtIndex(i);
+                    serialized.FindProperty("_syncedResources").GetArrayElementAtIndex(i).intValue = syncedResources[i];
+                }
+                serialized.FindProperty("_localResources").ClearArray();
+                for (int i = 0; i < localResources.Length; i++)
+                {
+                    serialized.FindProperty("_localResources").InsertArrayElementAtIndex(i);
+                    serialized.FindProperty("_localResources").GetArrayElementAtIndex(i).intValue = localResources[i];
+                }
+                
                 serialized.ApplyModifiedProperties();
             }
             Debug.Log("[P-Shooter Resource AUTOSETUP]: Configured " + resources.Length + " Resources");
             return true;
         }
+        public static ResourceManager[] resources;
+        [System.NonSerialized]
+        public static int[] resourceIdMap;
+        [System.NonSerialized]
+        public static int[] reverseSyncResourceIdMap;
+        [System.NonSerialized]
+        public static int[] reverseLocalResourceIdMap;
+        public static int[] syncedResources;
+        public static int[] localResources;
+        public static void BuildResourceIdMap()
+        {
+            int syncedRCount = 0;
+            int localRCount = 0;
+            resourceIdMap = new int[resources.Length];
+            for (int i = 0; i < resources.Length; i++)
+            {
+                if (resources[i].synced)
+                {
+                    resourceIdMap[i] = syncedRCount;
+                    syncedRCount++;
+                }
+                else
+                {
+                    resourceIdMap[i] = localRCount;
+                    localRCount++;
+                }
+            }
+            reverseSyncResourceIdMap = new int[syncedRCount];
+            syncedResources = new int[syncedRCount];
+            reverseLocalResourceIdMap = new int[localRCount];
+            localResources = new int[localRCount];
+
+            syncedRCount = 0;
+            localRCount = 0;
+            for (int i = 0; i < resources.Length; i++)
+            {
+                if (resources[i].synced)
+                {
+                    reverseSyncResourceIdMap[syncedRCount] = i;
+                    syncedRCount++;
+                }
+                else
+                {
+                    reverseLocalResourceIdMap[localRCount] = i;
+                    localRCount++;
+                }
+            }
+        }
         public override void OnInspectorGUI()
         {
             EditorGUILayout.LabelField("How to use Resources");
             EditorGUILayout.HelpBox(
-    @"1) Place this somewhere in your scene (Only one per resource)
+    @"1) Place this somewhere in your scene (Only one per resource type)
 2) Give the resource a unique name
-3) Set up your player object pool. Make sure there's one in your scene and it has the right max player count
+3) Set up your player object pool. Make sure there's one in your scene and it has the appropriate max player count and that it has a P-ShootersPlayerHandler on it somewhere.
 4) Name your resource. The name must be unique among resources.
-4) Press the setup button below. If you change the number of players in your player pool, you will have to press the setup button again.
 
 Resources are things like ammo or coins that is stored on the player object as a number.
 You can make this number go up and down with the `ResourceChanger` script and compare the number to another number with the `ResourceChecker` script.
@@ -84,10 +164,10 @@ For example, you probably don't need to sync ammo or coins because you usually c
 
             EditorGUILayout.Space();
 
-            if (GUILayout.Button(new GUIContent("Set up All Resources")))
-            {
-                ResourceManagerEditor.SetupResources();
-            }
+            // if (GUILayout.Button(new GUIContent("Set up All Resources")))
+            // {
+            //     ResourceManagerEditor.SetupResources();
+            // }
             EditorGUILayout.Space();
             if (UdonSharpGUI.DrawDefaultUdonSharpBehaviourHeader(target)) return;
             EditorGUILayout.Space();
@@ -157,13 +237,6 @@ For example, you probably don't need to sync ammo or coins because you usually c
                 _localPlayerObject = value;
             }
         }
-
-#if !COMPILER_UDONSHARP && UNITY_EDITOR
-        public void Reset()
-        {
-            ResourceManagerEditor.SetupResources();
-        }
-#endif
 
         public void _Register(int newId)
         {
