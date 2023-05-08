@@ -15,7 +15,7 @@ namespace MMMaellon
 
 #if !COMPILER_UDONSHARP && UNITY_EDITOR
     [CustomEditor(typeof(ResourceManager))]
-    public class ResourceManagerEditor : Editor
+    public class ResourceManagerEditor : Editor, IVRCSDKBuildRequestedCallback
     {
 
         public static bool SetupResources()
