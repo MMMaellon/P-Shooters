@@ -14,8 +14,9 @@
         "url": "https://twitter.com/MMMaellon"
     },
     "vpmDependencies": {
-        "com.vrchat.udonsharp": "1.1.X",
-        "com.mmmaellon.smartobjectsync": "3.0.X"
+        "com.vrchat.udonsharp": "^1.1.X",
+        "com.mmmaellon.smartobjectsync": "^3.0.0",
+        "com.cyan.playerobjectpool": "^1.1.X"
     },
     "legacyFolders": {
         "Assets\\MMMaellon\\P-Shooters": "",
