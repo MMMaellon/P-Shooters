@@ -136,14 +136,17 @@ namespace MMMaellon
                 {
                     Reload();
                 }
-                pointVector = transform.rotation * Vector3.forward;
-                if (pointDownToReloadAngle > 0 && pointDownToReloadAngle >= Vector3.Angle(Vector3.down, pointVector))
+                if (CanReload())
                 {
-                    Reload();
-                }
-                else if (pointUpToReloadAngle > 0 && pointUpToReloadAngle >= Vector3.Angle(Vector3.up, pointVector))
-                {
-                    Reload();
+                    pointVector = transform.rotation * Vector3.forward;
+                    if (pointDownToReloadAngle > 0 && pointDownToReloadAngle >= Vector3.Angle(Vector3.down, pointVector))
+                    {
+                        Reload();
+                    }
+                    else if (pointUpToReloadAngle > 0 && pointUpToReloadAngle >= Vector3.Angle(Vector3.up, pointVector))
+                    {
+                        Reload();
+                    }
                 }
             }
             if (Utilities.IsValid(vrReloadPickup) && vrReloadPickup.IsHeld())
