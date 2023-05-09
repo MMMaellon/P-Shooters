@@ -185,8 +185,7 @@ MonoBehaviour:
   - {fileID: 8169304610424872263}
   - {fileID: 8169304610235222585}
   respawnDamageCooldown: 0
-  playerListeners:
-  - {fileID: 0}
+  playerListeners: []
 --- !u!1001 &7367138172133777060
 PrefabInstance:
   m_ObjectHideFlags: 0
