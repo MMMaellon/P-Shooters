@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.17744392, g: 0.21554247, b: 0.26645613, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1027,19 +1027,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1058010310}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &139809460
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 139809455}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 229740497, guid: 4ecd63eff847044b68db9453ce219299, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  contentType: 1
 --- !u!1 &152137925 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3229685418717098268, guid: 2bf34f3678b77e3409511e56f09eb3e4,
@@ -1642,7 +1629,8 @@ GameObject:
   - component: {fileID: 256020708}
   - component: {fileID: 256020714}
   - component: {fileID: 256020713}
-  m_Layer: 0
+  - component: {fileID: 256020715}
+  m_Layer: 13
   m_Name: Cube (15)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1801,11 +1789,43 @@ MonoBehaviour:
   kinematicWhileHeld: 1
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 0
-  pickup: {fileID: 0}
+  pickup: {fileID: 256020715}
   rigid: {fileID: 256020708}
   states: []
   listeners: []
   SetupRan: 1
+--- !u!114 &256020715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256020707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1804438810, guid: 661092b4961be7145bfbe56e1e62337b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MomentumTransferMethod: 0
+  DisallowTheft: 0
+  ExactGun: {fileID: 0}
+  ExactGrip: {fileID: 0}
+  allowManipulationWhenEquipped: 0
+  orientation: 0
+  AutoHold: 0
+  InteractionText: 
+  UseText: Use
+  useEventBroadcastType: 0
+  UseDownEventName: 
+  UseUpEventName: 
+  pickupDropEventBroadcastType: 0
+  PickupEventName: 
+  DropEventName: 
+  ThrowVelocityBoostMinSpeed: 1
+  ThrowVelocityBoostScale: 1
+  currentlyHeldBy: {fileID: 0}
+  pickupable: 1
+  proximity: 2
 --- !u!1 &266299096
 GameObject:
   m_ObjectHideFlags: 0
@@ -1934,7 +1954,8 @@ GameObject:
   - component: {fileID: 297978836}
   - component: {fileID: 297978842}
   - component: {fileID: 297978841}
-  m_Layer: 0
+  - component: {fileID: 297978843}
+  m_Layer: 13
   m_Name: Cube (17)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2093,11 +2114,43 @@ MonoBehaviour:
   kinematicWhileHeld: 1
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 0
-  pickup: {fileID: 0}
+  pickup: {fileID: 297978843}
   rigid: {fileID: 297978836}
   states: []
   listeners: []
   SetupRan: 1
+--- !u!114 &297978843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 297978835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1804438810, guid: 661092b4961be7145bfbe56e1e62337b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MomentumTransferMethod: 0
+  DisallowTheft: 0
+  ExactGun: {fileID: 0}
+  ExactGrip: {fileID: 0}
+  allowManipulationWhenEquipped: 0
+  orientation: 0
+  AutoHold: 0
+  InteractionText: 
+  UseText: Use
+  useEventBroadcastType: 0
+  UseDownEventName: 
+  UseUpEventName: 
+  pickupDropEventBroadcastType: 0
+  PickupEventName: 
+  DropEventName: 
+  ThrowVelocityBoostMinSpeed: 1
+  ThrowVelocityBoostScale: 1
+  currentlyHeldBy: {fileID: 0}
+  pickupable: 1
+  proximity: 2
 --- !u!1 &301929465 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3229685417589035557, guid: 2bf34f3678b77e3409511e56f09eb3e4,
@@ -2705,7 +2758,8 @@ GameObject:
   - component: {fileID: 478912298}
   - component: {fileID: 478912304}
   - component: {fileID: 478912303}
-  m_Layer: 0
+  - component: {fileID: 478912305}
+  m_Layer: 13
   m_Name: Cube (16)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2864,11 +2918,43 @@ MonoBehaviour:
   kinematicWhileHeld: 1
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 0
-  pickup: {fileID: 0}
+  pickup: {fileID: 478912305}
   rigid: {fileID: 478912298}
   states: []
   listeners: []
   SetupRan: 1
+--- !u!114 &478912305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 478912297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1804438810, guid: 661092b4961be7145bfbe56e1e62337b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MomentumTransferMethod: 0
+  DisallowTheft: 0
+  ExactGun: {fileID: 0}
+  ExactGrip: {fileID: 0}
+  allowManipulationWhenEquipped: 0
+  orientation: 0
+  AutoHold: 0
+  InteractionText: 
+  UseText: Use
+  useEventBroadcastType: 0
+  UseDownEventName: 
+  UseUpEventName: 
+  pickupDropEventBroadcastType: 0
+  PickupEventName: 
+  DropEventName: 
+  ThrowVelocityBoostMinSpeed: 1
+  ThrowVelocityBoostScale: 1
+  currentlyHeldBy: {fileID: 0}
+  pickupable: 1
+  proximity: 2
 --- !u!1 &503728609 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6589608277433838867, guid: 228dfe288c7f553488209c9f783148db,
@@ -3103,7 +3189,8 @@ GameObject:
   - component: {fileID: 560958506}
   - component: {fileID: 560958512}
   - component: {fileID: 560958511}
-  m_Layer: 0
+  - component: {fileID: 560958513}
+  m_Layer: 13
   m_Name: Cube (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3262,11 +3349,43 @@ MonoBehaviour:
   kinematicWhileHeld: 1
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 0
-  pickup: {fileID: 0}
+  pickup: {fileID: 560958513}
   rigid: {fileID: 560958506}
   states: []
   listeners: []
   SetupRan: 1
+--- !u!114 &560958513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 560958505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1804438810, guid: 661092b4961be7145bfbe56e1e62337b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MomentumTransferMethod: 0
+  DisallowTheft: 0
+  ExactGun: {fileID: 0}
+  ExactGrip: {fileID: 0}
+  allowManipulationWhenEquipped: 0
+  orientation: 0
+  AutoHold: 0
+  InteractionText: 
+  UseText: Use
+  useEventBroadcastType: 0
+  UseDownEventName: 
+  UseUpEventName: 
+  pickupDropEventBroadcastType: 0
+  PickupEventName: 
+  DropEventName: 
+  ThrowVelocityBoostMinSpeed: 1
+  ThrowVelocityBoostScale: 1
+  currentlyHeldBy: {fileID: 0}
+  pickupable: 1
+  proximity: 2
 --- !u!1 &573165216 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7642567914792789232, guid: 1d399f689a01f15458071d1b77f8196c,
@@ -3983,7 +4102,8 @@ GameObject:
   - component: {fileID: 713219429}
   - component: {fileID: 713219435}
   - component: {fileID: 713219434}
-  m_Layer: 0
+  - component: {fileID: 713219436}
+  m_Layer: 13
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4142,11 +4262,43 @@ MonoBehaviour:
   kinematicWhileHeld: 1
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 0
-  pickup: {fileID: 0}
+  pickup: {fileID: 713219436}
   rigid: {fileID: 713219429}
   states: []
   listeners: []
   SetupRan: 1
+--- !u!114 &713219436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 713219428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1804438810, guid: 661092b4961be7145bfbe56e1e62337b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MomentumTransferMethod: 0
+  DisallowTheft: 0
+  ExactGun: {fileID: 0}
+  ExactGrip: {fileID: 0}
+  allowManipulationWhenEquipped: 0
+  orientation: 0
+  AutoHold: 0
+  InteractionText: 
+  UseText: Use
+  useEventBroadcastType: 0
+  UseDownEventName: 
+  UseUpEventName: 
+  pickupDropEventBroadcastType: 0
+  PickupEventName: 
+  DropEventName: 
+  ThrowVelocityBoostMinSpeed: 1
+  ThrowVelocityBoostScale: 1
+  currentlyHeldBy: {fileID: 0}
+  pickupable: 1
+  proximity: 2
 --- !u!1 &713689222 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3229685419320783713, guid: 2bf34f3678b77e3409511e56f09eb3e4,
@@ -5095,7 +5247,8 @@ GameObject:
   - component: {fileID: 873020604}
   - component: {fileID: 873020610}
   - component: {fileID: 873020609}
-  m_Layer: 0
+  - component: {fileID: 873020611}
+  m_Layer: 13
   m_Name: Cube (12)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5254,11 +5407,43 @@ MonoBehaviour:
   kinematicWhileHeld: 1
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 0
-  pickup: {fileID: 0}
+  pickup: {fileID: 873020611}
   rigid: {fileID: 873020604}
   states: []
   listeners: []
   SetupRan: 1
+--- !u!114 &873020611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873020603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1804438810, guid: 661092b4961be7145bfbe56e1e62337b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MomentumTransferMethod: 0
+  DisallowTheft: 0
+  ExactGun: {fileID: 0}
+  ExactGrip: {fileID: 0}
+  allowManipulationWhenEquipped: 0
+  orientation: 0
+  AutoHold: 0
+  InteractionText: 
+  UseText: Use
+  useEventBroadcastType: 0
+  UseDownEventName: 
+  UseUpEventName: 
+  pickupDropEventBroadcastType: 0
+  PickupEventName: 
+  DropEventName: 
+  ThrowVelocityBoostMinSpeed: 1
+  ThrowVelocityBoostScale: 1
+  currentlyHeldBy: {fileID: 0}
+  pickupable: 1
+  proximity: 2
 --- !u!1 &908500603 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2825630286911155942, guid: 1d399f689a01f15458071d1b77f8196c,
@@ -5322,7 +5507,8 @@ GameObject:
   - component: {fileID: 940525592}
   - component: {fileID: 940525598}
   - component: {fileID: 940525597}
-  m_Layer: 0
+  - component: {fileID: 940525599}
+  m_Layer: 13
   m_Name: Cube (14)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5481,11 +5667,43 @@ MonoBehaviour:
   kinematicWhileHeld: 1
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 0
-  pickup: {fileID: 0}
+  pickup: {fileID: 940525599}
   rigid: {fileID: 940525592}
   states: []
   listeners: []
   SetupRan: 1
+--- !u!114 &940525599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 940525591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1804438810, guid: 661092b4961be7145bfbe56e1e62337b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MomentumTransferMethod: 0
+  DisallowTheft: 0
+  ExactGun: {fileID: 0}
+  ExactGrip: {fileID: 0}
+  allowManipulationWhenEquipped: 0
+  orientation: 0
+  AutoHold: 0
+  InteractionText: 
+  UseText: Use
+  useEventBroadcastType: 0
+  UseDownEventName: 
+  UseUpEventName: 
+  pickupDropEventBroadcastType: 0
+  PickupEventName: 
+  DropEventName: 
+  ThrowVelocityBoostMinSpeed: 1
+  ThrowVelocityBoostScale: 1
+  currentlyHeldBy: {fileID: 0}
+  pickupable: 1
+  proximity: 2
 --- !u!1 &955838924 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3229685417429204828, guid: 2bf34f3678b77e3409511e56f09eb3e4,
@@ -5758,7 +5976,8 @@ GameObject:
   - component: {fileID: 1033089122}
   - component: {fileID: 1033089128}
   - component: {fileID: 1033089127}
-  m_Layer: 0
+  - component: {fileID: 1033089129}
+  m_Layer: 13
   m_Name: Cube (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5917,11 +6136,43 @@ MonoBehaviour:
   kinematicWhileHeld: 1
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 0
-  pickup: {fileID: 0}
+  pickup: {fileID: 1033089129}
   rigid: {fileID: 1033089122}
   states: []
   listeners: []
   SetupRan: 1
+--- !u!114 &1033089129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033089121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1804438810, guid: 661092b4961be7145bfbe56e1e62337b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MomentumTransferMethod: 0
+  DisallowTheft: 0
+  ExactGun: {fileID: 0}
+  ExactGrip: {fileID: 0}
+  allowManipulationWhenEquipped: 0
+  orientation: 0
+  AutoHold: 0
+  InteractionText: 
+  UseText: Use
+  useEventBroadcastType: 0
+  UseDownEventName: 
+  UseUpEventName: 
+  pickupDropEventBroadcastType: 0
+  PickupEventName: 
+  DropEventName: 
+  ThrowVelocityBoostMinSpeed: 1
+  ThrowVelocityBoostScale: 1
+  currentlyHeldBy: {fileID: 0}
+  pickupable: 1
+  proximity: 2
 --- !u!1001 &1058010310
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9498,7 +9749,8 @@ GameObject:
   - component: {fileID: 1386499700}
   - component: {fileID: 1386499706}
   - component: {fileID: 1386499705}
-  m_Layer: 0
+  - component: {fileID: 1386499707}
+  m_Layer: 13
   m_Name: Cube (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9657,11 +9909,43 @@ MonoBehaviour:
   kinematicWhileHeld: 1
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 0
-  pickup: {fileID: 0}
+  pickup: {fileID: 1386499707}
   rigid: {fileID: 1386499700}
   states: []
   listeners: []
   SetupRan: 1
+--- !u!114 &1386499707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1386499699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1804438810, guid: 661092b4961be7145bfbe56e1e62337b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MomentumTransferMethod: 0
+  DisallowTheft: 0
+  ExactGun: {fileID: 0}
+  ExactGrip: {fileID: 0}
+  allowManipulationWhenEquipped: 0
+  orientation: 0
+  AutoHold: 0
+  InteractionText: 
+  UseText: Use
+  useEventBroadcastType: 0
+  UseDownEventName: 
+  UseUpEventName: 
+  pickupDropEventBroadcastType: 0
+  PickupEventName: 
+  DropEventName: 
+  ThrowVelocityBoostMinSpeed: 1
+  ThrowVelocityBoostScale: 1
+  currentlyHeldBy: {fileID: 0}
+  pickupable: 1
+  proximity: 2
 --- !u!1 &1389847711 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3229685419381402713, guid: 2bf34f3678b77e3409511e56f09eb3e4,
@@ -9695,7 +9979,8 @@ GameObject:
   - component: {fileID: 1413883277}
   - component: {fileID: 1413883283}
   - component: {fileID: 1413883282}
-  m_Layer: 0
+  - component: {fileID: 1413883284}
+  m_Layer: 13
   m_Name: Cube (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9854,11 +10139,43 @@ MonoBehaviour:
   kinematicWhileHeld: 1
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 0
-  pickup: {fileID: 0}
+  pickup: {fileID: 1413883284}
   rigid: {fileID: 1413883277}
   states: []
   listeners: []
   SetupRan: 1
+--- !u!114 &1413883284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1413883276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1804438810, guid: 661092b4961be7145bfbe56e1e62337b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MomentumTransferMethod: 0
+  DisallowTheft: 0
+  ExactGun: {fileID: 0}
+  ExactGrip: {fileID: 0}
+  allowManipulationWhenEquipped: 0
+  orientation: 0
+  AutoHold: 0
+  InteractionText: 
+  UseText: Use
+  useEventBroadcastType: 0
+  UseDownEventName: 
+  UseUpEventName: 
+  pickupDropEventBroadcastType: 0
+  PickupEventName: 
+  DropEventName: 
+  ThrowVelocityBoostMinSpeed: 1
+  ThrowVelocityBoostScale: 1
+  currentlyHeldBy: {fileID: 0}
+  pickupable: 1
+  proximity: 2
 --- !u!1 &1422475836
 GameObject:
   m_ObjectHideFlags: 0
@@ -10227,7 +10544,8 @@ GameObject:
   - component: {fileID: 1443309156}
   - component: {fileID: 1443309162}
   - component: {fileID: 1443309161}
-  m_Layer: 0
+  - component: {fileID: 1443309163}
+  m_Layer: 13
   m_Name: Cube (18)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10386,11 +10704,43 @@ MonoBehaviour:
   kinematicWhileHeld: 1
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 0
-  pickup: {fileID: 0}
+  pickup: {fileID: 1443309163}
   rigid: {fileID: 1443309156}
   states: []
   listeners: []
   SetupRan: 1
+--- !u!114 &1443309163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1443309155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1804438810, guid: 661092b4961be7145bfbe56e1e62337b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MomentumTransferMethod: 0
+  DisallowTheft: 0
+  ExactGun: {fileID: 0}
+  ExactGrip: {fileID: 0}
+  allowManipulationWhenEquipped: 0
+  orientation: 0
+  AutoHold: 0
+  InteractionText: 
+  UseText: Use
+  useEventBroadcastType: 0
+  UseDownEventName: 
+  UseUpEventName: 
+  pickupDropEventBroadcastType: 0
+  PickupEventName: 
+  DropEventName: 
+  ThrowVelocityBoostMinSpeed: 1
+  ThrowVelocityBoostScale: 1
+  currentlyHeldBy: {fileID: 0}
+  pickupable: 1
+  proximity: 2
 --- !u!1 &1450378534 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3229685419378514567, guid: 2bf34f3678b77e3409511e56f09eb3e4,
@@ -16347,7 +16697,8 @@ GameObject:
   - component: {fileID: 1571783002}
   - component: {fileID: 1571783008}
   - component: {fileID: 1571783007}
-  m_Layer: 0
+  - component: {fileID: 1571783009}
+  m_Layer: 13
   m_Name: Cube (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16506,11 +16857,43 @@ MonoBehaviour:
   kinematicWhileHeld: 1
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 0
-  pickup: {fileID: 0}
+  pickup: {fileID: 1571783009}
   rigid: {fileID: 1571783002}
   states: []
   listeners: []
   SetupRan: 1
+--- !u!114 &1571783009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1571783001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1804438810, guid: 661092b4961be7145bfbe56e1e62337b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MomentumTransferMethod: 0
+  DisallowTheft: 0
+  ExactGun: {fileID: 0}
+  ExactGrip: {fileID: 0}
+  allowManipulationWhenEquipped: 0
+  orientation: 0
+  AutoHold: 0
+  InteractionText: 
+  UseText: Use
+  useEventBroadcastType: 0
+  UseDownEventName: 
+  UseUpEventName: 
+  pickupDropEventBroadcastType: 0
+  PickupEventName: 
+  DropEventName: 
+  ThrowVelocityBoostMinSpeed: 1
+  ThrowVelocityBoostScale: 1
+  currentlyHeldBy: {fileID: 0}
+  pickupable: 1
+  proximity: 2
 --- !u!1 &1581264404
 GameObject:
   m_ObjectHideFlags: 0
@@ -16879,7 +17262,8 @@ GameObject:
   - component: {fileID: 1631168840}
   - component: {fileID: 1631168846}
   - component: {fileID: 1631168845}
-  m_Layer: 0
+  - component: {fileID: 1631168847}
+  m_Layer: 13
   m_Name: Cube (13)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17038,11 +17422,43 @@ MonoBehaviour:
   kinematicWhileHeld: 1
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 0
-  pickup: {fileID: 0}
+  pickup: {fileID: 1631168847}
   rigid: {fileID: 1631168840}
   states: []
   listeners: []
   SetupRan: 1
+--- !u!114 &1631168847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1631168839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1804438810, guid: 661092b4961be7145bfbe56e1e62337b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MomentumTransferMethod: 0
+  DisallowTheft: 0
+  ExactGun: {fileID: 0}
+  ExactGrip: {fileID: 0}
+  allowManipulationWhenEquipped: 0
+  orientation: 0
+  AutoHold: 0
+  InteractionText: 
+  UseText: Use
+  useEventBroadcastType: 0
+  UseDownEventName: 
+  UseUpEventName: 
+  pickupDropEventBroadcastType: 0
+  PickupEventName: 
+  DropEventName: 
+  ThrowVelocityBoostMinSpeed: 1
+  ThrowVelocityBoostScale: 1
+  currentlyHeldBy: {fileID: 0}
+  pickupable: 1
+  proximity: 2
 --- !u!1 &1652051908
 GameObject:
   m_ObjectHideFlags: 0
@@ -17058,7 +17474,8 @@ GameObject:
   - component: {fileID: 1652051909}
   - component: {fileID: 1652051915}
   - component: {fileID: 1652051914}
-  m_Layer: 0
+  - component: {fileID: 1652051916}
+  m_Layer: 13
   m_Name: Cube (19)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17217,11 +17634,43 @@ MonoBehaviour:
   kinematicWhileHeld: 1
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 0
-  pickup: {fileID: 0}
+  pickup: {fileID: 1652051916}
   rigid: {fileID: 1652051909}
   states: []
   listeners: []
   SetupRan: 1
+--- !u!114 &1652051916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1652051908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1804438810, guid: 661092b4961be7145bfbe56e1e62337b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MomentumTransferMethod: 0
+  DisallowTheft: 0
+  ExactGun: {fileID: 0}
+  ExactGrip: {fileID: 0}
+  allowManipulationWhenEquipped: 0
+  orientation: 0
+  AutoHold: 0
+  InteractionText: 
+  UseText: Use
+  useEventBroadcastType: 0
+  UseDownEventName: 
+  UseUpEventName: 
+  pickupDropEventBroadcastType: 0
+  PickupEventName: 
+  DropEventName: 
+  ThrowVelocityBoostMinSpeed: 1
+  ThrowVelocityBoostScale: 1
+  currentlyHeldBy: {fileID: 0}
+  pickupable: 1
+  proximity: 2
 --- !u!1 &1653463112 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2919469583811103619, guid: 1d399f689a01f15458071d1b77f8196c,
@@ -17243,7 +17692,8 @@ GameObject:
   - component: {fileID: 1659810915}
   - component: {fileID: 1659810921}
   - component: {fileID: 1659810920}
-  m_Layer: 0
+  - component: {fileID: 1659810922}
+  m_Layer: 13
   m_Name: Cube (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17402,11 +17852,43 @@ MonoBehaviour:
   kinematicWhileHeld: 1
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 0
-  pickup: {fileID: 0}
+  pickup: {fileID: 1659810922}
   rigid: {fileID: 1659810915}
   states: []
   listeners: []
   SetupRan: 1
+--- !u!114 &1659810922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1659810914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1804438810, guid: 661092b4961be7145bfbe56e1e62337b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MomentumTransferMethod: 0
+  DisallowTheft: 0
+  ExactGun: {fileID: 0}
+  ExactGrip: {fileID: 0}
+  allowManipulationWhenEquipped: 0
+  orientation: 0
+  AutoHold: 0
+  InteractionText: 
+  UseText: Use
+  useEventBroadcastType: 0
+  UseDownEventName: 
+  UseUpEventName: 
+  pickupDropEventBroadcastType: 0
+  PickupEventName: 
+  DropEventName: 
+  ThrowVelocityBoostMinSpeed: 1
+  ThrowVelocityBoostScale: 1
+  currentlyHeldBy: {fileID: 0}
+  pickupable: 1
+  proximity: 2
 --- !u!1 &1663502090 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3229685418609136349, guid: 2bf34f3678b77e3409511e56f09eb3e4,
@@ -22986,7 +23468,8 @@ GameObject:
   - component: {fileID: 1895730020}
   - component: {fileID: 1895730026}
   - component: {fileID: 1895730025}
-  m_Layer: 0
+  - component: {fileID: 1895730027}
+  m_Layer: 13
   m_Name: Cube (20)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23145,11 +23628,43 @@ MonoBehaviour:
   kinematicWhileHeld: 1
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 0
-  pickup: {fileID: 0}
+  pickup: {fileID: 1895730027}
   rigid: {fileID: 1895730020}
   states: []
   listeners: []
   SetupRan: 1
+--- !u!114 &1895730027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1895730019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1804438810, guid: 661092b4961be7145bfbe56e1e62337b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MomentumTransferMethod: 0
+  DisallowTheft: 0
+  ExactGun: {fileID: 0}
+  ExactGrip: {fileID: 0}
+  allowManipulationWhenEquipped: 0
+  orientation: 0
+  AutoHold: 0
+  InteractionText: 
+  UseText: Use
+  useEventBroadcastType: 0
+  UseDownEventName: 
+  UseUpEventName: 
+  pickupDropEventBroadcastType: 0
+  PickupEventName: 
+  DropEventName: 
+  ThrowVelocityBoostMinSpeed: 1
+  ThrowVelocityBoostScale: 1
+  currentlyHeldBy: {fileID: 0}
+  pickupable: 1
+  proximity: 2
 --- !u!1 &1912899248
 GameObject:
   m_ObjectHideFlags: 0
@@ -23165,7 +23680,8 @@ GameObject:
   - component: {fileID: 1912899249}
   - component: {fileID: 1912899255}
   - component: {fileID: 1912899254}
-  m_Layer: 0
+  - component: {fileID: 1912899256}
+  m_Layer: 13
   m_Name: Cube (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23324,11 +23840,43 @@ MonoBehaviour:
   kinematicWhileHeld: 1
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 0
-  pickup: {fileID: 0}
+  pickup: {fileID: 1912899256}
   rigid: {fileID: 1912899249}
   states: []
   listeners: []
   SetupRan: 1
+--- !u!114 &1912899256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1912899248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1804438810, guid: 661092b4961be7145bfbe56e1e62337b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MomentumTransferMethod: 0
+  DisallowTheft: 0
+  ExactGun: {fileID: 0}
+  ExactGrip: {fileID: 0}
+  allowManipulationWhenEquipped: 0
+  orientation: 0
+  AutoHold: 0
+  InteractionText: 
+  UseText: Use
+  useEventBroadcastType: 0
+  UseDownEventName: 
+  UseUpEventName: 
+  pickupDropEventBroadcastType: 0
+  PickupEventName: 
+  DropEventName: 
+  ThrowVelocityBoostMinSpeed: 1
+  ThrowVelocityBoostScale: 1
+  currentlyHeldBy: {fileID: 0}
+  pickupable: 1
+  proximity: 2
 --- !u!1 &1932600084
 GameObject:
   m_ObjectHideFlags: 0
@@ -23824,7 +24372,8 @@ GameObject:
   - component: {fileID: 2128313949}
   - component: {fileID: 2128313955}
   - component: {fileID: 2128313954}
-  m_Layer: 0
+  - component: {fileID: 2128313956}
+  m_Layer: 13
   m_Name: Cube (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23983,11 +24532,43 @@ MonoBehaviour:
   kinematicWhileHeld: 1
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 0
-  pickup: {fileID: 0}
+  pickup: {fileID: 2128313956}
   rigid: {fileID: 2128313949}
   states: []
   listeners: []
   SetupRan: 1
+--- !u!114 &2128313956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2128313948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1804438810, guid: 661092b4961be7145bfbe56e1e62337b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MomentumTransferMethod: 0
+  DisallowTheft: 0
+  ExactGun: {fileID: 0}
+  ExactGrip: {fileID: 0}
+  allowManipulationWhenEquipped: 0
+  orientation: 0
+  AutoHold: 0
+  InteractionText: 
+  UseText: Use
+  useEventBroadcastType: 0
+  UseDownEventName: 
+  UseUpEventName: 
+  pickupDropEventBroadcastType: 0
+  PickupEventName: 
+  DropEventName: 
+  ThrowVelocityBoostMinSpeed: 1
+  ThrowVelocityBoostScale: 1
+  currentlyHeldBy: {fileID: 0}
+  pickupable: 1
+  proximity: 2
 --- !u!1001 &3073797926107620566
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -224,7 +224,8 @@ MonoBehaviour:
   syncParticleCollisions: 0
   respawnHeight: -100
   printDebugMessages: 0
-  worldSpaceRespawn: 0
+  worldSpaceTeleport: 0
+  worldSpaceSleep: 1
   forceContinuousSpeculative: 1
   preventPickupSnapping: 0
   lerpTime: 0.1

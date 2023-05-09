@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8204062347886898937}
-  m_Layer: 13
+  m_Layer: 17
   m_Name: respawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8204062347939147384}
-  m_Layer: 13
+  m_Layer: 17
   m_Name: gunParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,7 +70,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8204062348058553534}
-  m_Layer: 13
+  m_Layer: 17
   m_Name: scopeAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 8204062348208929880}
   - component: {fileID: 8204062348208929894}
   - component: {fileID: 8204062348208929881}
-  m_Layer: 13
+  m_Layer: 17
   m_Name: hits
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4911,7 +4911,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8204062348325043570}
-  m_Layer: 13
+  m_Layer: 17
   m_Name: gunGripPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4941,7 +4941,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8204062348347028807}
-  m_Layer: 13
+  m_Layer: 17
   m_Name: particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4956,7 +4956,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8204062348347028806}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.38}
+  m_LocalPosition: {x: 0, y: 0, z: 0.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8204062348208929880}
@@ -4974,7 +4974,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8204062348405204314}
-  m_Layer: 13
+  m_Layer: 17
   m_Name: gunSounds
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5019,7 +5019,7 @@ GameObject:
   - component: {fileID: 8204062348515326530}
   - component: {fileID: 4468433439284340299}
   - component: {fileID: 8286559550073578145}
-  m_Layer: 13
+  m_Layer: 17
   m_Name: P_Shooter_Simple
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5088,7 +5088,8 @@ MonoBehaviour:
   syncParticleCollisions: 0
   respawnHeight: -100
   printDebugMessages: 0
-  worldSpaceRespawn: 0
+  worldSpaceTeleport: 0
+  worldSpaceSleep: 1
   forceContinuousSpeculative: 1
   preventPickupSnapping: 0
   lerpTime: 0.1
@@ -5502,7 +5503,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8204062348609230504}
-  m_Layer: 13
+  m_Layer: 17
   m_Name: bulletHits
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5539,7 +5540,7 @@ GameObject:
   - component: {fileID: 8204062348622303104}
   - component: {fileID: 7137842437904529120}
   - component: {fileID: 7713579212561069375}
-  m_Layer: 13
+  m_Layer: 17
   m_Name: secondGrip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5636,7 +5637,8 @@ MonoBehaviour:
   syncParticleCollisions: 0
   respawnHeight: -100
   printDebugMessages: 0
-  worldSpaceRespawn: 0
+  worldSpaceTeleport: 0
+  worldSpaceSleep: 1
   forceContinuousSpeculative: 1
   preventPickupSnapping: 1
   lerpTime: 0.1
@@ -5754,7 +5756,7 @@ GameObject:
   - component: {fileID: 8204062348909744477}
   - component: {fileID: 8204062348909744476}
   - component: {fileID: 8549621238028362316}
-  m_Layer: 13
+  m_Layer: 17
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5847,7 +5849,7 @@ GameObject:
   - component: {fileID: 8204062348962100753}
   - component: {fileID: 8204062348962100752}
   - component: {fileID: 9030320564920166988}
-  m_Layer: 13
+  m_Layer: 17
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5939,7 +5941,7 @@ GameObject:
   - component: {fileID: 8204062349128837683}
   - component: {fileID: 8204062349128837681}
   - component: {fileID: 8204062349128837680}
-  m_Layer: 13
+  m_Layer: 17
   m_Name: bullets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8057,12 +8059,12 @@ ParticleSystem:
         m_RotationOrder: 4
     inWorldSpace: 0
   InheritVelocityModule:
-    enabled: 0
+    enabled: 1
     m_Mode: 0
     m_Curve:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 1
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -9719,7 +9721,7 @@ ParticleSystem:
     radiusScale: 0.1
     collidesWith:
       serializedVersion: 2
-      m_Bits: 2561
+      m_Bits: 11009
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
@@ -10759,7 +10761,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8204062349185677741}
-  m_Layer: 13
+  m_Layer: 17
   m_Name: sounds
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10791,7 +10793,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8204062349372747093}
-  m_Layer: 13
+  m_Layer: 17
   m_Name: models
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10827,7 +10829,7 @@ GameObject:
   - component: {fileID: 8204062349658627473}
   - component: {fileID: 8204062349658627487}
   - component: {fileID: 8204062349658627486}
-  m_Layer: 13
+  m_Layer: 17
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10907,7 +10909,7 @@ GameObject:
   - component: {fileID: 8204062349699446667}
   - component: {fileID: 8204062349699446666}
   - component: {fileID: 2152050238651793232}
-  m_Layer: 13
+  m_Layer: 17
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10998,7 +11000,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8204062349822659294}
-  m_Layer: 13
+  m_Layer: 17
   m_Name: recoil
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11033,7 +11035,7 @@ GameObject:
   - component: {fileID: 8204062349846420388}
   - component: {fileID: 8204062349846420386}
   - component: {fileID: 8204062349846420389}
-  m_Layer: 13
+  m_Layer: 17
   m_Name: muzzleFlashes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
