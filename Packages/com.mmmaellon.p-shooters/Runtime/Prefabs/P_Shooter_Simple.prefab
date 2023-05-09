@@ -5096,11 +5096,11 @@ MonoBehaviour:
   kinematicWhileHeld: 1
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 1
+  preventStealWhileAttachedToPlayer: 1
   pickup: {fileID: 8204062348515326522}
   rigid: {fileID: 8204062348515326535}
   states: []
-  listeners:
-  - {fileID: 0}
+  listeners: []
   SetupRan: 1
 --- !u!114 &8204062348515326521
 MonoBehaviour:
@@ -5645,6 +5645,7 @@ MonoBehaviour:
   kinematicWhileHeld: 1
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 0
+  preventStealWhileAttachedToPlayer: 1
   pickup: {fileID: 8204062348622303115}
   rigid: {fileID: 8204062348622303112}
   states: []
@@ -5717,7 +5718,7 @@ MonoBehaviour:
   disableWhenNotHoldingPrimaryPickup: 0
   allowDifferentPickupOwners: 0
   preventOneHandedSteal: 1
-  positionBias: 0.5
+  positionBias: 0
 --- !u!114 &7713579212561069375
 MonoBehaviour:
   m_ObjectHideFlags: 0

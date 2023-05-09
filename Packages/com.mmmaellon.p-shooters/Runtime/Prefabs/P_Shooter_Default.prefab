@@ -232,11 +232,11 @@ MonoBehaviour:
   kinematicWhileHeld: 1
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 0
+  preventStealWhileAttachedToPlayer: 1
   pickup: {fileID: 458532000}
   rigid: {fileID: 458532005}
   states: []
-  listeners:
-  - {fileID: 0}
+  listeners: []
   SetupRan: 1
 --- !u!114 &458532004
 MonoBehaviour:
@@ -518,7 +518,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: fc18322c8bd152b458ffc49ade697169, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
