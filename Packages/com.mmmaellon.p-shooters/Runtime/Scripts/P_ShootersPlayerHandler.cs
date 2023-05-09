@@ -27,9 +27,13 @@ namespace MMMaellon
                 Debug.LogError("<color=red>[P-Shooter Player Handler AUTOSETUP]: FAILED</color> Multiple P-Shooter Player Handlers found in scene. There should only be one.");
                 return false;
             }
-            if (listeners.Length > 0 && handlers.Length == 0)
+            if (handlers.Length == 0)
             {
-                Debug.LogError("<color=red>[P-Shooter Player Handler AUTOSETUP]: FAILED</color> Player Listeners were found in scene, but no P-Shooters Player Handler was found. Listeners won't have any effect without any player handlers");
+                if (listeners.Length > 0)
+                {
+                    Debug.LogError("<color=red>[P-Shooter Player Handler AUTOSETUP]: FAILED</color> Player Listeners were found in scene, but no P-Shooters Player Handler was found. Listeners won't have any effect without any player handlers");
+                    return true;
+                }
                 return true;
             }
             if ((listeners.Length > 0 || handlers.Length > 0) && players.Length == 0)

@@ -153,7 +153,9 @@ namespace MMMaellon
         public Animator animator{
             get
             {
+#if COMPILER_UDONSHARP || !UNITY_EDITOR
                 _animator.enabled = true;
+#endif
                 return _animator;
             }
             set
