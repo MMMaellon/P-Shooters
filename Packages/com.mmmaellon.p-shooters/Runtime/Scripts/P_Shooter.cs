@@ -101,6 +101,7 @@ namespace MMMaellon
     public class P_Shooter : SmartObjectSyncListener
     {
         public int damage = 15;
+        public bool selfDamage = false;
         [FieldChangeCallback(nameof(shootSpeed))]
         public float _shootSpeed = 1.0f;
         [FieldChangeCallback(nameof(reloadSpeed))]

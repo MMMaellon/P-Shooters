@@ -589,17 +589,32 @@ namespace MMMaellon
 
         public void OnPShooterHit(P_Shooter otherShooter)
         {
-            if (!Utilities.IsValid(otherShooter))
+            if (!Utilities.IsValid(otherShooter) || !otherShooter.sync.IsLocalOwner())
             {
                 return;
             }
 
+            if (IsOwnerLocal() && !otherShooter.selfDamage)
+            {
+                return;
+            }
+            foreach (PlayerListener listener in playerHandler.playerListeners)
+            {
+                if (!listener.CanDealDamage(_localPlayerObject, this))
+                {
+                    return;
+                }
+            }
             _localPlayerObject.SendDamage(otherShooter.calcDamage(), id);
         }
 
         private int matchingIndex = 0;
         public void SendDamage(int damage, int targetPlayerId)
         {
+            if (!CanDealDamage())
+            {
+                return;
+            }
             //find match if there is one
             for (int i = 0; i < damageTargetId.Length; i++)
             {
