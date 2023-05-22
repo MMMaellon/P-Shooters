@@ -13,8 +13,7 @@ using System.Collections.Immutable;
 namespace MMMaellon
 {
 #if !COMPILER_UDONSHARP && UNITY_EDITOR
-    [CustomEditor(typeof(P_Shooter)), CanEditMultipleObjects]
-    public class P_ShooterEditor : Editor
+    public class P_ShooterEditor : IVRCSDKBuildRequestedCallback
     {
         public static void SetupShooter(P_Shooter shooter)
         {
@@ -33,40 +32,6 @@ namespace MMMaellon
         {
             return !Utilities.IsValid(shooter.sync) || !Utilities.IsValid(shooter.animator);
         }
-        public override void OnInspectorGUI()
-        {
-            bool hasIssue = false;
-            foreach (var t in targets)
-            {
-                P_Shooter shooter = t as P_Shooter;
-                hasIssue = RequiresSetup(shooter);
-                if (hasIssue)
-                {
-                    break;
-                }
-            }
-            if (hasIssue)
-            {
-                EditorGUILayout.LabelField("Setup Required");
-                EditorGUILayout.HelpBox(
-@"Please set up a player object pool in the scene and then use the Setup button below
-", MessageType.Info);
-
-                EditorGUILayout.Space();
-
-                if (GUILayout.Button(new GUIContent("Setup")))
-                {
-                    foreach (var t in targets)
-                    {
-                        P_ShooterEditor.SetupShooter(t as P_Shooter);
-                    }
-                }
-                EditorGUILayout.Space();
-            }
-            if (UdonSharpGUI.DrawDefaultUdonSharpBehaviourHeader(target)) return;
-            EditorGUILayout.Space();
-            base.OnInspectorGUI();
-        }
 
 
         [InitializeOnLoadMethod]
@@ -81,9 +46,16 @@ namespace MMMaellon
             SetupAllPShooters();
         }
 
-        public static void SetupAllPShooters()
+        public int callbackOrder => 0;
+
+        public bool OnBuildRequested(VRCSDKRequestedBuildType requestedBuildType)
         {
-            foreach (P_Shooter shooter in Resources.FindObjectsOfTypeAll<P_Shooter>())
+            return SetupAllPShooters();
+        }
+
+        public static bool SetupAllPShooters()
+        {
+            foreach (P_Shooter shooter in GameObject.FindObjectsOfType<P_Shooter>())
             {
                 if (!EditorUtility.IsPersistent(shooter.transform.root.gameObject) && !(shooter.gameObject.hideFlags == HideFlags.NotEditable || shooter.gameObject.hideFlags == HideFlags.HideAndDontSave))
                 {
@@ -94,6 +66,7 @@ namespace MMMaellon
                     }
                 }
             }
+            return true;
         }
     }
 #endif

@@ -13,8 +13,7 @@ using System.Collections.Immutable;
 namespace MMMaellon
 {
 #if !COMPILER_UDONSHARP && UNITY_EDITOR
-    [CustomEditor(typeof(HealthAndShieldChanger))]
-    public class HealthAndShieldChangerEditor : Editor
+    public class HealthAndShieldChangerEditor : IVRCSDKBuildRequestedCallback
     {
         public static void SetupHealthAndShieldChanger(HealthAndShieldChanger healthAndShield)
         {
@@ -38,31 +37,35 @@ namespace MMMaellon
             serialized.FindProperty("playerHandler").objectReferenceValue = playerHandler;
             serialized.ApplyModifiedProperties();
         }
-        public override void OnInspectorGUI()
+        [InitializeOnLoadMethod]
+        public static void Initialize()
         {
-            HealthAndShieldChanger healthAndShield = target as HealthAndShieldChanger;
-            if (!Utilities.IsValid(healthAndShield))
-            {
-                return;
-            }
-            if (!Utilities.IsValid(healthAndShield.playerHandler))
-            {
-                EditorGUILayout.LabelField("Setup Required");
-                EditorGUILayout.HelpBox(
-@"Please set up a player object pool in the scene and then use the Setup button below
-", MessageType.Info);
+            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+        }
 
-                EditorGUILayout.Space();
+        public static void OnPlayModeStateChanged(PlayModeStateChange change)
+        {
+            if (change != PlayModeStateChange.ExitingEditMode) return;
+            Setup();
+        }
 
-                if (GUILayout.Button(new GUIContent("Set up")))
+        public int callbackOrder => 0;
+
+        public bool OnBuildRequested(VRCSDKRequestedBuildType requestedBuildType)
+        {
+            return Setup();
+        }
+
+        public static bool Setup()
+        {
+            foreach (HealthAndShieldChanger changer in GameObject.FindObjectsOfType<HealthAndShieldChanger>())
+            {
+                if (!EditorUtility.IsPersistent(changer.transform.root.gameObject) && !(changer.gameObject.hideFlags == HideFlags.NotEditable || changer.gameObject.hideFlags == HideFlags.HideAndDontSave))
                 {
-                    HealthAndShieldChangerEditor.SetupHealthAndShieldChanger(target as HealthAndShieldChanger);
+                    SetupHealthAndShieldChanger(changer);
                 }
-                EditorGUILayout.Space();
             }
-            if (UdonSharpGUI.DrawDefaultUdonSharpBehaviourHeader(target)) return;
-            EditorGUILayout.Space();
-            base.OnInspectorGUI();
+            return true;
         }
     }
 #endif
