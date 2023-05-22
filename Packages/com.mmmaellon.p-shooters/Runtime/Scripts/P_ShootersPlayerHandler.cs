@@ -19,6 +19,8 @@ namespace MMMaellon
     {
         public static bool SetupPlayers()
         {
+            Cyan.PlayerObjectPool.CyanPlayerObjectAssigner assigner = GameObject.FindObjectOfType<Cyan.PlayerObjectPool.CyanPlayerObjectAssigner>();
+            assigner.GetComponent<Cyan.PlayerObjectPool.CyanPoolSetupHelper>().RespawnAllPoolObjects();
             Player[] players = GameObject.FindObjectsOfType<Player>();
             PlayerListener[] listeners = GameObject.FindObjectsOfType<PlayerListener>();
             P_ShootersPlayerHandler[] handlers = GameObject.FindObjectsOfType<P_ShootersPlayerHandler>();
@@ -43,7 +45,7 @@ namespace MMMaellon
             }
 
             SerializedObject handler = new SerializedObject(handlers[0]);
-            handler.FindProperty("assigner").objectReferenceValue = GameObject.FindObjectOfType<Cyan.PlayerObjectPool.CyanPlayerObjectAssigner>();
+            handler.FindProperty("assigner").objectReferenceValue = assigner;
             handler.FindProperty("players").ClearArray();
             for (int i = 0; i < players.Length; i++)
             {

@@ -19,6 +19,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _AlphaTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -68,6 +72,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - PixelSnap: 0
     - _ApplyFog: 0
     - _BlendOp: 0
     - _BumpScale: 1
@@ -82,16 +87,21 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EdgeFalloff: 1
+    - _EnableExternalAlpha: 0
+    - _FaceDilate: 0
     - _FogPow: 1
     - _FogScale: 0.75
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _GradientScale: 5
     - _HDRIntensity: 25
     - _Intensity: 1
     - _InvFade: 1
     - _LightPow: 1
     - _LightScale: 0.75
+    - _MaskSoftnessX: 0
+    - _MaskSoftnessY: 0
     - _Metallic: 0
     - _MinimumSize: 0.1
     - _Mode: 0
@@ -100,6 +110,8 @@ Material:
     - _NoLight: 0
     - _OcclusionStrength: 1
     - _Offset: 0
+    - _OutlineSoftness: 0
+    - _OutlineWidth: 0
     - _Parallax: 0.02
     - _ParticleCutoff: 0
     - _ParticleCutoffEnable: 1
@@ -107,9 +119,17 @@ Material:
     - _ParticleDstBlend: 1
     - _ParticleSrcBlend: 1
     - _ParticleZWrite: 0
+    - _PerspectiveFilter: 0.875
     - _PremultiplyAlpha: 0
     - _ReadMask: 255
     - _RenderQueueOverride: -1
+    - _ScaleRatioA: 1
+    - _ScaleRatioB: 1
+    - _ScaleRatioC: 1
+    - _ScaleX: 1
+    - _ScaleY: 1
+    - _ShaderFlags: 0
+    - _Sharpness: 0
     - _SmoothnessTextureChannel: 0
     - _SoftParticles: 0
     - _SpecularHighlights: 1
@@ -118,8 +138,16 @@ Material:
     - _StencilComp: 0
     - _StencilFail: 0
     - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
     - _StencilZFail: 0
+    - _TextureHeight: 512
+    - _TextureWidth: 512
     - _UVSec: 0
+    - _UnderlayDilate: 0
+    - _UnderlayOffsetX: 0
+    - _UnderlayOffsetY: 0
+    - _UnderlaySoftness: 0
     - _UseBicubic: 0
     - _UseCustom: 0
     - _UseDistortion: 0
@@ -127,18 +155,28 @@ Material:
     - _UseRampAlpha: 0
     - _VanishingEnd: 0.1
     - _VanishingStart: 0
+    - _VertexOffsetX: 0
+    - _VertexOffsetY: 0
     - _ViewOffset: 0
     - _VisDistance: 0
+    - _WeightBold: 0.5
+    - _WeightNormal: 0
     - _WriteMask: 255
     - _ZEdge: 0
     - _ZTest: 4
     - _ZWrite: 1
     - _colormask: 15
     m_Colors:
+    - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DetailTimePow: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
+    - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
     - _TimePow: {r: 0, g: 0, b: 0, a: 0}
     - _TintColor: {r: 1, g: 0.8903302, b: 0.5613208, a: 1}
+    - _UnderlayColor: {r: 0, g: 0, b: 0, a: 0.5}
     - _WarpPow: {r: 1, g: 1, b: 1, a: 1}
