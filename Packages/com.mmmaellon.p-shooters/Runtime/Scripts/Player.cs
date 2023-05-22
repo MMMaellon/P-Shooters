@@ -605,21 +605,21 @@ namespace MMMaellon
                     return;
                 }
             }
-            _localPlayerObject.SendDamage(CalcDamage(otherShooter), id);
+            _localPlayerObject.SendDamage(AdjustDamage(otherShooter.damage), id);
         }
 
-        int damage;
-        public int CalcDamage(P_Shooter shooter)
+        int newDamage;
+        public int AdjustDamage(int damage)
         {
-            damage = shooter.damage;
+            newDamage = damage;
             foreach(PlayerListener listener in playerHandler.playerListeners)
             {
                 if (listener.ControlsDamage)
                 {
-                    damage = listener.AdjustDamage(_localPlayerObject, this, damage);
+                    newDamage = listener.AdjustDamage(_localPlayerObject, this, newDamage);
                 }
             }
-            return damage;
+            return newDamage;
         }
 
         private int matchingIndex = 0;

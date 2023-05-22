@@ -23,19 +23,19 @@ namespace MMMaellon
                 Debug.LogError("<color=red>[P-Shooter Damage And Heal AUTOSETUP]: FAILED</color> No Damage And Heal Found");
                 return;
             }
-            Cyan.PlayerObjectPool.CyanPlayerObjectAssigner assigner = GameObject.FindObjectOfType<Cyan.PlayerObjectPool.CyanPlayerObjectAssigner>();
-            if (!Utilities.IsValid(assigner))
+            P_ShootersPlayerHandler playerHandler = GameObject.FindObjectOfType<P_ShootersPlayerHandler>();
+            if (!Utilities.IsValid(playerHandler))
             {
-                Debug.LogError("<color=red>[P-Shooter Damage And Heal AUTOSETUP]: FAILED</color> Could not find player object pool. Please set up a player object pool");
+                Debug.LogError("<color=red>[P-Shooter Damage And Heal AUTOSETUP]: FAILED</color> Could not find the P-Shooters Player Handler.");
                 return;
             }
-            if (!Utilities.IsValid(assigner.GetComponentInChildren<Player>()))
+            if (!Utilities.IsValid(playerHandler.GetComponentInChildren<Player>()))
             {
                 Debug.LogError("<color=red>[P-Shooter Damage And Heal AUTOSETUP]: FAILED</color> Could not find players in player object pool. Please make sure your player prefab uses a Player script on the root object");
                 return;
             }
             SerializedObject serialized = new SerializedObject(healthAndShield);
-            serialized.FindProperty("assigner").objectReferenceValue = assigner;
+            serialized.FindProperty("playerHandler").objectReferenceValue = playerHandler;
             serialized.ApplyModifiedProperties();
         }
         public override void OnInspectorGUI()
@@ -45,7 +45,7 @@ namespace MMMaellon
             {
                 return;
             }
-            if (!Utilities.IsValid(healthAndShield.assigner))
+            if (!Utilities.IsValid(healthAndShield.playerHandler))
             {
                 EditorGUILayout.LabelField("Setup Required");
                 EditorGUILayout.HelpBox(
@@ -72,11 +72,12 @@ namespace MMMaellon
         public bool affectInvincibilePlayers = false;
         public bool affectHealth = true;
         public bool affectShield = true;
+        public bool adjustDamageWithPlayerListeners = true;
         public bool incrementByValue = true;
         [Tooltip("When incrementByValue is true, positive values heal players, negative values damage players. Otherwise, it just sets the value")]
         public int value;
         [HideInInspector]
-        public Cyan.PlayerObjectPool.CyanPlayerObjectAssigner assigner;
+        public P_ShootersPlayerHandler playerHandler;
         [System.NonSerialized]
         Player localPlayer;
 
@@ -86,28 +87,13 @@ namespace MMMaellon
             HealthAndShieldChangerEditor.SetupHealthAndShieldChanger(this);
         }
 #endif
-        void Start()
-        {
-        }
 
         public void Change()
         {
-            if (!Utilities.IsValid(localPlayer))
-            {
-                GameObject obj = assigner._GetPlayerPooledObject(Networking.LocalPlayer);
-                if (!Utilities.IsValid(obj))
-                {
-                    return;
-                }
-                localPlayer = obj.GetComponent<Player>();
-                if (!Utilities.IsValid(localPlayer))
-                {
-                    return;
-                }
-            }
-            ChangePlayer(localPlayer);
+            ChangePlayer(playerHandler.localPlayer);
         }
 
+        int damage;
         public void ChangePlayer(Player player)
         {
             if (!Utilities.IsValid(player))
@@ -118,36 +104,44 @@ namespace MMMaellon
             {
                 return;
             }
-            if (value > 0)
-            {
-                player.lastHealer = player;
-            } else
-            {
-                player.lastAttacker = player;
-            }
             if (incrementByValue)
             {
+                damage = value;
+                if (adjustDamageWithPlayerListeners)
+                {
+                    damage = player.AdjustDamage(damage);
+                }
+                if (damage > 0)
+                {
+                    player.lastHealer = player;
+                }
+                else
+                {
+                    player.lastAttacker = player;
+                }
                 if (affectHealth && affectShield)
                 {
-                    if (value > 0)
+                    if (damage > 0)
                     {
-                        player.ReceiveHealth(value, false);
+                        player.ReceiveHealth(damage, false);
                     }
                     else
                     {
-                        player.ReceiveDamage(-value, false);
+                        player.ReceiveDamage(-damage, false);
                     }
                 }
                 else if (affectShield)
                 {
-                    player.shield += value;
+                    player.shield += damage;
                 }
                 else if (affectHealth)
                 {
-                    player.health += value;
+                    player.health += damage;
                 }
             } else
             {
+                player.lastHealer = player;
+                player.lastAttacker = player;
                 if (affectHealth && affectShield)
                 {
                     player.health = value;
