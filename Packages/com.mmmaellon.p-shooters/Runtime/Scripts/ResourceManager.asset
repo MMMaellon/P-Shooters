@@ -50,19 +50,19 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: assigner
+      Data: playerHandler
     - Name: $v
       Entry: 7
       Data: 2|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: assigner
+      Data: playerHandler
     - Name: <UserType>k__BackingField
       Entry: 7
       Data: 3|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: Cyan.PlayerObjectPool.CyanPlayerObjectAssigner, Cyan.PlayerObjectPool.UdonSharp
+      Data: MMMaellon.P_ShootersPlayerHandler, com.mmmaellon.p-shooters
     - Name: 
       Entry: 8
       Data: 
