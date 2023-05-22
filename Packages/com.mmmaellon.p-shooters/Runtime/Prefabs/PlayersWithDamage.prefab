@@ -168,7 +168,7 @@ MonoBehaviour:
   - {fileID: 0}
   respawnDamageCooldown: 0
   playerListeners: []
-  assigner: {fileID: 0}
+  assigner: {fileID: 3387802532356035583}
 --- !u!1 &4050281728191537473
 GameObject:
   m_ObjectHideFlags: 0
@@ -668,7 +668,7 @@ PrefabInstance:
         type: 3}
       propertyPath: poolEventListener
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 7820638178802474667}
     - target: {fileID: -3945521236885312116, guid: 86c96d853d1a64c489730cfa917f604e,
         type: 3}
       propertyPath: serializationData.Prefab
@@ -765,3 +765,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 7367138174057905779}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3387802532356035583 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -3945521236885312116, guid: 86c96d853d1a64c489730cfa917f604e,
+    type: 3}
+  m_PrefabInstance: {fileID: 7367138174057905779}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 511c88e9e2f5ef84aa091d7eca6eeb51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
