@@ -129,6 +129,7 @@ GameObject:
   - component: {fileID: 4663366338715102013}
   - component: {fileID: 7775344349608860461}
   - component: {fileID: 3960682286752220552}
+  - component: {fileID: 1466223848799953716}
   m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
@@ -181,11 +182,16 @@ MonoBehaviour:
   damageLayers:
     serializedVersion: 2
     m_Bits: 0
-  _statsAnimator: {fileID: 0}
-  eventAnimator: {fileID: 0}
-  listeners: []
+  _statsAnimator: {fileID: 8249617076228757282}
+  eventAnimator: {fileID: 1466223848799953716}
+  playerHandler: {fileID: 0}
   defaultHeight: 2
+  _syncedResources: 
+  _localResources: 
   resources: []
+  resourceIdMap: 
+  reverseSyncResourceIdMap: 
+  reverseLocalResourceIdMap: 
 --- !u!114 &4663366338715102013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,6 +248,25 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!95 &1466223848799953716
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5399658603550781711}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &6235565586414843424
 GameObject:
   m_ObjectHideFlags: 0
