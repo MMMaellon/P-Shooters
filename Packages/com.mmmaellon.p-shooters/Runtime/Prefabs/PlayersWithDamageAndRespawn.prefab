@@ -116,6 +116,11 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 7367138173251141170, guid: 2bf34f3678b77e3409511e56f09eb3e4,
         type: 3}
+      propertyPath: assigner
+      value: 
+      objectReference: {fileID: 7358157168068122631}
+    - target: {fileID: 7367138173251141170, guid: 2bf34f3678b77e3409511e56f09eb3e4,
+        type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 7367138173251141170, guid: 2bf34f3678b77e3409511e56f09eb3e4,
@@ -1515,5 +1520,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 41544ec167ea3f048a7fc585ccb1b3b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7358157168068122631 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3387802532356035583, guid: 2bf34f3678b77e3409511e56f09eb3e4,
+    type: 3}
+  m_PrefabInstance: {fileID: 5268798704427584504}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 511c88e9e2f5ef84aa091d7eca6eeb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
