@@ -24,6 +24,7 @@ namespace MMMaellon
             resources = GameObject.FindObjectsOfType<ResourceManager>();
             BuildResourceIdMap();
             Cyan.PlayerObjectPool.CyanPlayerObjectAssigner sceneAssigner = GameObject.FindObjectOfType<Cyan.PlayerObjectPool.CyanPlayerObjectAssigner>();
+            P_ShootersPlayerHandler playerHandler = GameObject.FindObjectOfType<P_ShootersPlayerHandler>();
             if (!Utilities.IsValid(sceneAssigner))
             {
                 Debug.LogError("<color=red>[P-Shooter Resource AUTOSETUP]: FAILED</color> Could not find Cyan.PlayerObjectPool.CyanPlayerObjectAssigner object. Please set up a player object pool");
@@ -42,7 +43,7 @@ namespace MMMaellon
                     continue;
                 }
                 SerializedObject serialized = new SerializedObject(resources[i]);
-                serialized.FindProperty("assigner").objectReferenceValue = sceneAssigner;
+                serialized.FindProperty("playerHandler").objectReferenceValue = playerHandler;
                 serialized.FindProperty("id").intValue = i;
                 serialized.ApplyModifiedProperties();
             }
@@ -197,7 +198,7 @@ For example, you probably don't need to sync ammo or coins because you usually c
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
     public class ResourceManager : UdonSharpBehaviour
     {
-        public Cyan.PlayerObjectPool.CyanPlayerObjectAssigner assigner;
+        public P_ShootersPlayerHandler playerHandler;
         public bool synced;
         public string resourceName;
         [System.NonSerialized]
@@ -223,7 +224,7 @@ For example, you probably don't need to sync ammo or coins because you usually c
             {
                 if (!Utilities.IsValid(_localPlayerObject))
                 {
-                    GameObject playerObj = assigner._GetPlayerPooledObject(Networking.LocalPlayer);
+                    GameObject playerObj = playerHandler.assigner._GetPlayerPooledObject(Networking.LocalPlayer);
                     if (!Utilities.IsValid(playerObj))
                     {
                         return _localPlayerObject;

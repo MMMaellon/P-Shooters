@@ -227,7 +227,6 @@ MonoBehaviour:
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
-  preventPickupSnapping: 0
   lerpTime: 0.1
   kinematicWhileHeld: 1
   nonKinematicPickupJitterPreventionTime: 0
@@ -575,7 +574,7 @@ MonoBehaviour:
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 2012449602}
   targetUdon: {fileID: 1619756972741539295}
-  targetUdonEvent: ToggleAltFire
+  targetUdonEvent: Cycle
   onInteract: 1
   onPickup: 0
   onPickupUseDown: 0
@@ -760,7 +759,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6589608277332648548}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -30.000002, y: 90.00001, z: 0}
 --- !u!198 &2700295838802104633
 ParticleSystem:
@@ -1388,7 +1387,7 @@ ParticleSystem:
         m_RotationOrder: 4
   ShapeModule:
     serializedVersion: 6
-    enabled: 1
+    enabled: 0
     type: 18
     angle: 0
     length: 5
@@ -5575,6 +5574,7 @@ MonoBehaviour:
   animator: {fileID: 6589608277433838876}
   _rapidFire: 1
   _altFire: 0
+  altFireModeCount: 1
 --- !u!114 &1157590988920738970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5597,7 +5597,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 8397389300495070513}
-  audioSource: {fileID: 6589608277433838872}
+  audioSource: {fileID: 4317792030358083477}
   reloads:
   - {fileID: 8300000, guid: e8b508355b22ecb4fbe962658425f41d, type: 3}
   reloadVol: 1
@@ -5865,23 +5865,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8204062348622303114, guid: af792625e2673b348a0c7af3efc10c5b,
         type: 3}
+    - target: {fileID: 9021772978981145409, guid: af792625e2673b348a0c7af3efc10c5b,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: af792625e2673b348a0c7af3efc10c5b, type: 3}
 --- !u!4 &6589608277332648548 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8204062348347028807, guid: af792625e2673b348a0c7af3efc10c5b,
-    type: 3}
-  m_PrefabInstance: {fileID: 3073797925806233379}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &6589608278808157693 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8204062349822659294, guid: af792625e2673b348a0c7af3efc10c5b,
-    type: 3}
-  m_PrefabInstance: {fileID: 3073797925806233379}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &6589608277433838872 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 8204062348515326523, guid: af792625e2673b348a0c7af3efc10c5b,
     type: 3}
   m_PrefabInstance: {fileID: 3073797925806233379}
   m_PrefabAsset: {fileID: 0}
@@ -5894,6 +5887,18 @@ Animator:
 --- !u!1 &6589608277433838867 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8204062348515326512, guid: af792625e2673b348a0c7af3efc10c5b,
+    type: 3}
+  m_PrefabInstance: {fileID: 3073797925806233379}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &4317792030358083477 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 1244033721330483382, guid: af792625e2673b348a0c7af3efc10c5b,
+    type: 3}
+  m_PrefabInstance: {fileID: 3073797925806233379}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6589608278808157693 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8204062349822659294, guid: af792625e2673b348a0c7af3efc10c5b,
     type: 3}
   m_PrefabInstance: {fileID: 3073797925806233379}
   m_PrefabAsset: {fileID: 0}

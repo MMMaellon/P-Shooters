@@ -252,11 +252,6 @@ namespace MMMaellon
             reloadSpeed = reloadSpeed;
         }
 
-        public int calcDamage()
-        {
-            return damage;
-        }
-
         public void EnableAnimator()
         {
             _animator.enabled = true;

@@ -42,6 +42,11 @@ namespace MMMaellon
             return true;
         }
 
+        public virtual int AdjustDamage(Player attacker, Player receiver, int damage)
+        {
+            return damage;
+        }
+
         public virtual void OnReceiveNormalKillConfirmation(Player attacker)
         {
 

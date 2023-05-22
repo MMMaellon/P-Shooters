@@ -43,6 +43,7 @@ namespace MMMaellon
             }
 
             SerializedObject handler = new SerializedObject(handlers[0]);
+            handler.FindProperty("assigner").objectReferenceValue = GameObject.FindObjectOfType<Cyan.PlayerObjectPool.CyanPlayerObjectAssigner>();
             handler.FindProperty("players").ClearArray();
             for (int i = 0; i < players.Length; i++)
             {
@@ -97,6 +98,7 @@ namespace MMMaellon
         public Player localPlayer;
         public float respawnDamageCooldown;
         public PlayerListener[] playerListeners;
+        public Cyan.PlayerObjectPool.CyanPlayerObjectAssigner assigner;
         void Start()
         {
             if (Utilities.IsValid(players))
