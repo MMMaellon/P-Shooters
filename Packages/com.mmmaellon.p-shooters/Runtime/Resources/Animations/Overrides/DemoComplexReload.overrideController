@@ -7,7 +7,7 @@ AnimatorOverrideController:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: DemoComplexReload
-  m_Controller: {fileID: 9100000, guid: fb5f5adb926eca047826dc6535f8d4c5, type: 2}
+  m_Controller: {fileID: 9100000, guid: 5d121f0ccd07d0643962aecaf1ec398a, type: 2}
   m_Clips:
   - m_OriginalClip: {fileID: 7400000, guid: 58650065cd78dca4ab8ad1f9d326f4ee, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 2beff0f47be625c4cbd891617daaf394, type: 2}

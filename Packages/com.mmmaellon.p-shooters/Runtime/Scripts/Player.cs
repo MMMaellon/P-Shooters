@@ -97,8 +97,24 @@ namespace MMMaellon.P_Shooters
         public int[] damageMatrix = new int[82];
         [System.NonSerialized, UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(shield))]
         public int _shield = 100;
-        public int defaultShield = 100;
-        public int maxShield = 100;
+        [System.NonSerialized, UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(maxShield))]
+        public int _maxShield = 100;
+        public int maxShield
+        {
+            get => _maxShield;
+            set
+            {
+                if (_maxHealth != value)
+                {
+                    _maxShield = value;
+                    _SetShieldBar();
+                    if (IsOwnerLocal())
+                    {
+                        RequestSerialization();
+                    }
+                }
+            }
+        }
         public int shield
         {
             get => _shield;
@@ -130,10 +146,7 @@ namespace MMMaellon.P_Shooters
                         _OnDecreaseShield();
                     }
                 }
-                if (Utilities.IsValid(statsAnimator))
-                {
-                    statsAnimator.SetFloat("shield", Mathf.Clamp01((float)value / (float)maxShield));
-                }
+                _SetShieldBar();
                 if (IsOwnerLocal())
                 {
                     RequestSerialization();
@@ -142,8 +155,21 @@ namespace MMMaellon.P_Shooters
         }
         [System.NonSerialized, UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(health))]
         public int _health = 100;
-        public int defaultHealth = 100;
-        public int maxHealth = 100;
+        [System.NonSerialized, UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(maxHealth))]
+        public int _maxHealth = 100;
+        public int maxHealth
+        {
+            get => _maxHealth;
+            set
+            {
+                _maxHealth = value;
+                _SetHealthBar();
+                if (IsOwnerLocal())
+                {
+                    RequestSerialization();
+                }
+            }
+        }
         public int health
         {
             get => _health;
@@ -176,17 +202,13 @@ namespace MMMaellon.P_Shooters
                         _OnDecreaseHealth();
                     }
                 }
-                if (Utilities.IsValid(statsAnimator))
-                {
-                    statsAnimator.SetFloat("health", Mathf.Clamp01((float)value / (float)maxHealth));
-                }
+                _SetHealthBar();
                 if (IsOwnerLocal())
                 {
                     RequestSerialization();
                 }
             }
         }
-        public LayerMask meleeLayer;
         [Tooltip("Will automatically set \"health\" and \"shield\" float parameters and a \"team\" integer parameter on this animator")]
         [FieldChangeCallback(nameof(statsAnimator))]
         public Animator _statsAnimator = null;
@@ -336,8 +358,8 @@ namespace MMMaellon.P_Shooters
         {
             if (IsOwnerLocal())
             {
-                shield = defaultShield;
-                health = defaultHealth;
+                shield = playerHandler.startingShield;
+                health = playerHandler.startingHealth;
             }
             foreach (ResourceManager resource in resources)
             {
@@ -382,6 +404,20 @@ namespace MMMaellon.P_Shooters
                 {
                     statsAnimator.SetInteger(resource.resourceName, GetResourceValueById(resource.id));
                 }
+            }
+        }
+        public void _SetHealthBar()
+        {
+            if (Utilities.IsValid(statsAnimator))
+            {
+                statsAnimator.SetFloat("health", Mathf.Clamp01((float)health / (float)maxHealth));
+            }
+        }
+        public void _SetShieldBar()
+        {
+            if (Utilities.IsValid(statsAnimator))
+            {
+                statsAnimator.SetFloat("shield", Mathf.Clamp01((float)shield / (float)maxShield));
             }
         }
         public int GetResourceId(string resourceName)
@@ -569,18 +605,33 @@ namespace MMMaellon.P_Shooters
         public void _OnChangeResource(ResourceManager resource, int oldValue, int newValue)
         {
         }
+        P_Shooter otherPShooter;
 
         public void OnParticleCollision(GameObject other)
         {
-            P_Shooter otherShooter = other.GetComponent<P_Shooter>();
-            OnPShooterHit(Utilities.IsValid(otherShooter) ? otherShooter : other.GetComponentInParent<P_Shooter>());
+            otherPShooter = other.GetComponent<P_Shooter>();
+            if (!Utilities.IsValid(otherPShooter))
+            {
+                otherPShooter = other.GetComponentInParent<P_Shooter>();
+            }
+            if (Utilities.IsValid(otherPShooter) && otherPShooter.damageOnParticleCollision)
+            {
+                OnPShooterHit(otherPShooter);
+            }
         }
         public void OnTriggerEnter(Collider other)
         {
-            if (meleeLayer == (meleeLayer | (1 << other.gameObject.layer)))
+            if (playerHandler.meleeLayer == (playerHandler.meleeLayer | (1 << other.gameObject.layer)))
             {
-                P_Shooter otherShooter = other.GetComponent<P_Shooter>();
-                OnPShooterHit(Utilities.IsValid(otherShooter) ? otherShooter : otherShooter.GetComponentInParent<P_Shooter>());
+                otherPShooter = other.GetComponent<P_Shooter>();
+                if (!Utilities.IsValid(otherPShooter))
+                {
+                    otherPShooter = other.GetComponentInParent<P_Shooter>();
+                }
+                if (Utilities.IsValid(otherPShooter) && otherPShooter.damageOnTriggerEnter)
+                {
+                    OnPShooterHit(otherPShooter);
+                }
             }
         }
 
@@ -602,7 +653,7 @@ namespace MMMaellon.P_Shooters
                     return;
                 }
             }
-            _localPlayerObject.SendDamage(AdjustDamage(otherShooter.damage), id);
+            _localPlayerObject.SendDamage(AdjustDamage(otherShooter.CalcDamage()), id);
         }
 
         int newDamage;

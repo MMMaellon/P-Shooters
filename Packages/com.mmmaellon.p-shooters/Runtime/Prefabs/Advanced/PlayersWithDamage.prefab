@@ -166,7 +166,13 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  respawnDamageCooldown: 0
+  startingMaxHealth: 100
+  startingMaxShield: 100
+  startingShield: 100
+  startingHealth: 100
+  meleeLayer:
+    serializedVersion: 2
+    m_Bits: 16
   playerListeners: []
   assigner: {fileID: 3387802532356035583}
 --- !u!1 &4050281728191537473

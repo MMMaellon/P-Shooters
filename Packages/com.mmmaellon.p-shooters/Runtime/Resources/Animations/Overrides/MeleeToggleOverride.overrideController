@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MeleeToggleOverride
+  m_Controller: {fileID: 9100000, guid: fb5f5adb926eca047826dc6535f8d4c5, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 33c2b075b1044534daeb50c9fda2259a, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: d7de31c6714f264469b0ec758a9b4ecf, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: c3359d042c5600d4997a7ba703ec8f0b, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: ca285db9b7bcb94479575f954d8919cf, type: 2}

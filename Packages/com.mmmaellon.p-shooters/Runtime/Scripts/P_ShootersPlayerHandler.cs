@@ -18,7 +18,11 @@ namespace MMMaellon.P_Shooters
         public Player[] players;
         [System.NonSerialized]
         public Player localPlayer;
-        public float respawnDamageCooldown;
+        public int startingMaxHealth = 100;
+        public int startingMaxShield = 100;
+        public int startingShield = 100;
+        public int startingHealth = 100;
+        public LayerMask meleeLayer;
         public PlayerListener[] playerListeners;
         public Cyan.PlayerObjectPool.CyanPlayerObjectAssigner assigner;
         void Start()

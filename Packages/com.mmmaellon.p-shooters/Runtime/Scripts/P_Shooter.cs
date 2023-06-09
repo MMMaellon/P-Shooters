@@ -16,7 +16,12 @@ namespace MMMaellon.P_Shooters
     public class P_Shooter : SmartObjectSyncListener
     {
         public int damage = 15;
+        public bool damageOnTriggerEnter = false;
+        public bool damageOnParticleCollision = true;
+        public bool damageWhenNotHeld = false;
         public bool selfDamage = false;
+        public bool toggleableDamage = false;
+        public bool toggleOffOnDrop = true;
         [FieldChangeCallback(nameof(shootSpeed))]
         public float _shootSpeed = 1.0f;
         [FieldChangeCallback(nameof(reloadSpeed))]
@@ -61,9 +66,9 @@ namespace MMMaellon.P_Shooters
         public const int STATE_RELOAD = 3;//gun is not able to shoot because you're stuck in a reload animation
         [System.NonSerialized]
         public const int STATE_DISABLED = 4;//gun jammed or overheated or something
+        public ParticleSystem shootParticles;
 
         [Header("Required Components")]
-        public ParticleSystem shootParticles;
         public SmartObjectSync sync;
         public Animator _animator;
         public Animator animator{
@@ -211,7 +216,10 @@ namespace MMMaellon.P_Shooters
                 return;
             }
             _print("ShootFX");
-            shootParticles.Play();
+            if (Utilities.IsValid(shootParticles))
+            {
+                shootParticles.Play();
+            }
             if (Utilities.IsValid(gunshotSource) && gunshots.Length > 0)
             {
                 if (overlapGunshotSounds)
@@ -227,23 +235,57 @@ namespace MMMaellon.P_Shooters
 
         public override void OnPickupUseDown()
         {
-            if (state != STATE_IDLE)
+            if (!toggleableDamage)
             {
-                return;
-            }
-            
-            if (Utilities.IsValid(ammo))
+                if (state != STATE_IDLE)
+                {
+                    return;
+                }
+
+                if (Utilities.IsValid(ammo))
+                {
+                    ammo.Shoot();
+                }
+                else
+                {
+                    state = STATE_SHOOT;
+                }
+            } else
             {
-                ammo.Shoot();
-            }
-            else 
-            {
-                state = STATE_SHOOT;
+                if (state != STATE_IDLE && state != STATE_SHOOT)
+                {
+                    return;
+                }
+
+                else if (state == STATE_IDLE)
+                {
+                    if (Utilities.IsValid(ammo))
+                    {
+                        ammo.Shoot();
+                    } else
+                    {
+                        state = STATE_SHOOT;
+                    }
+                } else
+                {
+                    state = STATE_IDLE;
+                }
             }
         }
         public override void OnPickupUseUp()
         {
-            if (state == STATE_SHOOT || state == STATE_EMPTY)
+            if (!toggleableDamage)
+            {
+                if (state == STATE_SHOOT || state == STATE_EMPTY)
+                {
+                    state = STATE_IDLE;
+                }
+            }
+        }
+
+        public override void OnDrop()
+        {
+            if (toggleableDamage && toggleOffOnDrop && state == STATE_SHOOT)
             {
                 state = STATE_IDLE;
             }
@@ -288,6 +330,15 @@ namespace MMMaellon.P_Shooters
             }
 
             state = STATE_IDLE;
+        }
+
+        public int CalcDamage()
+        {
+            if (damageWhenNotHeld && !sync.IsHeld())
+            {
+                return 0;
+            }
+            return damage;
         }
     }
 }

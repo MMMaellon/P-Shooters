@@ -122,6 +122,10 @@ namespace MMMaellon.P_Shooters
             {
                 Scope.SetupScope(scope);
             }
+            foreach (ParticleCollisionSFX sfx in GameObject.FindObjectsOfType<ParticleCollisionSFX>())
+            {
+                ParticleCollisionSFX.SetupParticleCollisionSFX(sfx);
+            }
 
             P_ShootersPlayerHandler.SetupPlayers();
 
