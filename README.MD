@@ -28,4 +28,5 @@ View the readme and source code of version 1 here: <https://github.com/MMMaellon
  - [Udon 1.X (with VCC)](https://docs.vrchat.com/docs/getting-started-with-udon)
  - [Udon Sharp](https://udonsharp.docs.vrchat.com/setup)
  - [SmartObjectSync](https://github.com/MMMaellon/SmartObjectSync) (Version 2 Only)
+ - [CyanPlayerObjectPool](https://github.com/CyanLaser/CyanPlayerObjectPool)
  - [Silent's Magic Particle Shader](https://gitlab.com/s-ilent/magic-particles.git)
