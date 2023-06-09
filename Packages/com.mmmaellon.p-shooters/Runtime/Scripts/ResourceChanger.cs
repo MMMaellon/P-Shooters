@@ -10,7 +10,7 @@ using UdonSharpEditor;
 using System.Collections.Immutable;
 #endif
 
-namespace MMMaellon
+namespace MMMaellon.P_Shooters
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
     public class ResourceChanger : UdonSharpBehaviour

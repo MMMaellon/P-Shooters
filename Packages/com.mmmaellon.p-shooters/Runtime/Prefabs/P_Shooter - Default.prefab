@@ -227,7 +227,6 @@ MonoBehaviour:
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
-  lerpTime: 0.1
   kinematicWhileHeld: 1
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 0
@@ -237,6 +236,7 @@ MonoBehaviour:
   states: []
   listeners: []
   SetupRan: 1
+  lastSerializeRequest: -1001
 --- !u!114 &458532004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5597,6 +5597,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 8397389300495070513}
+  shooter: {fileID: 0}
   audioSource: {fileID: 4317792030358083477}
   reloads:
   - {fileID: 8300000, guid: e8b508355b22ecb4fbe962658425f41d, type: 3}

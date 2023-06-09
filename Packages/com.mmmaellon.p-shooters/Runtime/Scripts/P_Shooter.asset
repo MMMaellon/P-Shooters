@@ -21,7 +21,7 @@ MonoBehaviour:
   compiledVersion: 2
   behaviourSyncMode: 4
   hasInteractEvent: 0
-  scriptID: -1673986758035248712
+  scriptID: -3061615297422781448
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
@@ -629,7 +629,7 @@ MonoBehaviour:
       Data: 37|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: MMMaellon.AmmoTracker, com.mmmaellon.p-shooters
+      Data: MMMaellon.P_Shooters.AmmoTracker, com.mmmaellon.p-shooters
     - Name: 
       Entry: 8
       Data: 
@@ -647,7 +647,7 @@ MonoBehaviour:
       Data: 
     - Name: <IsSerialized>k__BackingField
       Entry: 5
-      Data: false
+      Data: true
     - Name: _fieldAttributes
       Entry: 7
       Data: 38|System.Collections.Generic.List`1[[System.Attribute, mscorlib]], mscorlib
@@ -656,7 +656,7 @@ MonoBehaviour:
       Data: 1
     - Name: 
       Entry: 7
-      Data: 39|System.NonSerializedAttribute, mscorlib
+      Data: 39|UnityEngine.HideInInspector, UnityEngine.CoreModule
     - Name: 
       Entry: 8
       Data: 

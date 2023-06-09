@@ -10,66 +10,8 @@ using UdonSharpEditor;
 using System.Collections.Immutable;
 #endif
 
-namespace MMMaellon
+namespace MMMaellon.P_Shooters
 {
-#if !COMPILER_UDONSHARP && UNITY_EDITOR
-    public class HealthAndShieldChangerEditor : IVRCSDKBuildRequestedCallback
-    {
-        public static void SetupHealthAndShieldChanger(HealthAndShieldChanger healthAndShield)
-        {
-            if (!Utilities.IsValid(healthAndShield))
-            {
-                Debug.LogError("<color=red>[P-Shooter Damage And Heal AUTOSETUP]: FAILED</color> No Damage And Heal Found");
-                return;
-            }
-            P_ShootersPlayerHandler playerHandler = GameObject.FindObjectOfType<P_ShootersPlayerHandler>();
-            if (!Utilities.IsValid(playerHandler))
-            {
-                Debug.LogError("<color=red>[P-Shooter Damage And Heal AUTOSETUP]: FAILED</color> Could not find the P-Shooters Player Handler.");
-                return;
-            }
-            if (!Utilities.IsValid(playerHandler.GetComponentInChildren<Player>()))
-            {
-                Debug.LogError("<color=red>[P-Shooter Damage And Heal AUTOSETUP]: FAILED</color> Could not find players in player object pool. Please make sure your player prefab uses a Player script on the root object");
-                return;
-            }
-            SerializedObject serialized = new SerializedObject(healthAndShield);
-            serialized.FindProperty("playerHandler").objectReferenceValue = playerHandler;
-            serialized.ApplyModifiedProperties();
-        }
-        [InitializeOnLoadMethod]
-        public static void Initialize()
-        {
-            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
-        }
-
-        public static void OnPlayModeStateChanged(PlayModeStateChange change)
-        {
-            if (change != PlayModeStateChange.ExitingEditMode) return;
-            Setup();
-        }
-
-        public int callbackOrder => 0;
-
-        public bool OnBuildRequested(VRCSDKRequestedBuildType requestedBuildType)
-        {
-            return Setup();
-        }
-
-        public static bool Setup()
-        {
-            foreach (HealthAndShieldChanger changer in GameObject.FindObjectsOfType<HealthAndShieldChanger>())
-            {
-                if (!EditorUtility.IsPersistent(changer.transform.root.gameObject) && !(changer.gameObject.hideFlags == HideFlags.NotEditable || changer.gameObject.hideFlags == HideFlags.HideAndDontSave))
-                {
-                    SetupHealthAndShieldChanger(changer);
-                }
-            }
-            return true;
-        }
-    }
-#endif
-
     public class HealthAndShieldChanger : UdonSharpBehaviour
     {
         public bool affectInvincibilePlayers = false;
@@ -87,7 +29,29 @@ namespace MMMaellon
 #if !COMPILER_UDONSHARP && UNITY_EDITOR
         public void Reset()
         {
-            HealthAndShieldChangerEditor.SetupHealthAndShieldChanger(this);
+            SetupHealthAndShieldChanger(this);
+        }
+        public static void SetupHealthAndShieldChanger(HealthAndShieldChanger healthAndShield)
+        {
+            if (!Utilities.IsValid(healthAndShield) || (Utilities.IsValid(healthAndShield.playerHandler)))
+            {
+                //was null or was already set up
+                return;
+            }
+            if (!Helper.IsEditable(healthAndShield))
+            {
+                Helper.ErrorLog(healthAndShield, "Health And Shield Changer is not editable");
+                return;
+            }
+            P_ShootersPlayerHandler playerHandler = GameObject.FindObjectOfType<P_ShootersPlayerHandler>();
+            if (!Utilities.IsValid(playerHandler))
+            {
+                Helper.ErrorLog(healthAndShield, "Could not find a P-Shooters Player Handler in the scene");
+                return;
+            }
+            SerializedObject serialized = new SerializedObject(healthAndShield);
+            serialized.FindProperty("playerHandler").objectReferenceValue = playerHandler;
+            serialized.ApplyModifiedProperties();
         }
 #endif
 

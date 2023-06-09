@@ -21,7 +21,7 @@ MonoBehaviour:
   compiledVersion: 2
   behaviourSyncMode: 4
   hasInteractEvent: 0
-  scriptID: -1242332489761167185
+  scriptID: -7218300210924726946
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
@@ -788,7 +788,7 @@ MonoBehaviour:
       Data: 40|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: MMMaellon.MultiStageConstraint, com.mmmaellon.p-shooters
+      Data: MMMaellon.P_Shooters.MultiStageConstraint, com.mmmaellon.p-shooters
     - Name: 
       Entry: 8
       Data: 

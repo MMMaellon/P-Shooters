@@ -9,9 +9,10 @@ using VRC.SDKBase.Editor.BuildPipeline;
 using UnityEditor;
 using UdonSharpEditor;
 using System.Collections.Generic;
+using VRC.Udon.Serialization;
 #endif
 
-namespace MMMaellon
+namespace MMMaellon.P_Shooters
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.Manual), RequireComponent(typeof(ChildAttachmentState))]
     public class Mag : SmartObjectSyncListener
@@ -62,9 +63,28 @@ namespace MMMaellon
 #if !COMPILER_UDONSHARP && UNITY_EDITOR
         public void Reset()
         {
-            SerializedObject serialized = new SerializedObject(this);
-            serialized.FindProperty(nameof(childState)).objectReferenceValue = GetComponent<ChildAttachmentState>();
+            SetupMag(this);
+        }
+        public static void SetupMag(Mag mag)
+        {
+            if (!Utilities.IsValid(mag) || (Utilities.IsValid(mag.childState) && mag.childState.gameObject == mag.gameObject))
+            {
+                //was null or was already set up
+                return;
+            }
+            if (!Helper.IsEditable(mag))
+            {
+                Helper.ErrorLog(mag, "Mag is not editable");
+                return;
+            }
+            SerializedObject serialized = new SerializedObject(mag);
+            serialized.FindProperty(nameof(childState)).objectReferenceValue = mag.GetComponent<ChildAttachmentState>();
             serialized.ApplyModifiedProperties();
+            if (mag.childState == null)
+            {
+                Helper.ErrorLog(mag, "Mag is missing a ChildAttachmentState");
+                return;
+            }
         }
 #endif
 

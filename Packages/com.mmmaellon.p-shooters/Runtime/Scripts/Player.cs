@@ -4,7 +4,7 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon.Serialization;
 
-namespace MMMaellon
+namespace MMMaellon.P_Shooters
 {
     [RequireComponent(typeof(CapsuleCollider)), UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
     public class Player : Cyan.PlayerObjectPool.CyanPlayerObjectPoolObject
@@ -23,7 +23,7 @@ namespace MMMaellon
         public VRCPlayerApi _localPlayer = null;
         [System.NonSerialized]
         public Player _localPlayerObject = null;
-        [System.NonSerialized]
+        [HideInInspector]
         public CapsuleCollider capsuleCollider = null;
         void Start()
         {
@@ -35,7 +35,6 @@ namespace MMMaellon
             }
             parent = transform.parent;
             _localPlayer = Networking.LocalPlayer;
-            capsuleCollider = GetComponent<CapsuleCollider>();
         }
         [System.NonSerialized]
         public int id = -1001;
@@ -187,7 +186,7 @@ namespace MMMaellon
                 }
             }
         }
-        public LayerMask damageLayers;
+        public LayerMask meleeLayer;
         [Tooltip("Will automatically set \"health\" and \"shield\" float parameters and a \"team\" integer parameter on this animator")]
         [FieldChangeCallback(nameof(statsAnimator))]
         public Animator _statsAnimator = null;
@@ -578,12 +577,10 @@ namespace MMMaellon
         }
         public void OnTriggerEnter(Collider other)
         {
-            if (damageLayers == (damageLayers | (1 << other.gameObject.layer)))
+            if (meleeLayer == (meleeLayer | (1 << other.gameObject.layer)))
             {
                 P_Shooter otherShooter = other.GetComponent<P_Shooter>();
                 OnPShooterHit(Utilities.IsValid(otherShooter) ? otherShooter : otherShooter.GetComponentInParent<P_Shooter>());
-            } else {
-                //heal or something?
             }
         }
 

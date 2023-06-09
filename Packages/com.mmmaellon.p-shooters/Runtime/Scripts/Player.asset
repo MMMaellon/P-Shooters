@@ -21,7 +21,7 @@ MonoBehaviour:
   compiledVersion: 2
   behaviourSyncMode: 4
   hasInteractEvent: 0
-  scriptID: 7659718468050164828
+  scriptID: 2499886084717221105
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
@@ -290,7 +290,7 @@ MonoBehaviour:
       Data: 17|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: MMMaellon.Player, com.mmmaellon.p-shooters
+      Data: MMMaellon.P_Shooters.Player, com.mmmaellon.p-shooters
     - Name: 
       Entry: 8
       Data: 
@@ -374,7 +374,7 @@ MonoBehaviour:
       Data: 
     - Name: <IsSerialized>k__BackingField
       Entry: 5
-      Data: false
+      Data: true
     - Name: _fieldAttributes
       Entry: 7
       Data: 23|System.Collections.Generic.List`1[[System.Attribute, mscorlib]], mscorlib
@@ -383,7 +383,7 @@ MonoBehaviour:
       Data: 1
     - Name: 
       Entry: 7
-      Data: 24|System.NonSerializedAttribute, mscorlib
+      Data: 24|UnityEngine.HideInInspector, UnityEngine.CoreModule
     - Name: 
       Entry: 8
       Data: 
@@ -1100,13 +1100,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: damageLayers
+      Data: meleeLayer
     - Name: $v
       Entry: 7
       Data: 69|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: damageLayers
+      Data: meleeLayer
     - Name: <UserType>k__BackingField
       Entry: 7
       Data: 70|System.RuntimeType, mscorlib
@@ -1297,7 +1297,7 @@ MonoBehaviour:
       Data: 81|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: MMMaellon.P_ShootersPlayerHandler, com.mmmaellon.p-shooters
+      Data: MMMaellon.P_Shooters.P_ShootersPlayerHandler, com.mmmaellon.p-shooters
     - Name: 
       Entry: 8
       Data: 
@@ -1589,7 +1589,7 @@ MonoBehaviour:
       Data: 99|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: MMMaellon.ResourceManager[], com.mmmaellon.p-shooters
+      Data: MMMaellon.P_Shooters.ResourceManager[], com.mmmaellon.p-shooters
     - Name: 
       Entry: 8
       Data: 

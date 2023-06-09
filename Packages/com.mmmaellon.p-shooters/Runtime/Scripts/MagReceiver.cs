@@ -4,15 +4,20 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
 using VRC.Udon.Common;
+#if !COMPILER_UDONSHARP && UNITY_EDITOR
+using VRC.SDKBase.Editor.BuildPipeline;
+using UnityEditor;
+using UdonSharpEditor;
+using System.Collections.Immutable;
+#endif
 
-namespace MMMaellon
+namespace MMMaellon.P_Shooters
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
     public class MagReceiver : UdonSharpBehaviour
     {
-        [System.NonSerialized]
+        [HideInInspector]
         public MagReload magReload;
-        // [System.NonSerialized, FieldChangeCallback(nameof(attachedMag))]
         [FieldChangeCallback(nameof(attachedMag))]
         public Mag _attachedMag;
         public bool ejectExistingMagOnTInteract = false;
@@ -25,8 +30,32 @@ namespace MMMaellon
 
         public void Start()
         {
-            DisableInteractive = !ejectExistingMagOnTInteract;
+            attachedMag = attachedMag;
         }
+
+#if !COMPILER_UDONSHARP && UNITY_EDITOR
+        public void Reset()
+        {
+            SetupMagReceiver(this);
+        }
+
+        public static void SetupMagReceiver(MagReceiver receiver)
+        {
+            if (!Utilities.IsValid(receiver) || (Utilities.IsValid(receiver.attachedMag) && receiver.attachedMag.transform.parent == receiver.transform))
+            {
+                //was null or was already set up
+                return;
+            }
+            if (!Helper.IsEditable(receiver))
+            {
+                Helper.ErrorLog(receiver, "MagReceiver is not editable");
+                return;
+            }
+            SerializedObject serialized = new SerializedObject(receiver);
+            serialized.FindProperty("_attachedMag").objectReferenceValue = receiver.GetComponentInChildren<Mag>();
+            serialized.ApplyModifiedProperties();
+        }
+#endif
 
         public void OnTriggerEnter(Collider other)
         {

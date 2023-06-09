@@ -3,8 +3,14 @@ using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
+#if !COMPILER_UDONSHARP && UNITY_EDITOR
+using VRC.SDKBase.Editor.BuildPipeline;
+using UnityEditor;
+using UdonSharpEditor;
+using System.Collections.Immutable;
+#endif
 
-namespace MMMaellon
+namespace MMMaellon.P_Shooters
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
     public class MagReload : AmmoTracker
@@ -49,16 +55,45 @@ namespace MMMaellon
                 shooter.animator.SetInteger("chamber", chamberCapacity > 0 ? value : -1001);
             }
         }
-        public override void Start()
+        public void Start()
         {
-            base.Start();
-            magReceiver.magReload = this;
-            magReceiver.attachedMag = magReceiver.GetComponentInChildren<Mag>();
             if (Utilities.IsValid(magReceiver.attachedMag))
             {
                 magReceiver.attachedMag.Attach(magReceiver.transform);
             }
         }
+
+
+#if !COMPILER_UDONSHARP && UNITY_EDITOR
+        public override void Reset()
+        {
+            base.Reset();
+            SetupMagReload(this);
+        }
+
+        public static void SetupMagReload(MagReload reload)
+        {
+            if (!Utilities.IsValid(reload) || (Utilities.IsValid(reload.magReceiver) && reload.magReceiver.magReload == reload))
+            {
+                //was null or was already set up
+                return;
+            }
+            if (!Utilities.IsValid(reload.magReceiver))
+            {
+                Helper.ErrorLog(reload, "MagReload is missing a mag receiver");
+                return;
+            }
+            if (!Helper.IsEditable(reload.magReceiver))
+            {
+                Helper.ErrorLog(reload, "MagReload's MagReceiver is not editable");
+                return;
+            }
+            SerializedObject serialized = new SerializedObject(reload.magReceiver);
+            serialized.FindProperty("magReload").objectReferenceValue = reload;
+            serialized.ApplyModifiedProperties();
+        }
+#endif
+
         public override bool CanReload()
         {
             if (shooter.state != P_Shooter.STATE_IDLE || !Utilities.IsValid(magReceiver.attachedMag))

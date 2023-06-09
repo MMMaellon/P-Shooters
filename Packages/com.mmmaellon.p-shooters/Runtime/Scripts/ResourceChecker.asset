@@ -21,7 +21,7 @@ MonoBehaviour:
   compiledVersion: 2
   behaviourSyncMode: 1
   hasInteractEvent: 0
-  scriptID: -2171173714424248795
+  scriptID: 4618743777460779416
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
@@ -62,7 +62,7 @@ MonoBehaviour:
       Data: 3|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: MMMaellon.ResourceManager, com.mmmaellon.p-shooters
+      Data: MMMaellon.P_Shooters.ResourceManager, com.mmmaellon.p-shooters
     - Name: 
       Entry: 8
       Data: 

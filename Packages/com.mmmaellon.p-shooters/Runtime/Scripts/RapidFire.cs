@@ -10,7 +10,7 @@ using UdonSharpEditor;
 using System.Collections.Immutable;
 #endif
 
-namespace MMMaellon
+namespace MMMaellon.P_Shooters
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.Manual), RequireComponent(typeof(Animator))]
     public class RapidFire : UdonSharpBehaviour
@@ -24,18 +24,29 @@ namespace MMMaellon
 
         public void Start()
         {
-            if (!Utilities.IsValid(animator))
-            {
-                animator = GetComponent<Animator>();
-            }
             animator.SetBool("rapidfire", rapidFire);
             animator.SetInteger("altfire", altFire);
         }
 #if !COMPILER_UDONSHARP && UNITY_EDITOR
         public void Reset()
         {
-            SerializedObject obj = new SerializedObject(this);
-            obj.FindProperty("animator").objectReferenceValue = GetComponent<Animator>();
+            SetupRapidFire(this);
+        }
+
+        public static void SetupRapidFire(RapidFire rapid)
+        {
+            if(!Utilities.IsValid(rapid) || (Utilities.IsValid(rapid.animator) && rapid.animator.gameObject == rapid.gameObject))
+            {
+                //null or already setup
+                return;
+            }
+            if (!Helper.IsEditable(rapid))
+            {
+                Helper.ErrorLog(rapid, "RapidFire is not editable");
+                return;
+            }
+            SerializedObject obj = new SerializedObject(rapid);
+            obj.FindProperty("animator").objectReferenceValue = rapid.GetComponent<Animator>();
             obj.ApplyModifiedProperties();
         }
 #endif

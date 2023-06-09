@@ -10,7 +10,7 @@ using UdonSharpEditor;
 using System.Collections.Immutable;
 #endif
 
-namespace MMMaellon
+namespace MMMaellon.P_Shooters
 {
 #if !COMPILER_UDONSHARP && UNITY_EDITOR
     [CustomEditor(typeof(LocalEventTrigger))]

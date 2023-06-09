@@ -4,7 +4,7 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
 
-namespace MMMaellon
+namespace MMMaellon.P_Shooters
 {
     [RequireComponent(typeof(Animator)), UdonBehaviourSyncMode(BehaviourSyncMode.None)]
     public class HUD : Cyan.PlayerObjectPool.CyanPlayerObjectPoolEventListener

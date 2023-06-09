@@ -10,141 +10,13 @@ using UdonSharpEditor;
 using System.Collections.Immutable;
 #endif
 
-namespace MMMaellon
+namespace MMMaellon.P_Shooters
 {
 
 #if !COMPILER_UDONSHARP && UNITY_EDITOR
     [CustomEditor(typeof(ResourceManager))]
-    public class ResourceManagerEditor : Editor, IVRCSDKBuildRequestedCallback
+    public class ResourceManagerEditor : Editor
     {
-
-        public static bool SetupResources()
-        {
-            Player[] players = GameObject.FindObjectsOfType<Player>();
-            resources = GameObject.FindObjectsOfType<ResourceManager>();
-            BuildResourceIdMap();
-            Cyan.PlayerObjectPool.CyanPlayerObjectAssigner sceneAssigner = GameObject.FindObjectOfType<Cyan.PlayerObjectPool.CyanPlayerObjectAssigner>();
-            P_ShootersPlayerHandler playerHandler = GameObject.FindObjectOfType<P_ShootersPlayerHandler>();
-            if (!Utilities.IsValid(sceneAssigner))
-            {
-                Debug.LogError("<color=red>[P-Shooter Resource AUTOSETUP]: FAILED</color> Could not find Cyan.PlayerObjectPool.CyanPlayerObjectAssigner object. Please set up a player object pool");
-                return false;
-            }
-
-            if (players.Length == 0)
-            {
-                Debug.LogError("<color=red>[P-Shooter Resource AUTOSETUP]: FAILED</color> Could not find players. Please set up a player object pool");
-                return false;
-            }
-            for (int i = 0; i < resources.Length; i++)
-            {
-                if (EditorUtility.IsPersistent(resources[i].transform.root.gameObject) || resources[i].hideFlags == HideFlags.NotEditable || resources[i].hideFlags == HideFlags.HideAndDontSave)
-                {
-                    continue;
-                }
-                SerializedObject serialized = new SerializedObject(resources[i]);
-                serialized.FindProperty("playerHandler").objectReferenceValue = playerHandler;
-                serialized.FindProperty("id").intValue = i;
-                serialized.ApplyModifiedProperties();
-            }
-            foreach (Player player in players)
-            {
-                if (EditorUtility.IsPersistent(player.transform.root.gameObject) || player.hideFlags == HideFlags.NotEditable || player.hideFlags == HideFlags.HideAndDontSave)
-                {
-                    continue;
-                }
-                SerializedObject serialized = new SerializedObject(player);
-                serialized.FindProperty(nameof(resources)).ClearArray();
-                for (int i = 0; i < resources.Length; i++)
-                {
-                    serialized.FindProperty(nameof(resources)).InsertArrayElementAtIndex(i);
-                    serialized.FindProperty(nameof(resources)).GetArrayElementAtIndex(i).objectReferenceValue = resources[i];
-                }
-
-                serialized.FindProperty(nameof(resourceIdMap)).ClearArray();
-                for (int i = 0; i < resourceIdMap.Length; i++)
-                {
-                    serialized.FindProperty(nameof(resourceIdMap)).InsertArrayElementAtIndex(i);
-                    serialized.FindProperty(nameof(resourceIdMap)).GetArrayElementAtIndex(i).intValue = resourceIdMap[i];
-                }
-                serialized.FindProperty(nameof(reverseSyncResourceIdMap)).ClearArray();
-                for (int i = 0; i < reverseSyncResourceIdMap.Length; i++)
-                {
-                    serialized.FindProperty(nameof(reverseSyncResourceIdMap)).InsertArrayElementAtIndex(i);
-                    serialized.FindProperty(nameof(reverseSyncResourceIdMap)).GetArrayElementAtIndex(i).intValue = reverseSyncResourceIdMap[i];
-                }
-                serialized.FindProperty(nameof(reverseLocalResourceIdMap)).ClearArray();
-                for (int i = 0; i < reverseLocalResourceIdMap.Length; i++)
-                {
-                    serialized.FindProperty(nameof(reverseLocalResourceIdMap)).InsertArrayElementAtIndex(i);
-                    serialized.FindProperty(nameof(reverseLocalResourceIdMap)).GetArrayElementAtIndex(i).intValue = reverseLocalResourceIdMap[i];
-                }
-                serialized.FindProperty("_syncedResources").ClearArray();
-                for (int i = 0; i < syncedResources.Length; i++)
-                {
-                    serialized.FindProperty("_syncedResources").InsertArrayElementAtIndex(i);
-                    serialized.FindProperty("_syncedResources").GetArrayElementAtIndex(i).intValue = syncedResources[i];
-                }
-                serialized.FindProperty("_localResources").ClearArray();
-                for (int i = 0; i < localResources.Length; i++)
-                {
-                    serialized.FindProperty("_localResources").InsertArrayElementAtIndex(i);
-                    serialized.FindProperty("_localResources").GetArrayElementAtIndex(i).intValue = localResources[i];
-                }
-                
-                serialized.ApplyModifiedProperties();
-            }
-            Debug.Log("[P-Shooter Resource AUTOSETUP]: Configured " + resources.Length + " Resources");
-            return true;
-        }
-        public static ResourceManager[] resources;
-        [System.NonSerialized]
-        public static int[] resourceIdMap;
-        [System.NonSerialized]
-        public static int[] reverseSyncResourceIdMap;
-        [System.NonSerialized]
-        public static int[] reverseLocalResourceIdMap;
-        public static int[] syncedResources;
-        public static int[] localResources;
-        public static void BuildResourceIdMap()
-        {
-            int syncedRCount = 0;
-            int localRCount = 0;
-            resourceIdMap = new int[resources.Length];
-            for (int i = 0; i < resources.Length; i++)
-            {
-                if (resources[i].synced)
-                {
-                    resourceIdMap[i] = syncedRCount;
-                    syncedRCount++;
-                }
-                else
-                {
-                    resourceIdMap[i] = localRCount;
-                    localRCount++;
-                }
-            }
-            reverseSyncResourceIdMap = new int[syncedRCount];
-            syncedResources = new int[syncedRCount];
-            reverseLocalResourceIdMap = new int[localRCount];
-            localResources = new int[localRCount];
-
-            syncedRCount = 0;
-            localRCount = 0;
-            for (int i = 0; i < resources.Length; i++)
-            {
-                if (resources[i].synced)
-                {
-                    reverseSyncResourceIdMap[syncedRCount] = i;
-                    syncedRCount++;
-                }
-                else
-                {
-                    reverseLocalResourceIdMap[localRCount] = i;
-                    localRCount++;
-                }
-            }
-        }
         public override void OnInspectorGUI()
         {
             EditorGUILayout.LabelField("How to use Resources");
@@ -173,25 +45,6 @@ For example, you probably don't need to sync ammo or coins because you usually c
             if (UdonSharpGUI.DrawDefaultUdonSharpBehaviourHeader(target)) return;
             EditorGUILayout.Space();
             base.OnInspectorGUI();
-        }
-
-        [InitializeOnLoadMethod]
-        public static void Initialize()
-        {
-            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
-        }
-
-        public static void OnPlayModeStateChanged(PlayModeStateChange change)
-        {
-            if (change != PlayModeStateChange.ExitingEditMode) return;
-            SetupResources();
-        }
-
-        public int callbackOrder => 0;
-
-        public bool OnBuildRequested(VRCSDKRequestedBuildType requestedBuildType)
-        {
-            return SetupResources();
         }
     }
 #endif

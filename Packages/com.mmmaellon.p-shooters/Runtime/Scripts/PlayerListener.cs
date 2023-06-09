@@ -3,7 +3,7 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
 
-namespace MMMaellon
+namespace MMMaellon.P_Shooters
 {
     public abstract class PlayerListener : UdonSharpBehaviour
     {

@@ -10,66 +10,8 @@ using UdonSharpEditor;
 using System.Collections.Immutable;
 #endif
 
-namespace MMMaellon
+namespace MMMaellon.P_Shooters
 {
-#if !COMPILER_UDONSHARP && UNITY_EDITOR
-    public class P_ShooterEditor : IVRCSDKBuildRequestedCallback
-    {
-        public static void SetupShooter(P_Shooter shooter)
-        {
-            if (!Utilities.IsValid(shooter))
-            {
-                Debug.LogError("<color=red>[P-Shooter AUTOSETUP]: FAILED</color> No P-Shooter Found");
-                return;
-            }
-            SerializedObject serialized = new SerializedObject(shooter);
-            serialized.FindProperty("sync").objectReferenceValue = shooter.GetComponent<SmartObjectSync>();//must exist because we depend on it
-            serialized.FindProperty("_animator").objectReferenceValue = shooter.GetComponent<Animator>();
-            serialized.ApplyModifiedProperties();
-        }
-
-        public static bool RequiresSetup(P_Shooter shooter)
-        {
-            return !Utilities.IsValid(shooter.sync) || !Utilities.IsValid(shooter.animator);
-        }
-
-
-        [InitializeOnLoadMethod]
-        public static void Initialize()
-        {
-            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
-        }
-
-        public static void OnPlayModeStateChanged(PlayModeStateChange change)
-        {
-            if (change != PlayModeStateChange.ExitingEditMode) return;
-            SetupAllPShooters();
-        }
-
-        public int callbackOrder => 0;
-
-        public bool OnBuildRequested(VRCSDKRequestedBuildType requestedBuildType)
-        {
-            return SetupAllPShooters();
-        }
-
-        public static bool SetupAllPShooters()
-        {
-            foreach (P_Shooter shooter in GameObject.FindObjectsOfType<P_Shooter>())
-            {
-                if (!EditorUtility.IsPersistent(shooter.transform.root.gameObject) && !(shooter.gameObject.hideFlags == HideFlags.NotEditable || shooter.gameObject.hideFlags == HideFlags.HideAndDontSave))
-                {
-
-                    if (RequiresSetup(shooter))
-                    {
-                        SetupShooter(shooter);
-                    }
-                }
-            }
-            return true;
-        }
-    }
-#endif
     [UdonBehaviourSyncMode(BehaviourSyncMode.Manual), RequireComponent(typeof(SmartObjectSync)), RequireComponent(typeof(Animator))]
     public class P_Shooter : SmartObjectSyncListener
     {
@@ -139,7 +81,7 @@ namespace MMMaellon
         }
         public Transform gunParent;
 
-        [System.NonSerialized]
+        [HideInInspector]
         public AmmoTracker ammo;
 
         [Header("Sounds")]
@@ -211,7 +153,25 @@ namespace MMMaellon
 
 #if !COMPILER_UDONSHARP && UNITY_EDITOR
         public void Reset(){
-            P_ShooterEditor.SetupShooter(this);
+            P_Shooter.SetupShooter(this);
+        }
+
+        public static void SetupShooter(P_Shooter shooter)
+        {
+            if (!Utilities.IsValid(shooter) || (Utilities.IsValid(shooter.sync) && Utilities.IsValid(shooter.animator) && shooter.sync.gameObject == shooter.gameObject && shooter.animator.gameObject == shooter.gameObject))
+            {
+                //null or already set up
+                return;
+            }
+            if (!Helper.IsEditable(shooter))
+            {
+                Helper.ErrorLog(shooter, "P-Shooter is not editable");
+                return;
+            }
+            SerializedObject serialized = new SerializedObject(shooter);
+            serialized.FindProperty("sync").objectReferenceValue = shooter.GetComponent<SmartObjectSync>();//must exist because we depend on it
+            serialized.FindProperty("_animator").objectReferenceValue = shooter.GetComponent<Animator>();
+            serialized.ApplyModifiedProperties();
         }
 #endif
         [System.NonSerialized]

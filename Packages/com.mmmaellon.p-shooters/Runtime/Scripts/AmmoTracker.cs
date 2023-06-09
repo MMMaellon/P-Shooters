@@ -8,12 +8,12 @@ using UdonSharpEditor;
 using System.Collections.Immutable;
 #endif
 
-namespace MMMaellon
+namespace MMMaellon.P_Shooters
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.Manual), RequireComponent(typeof(P_Shooter))]
     public abstract class AmmoTracker : UdonSharpBehaviour
     {
-        [System.NonSerialized]
+        [HideInInspector]
         public P_Shooter shooter;
 
         public AudioSource audioSource;
@@ -35,14 +35,6 @@ namespace MMMaellon
         public abstract bool CanReload();
         public abstract void Reload();
         public abstract void ReloadEnd();
-        public virtual void Start()
-        {
-            if (!Utilities.IsValid(shooter))
-            {
-                shooter = GetComponent<P_Shooter>();
-                shooter.ammo = this;
-            }
-        }
         public abstract bool ChamberAmmo();
         public abstract bool ConsumeAmmo();
 
@@ -96,11 +88,47 @@ namespace MMMaellon
         }
 
 #if !COMPILER_UDONSHARP && UNITY_EDITOR
-        public void Reset()
+        public virtual void Reset()
         {
-            SerializedObject obj = new SerializedObject(GetComponent<P_Shooter>());
-            obj.FindProperty("ammo").objectReferenceValue = this;
+            SetupAmmoTracker(this);
+        }
+
+        public static void SetupAmmoTracker(AmmoTracker ammoTracker)
+        {
+            if (!Utilities.IsValid(ammoTracker) || (Utilities.IsValid(ammoTracker.shooter) && ammoTracker.shooter.ammo == ammoTracker && ammoTracker.gameObject == ammoTracker.shooter.gameObject))
+            {
+                //was null or was already set up
+                return;
+            }
+            if (!Helper.IsEditable(ammoTracker))
+            {
+                Helper.ErrorLog(ammoTracker, "AmmoTracker is not editable");
+                return;
+            }
+            SerializedObject obj = new SerializedObject(ammoTracker);
+            obj.FindProperty("shooter").objectReferenceValue = ammoTracker.GetComponent<P_Shooter>();
             obj.ApplyModifiedProperties();
+            if (ammoTracker.shooter == null)
+            {
+                Helper.ErrorLog(ammoTracker, "AmmoTracker is missing a P_Shooter");
+                return;
+            }
+            if (Utilities.IsValid(ammoTracker.shooter.ammo) && ammoTracker.shooter.ammo != ammoTracker && ammoTracker.shooter.gameObject == ammoTracker.shooter.ammo.gameObject)
+            {
+                Helper.ErrorLog(ammoTracker, "AmmoTracker is already assigned to a different P_Shooter. Make sure you do not have two ammo trackers on the same object");
+                return;
+            }
+            if (ammoTracker.shooter.ammo != ammoTracker)
+            {
+                if (!Helper.IsEditable(ammoTracker.shooter))
+                {
+                    Helper.ErrorLog(ammoTracker.shooter, "Shooter is not editable");
+                    return;
+                }
+                SerializedObject serializedShooter = new SerializedObject(ammoTracker.shooter);
+                serializedShooter.FindProperty("ammo").objectReferenceValue = ammoTracker;
+                serializedShooter.ApplyModifiedProperties();
+            }
         }
 #endif
     }

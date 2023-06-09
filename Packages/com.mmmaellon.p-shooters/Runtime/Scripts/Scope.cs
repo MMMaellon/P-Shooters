@@ -10,12 +10,12 @@ using UdonSharpEditor;
 using System.Collections.Immutable;
 #endif
 
-namespace MMMaellon
+namespace MMMaellon.P_Shooters
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.Manual), RequireComponent(typeof(P_Shooter))]
     public class Scope : UdonSharpBehaviour
     {
-        [System.NonSerialized]
+        [HideInInspector]
         public P_Shooter shooter;
         public GameObject scopeCam;
         public Transform scopeAnchor;
@@ -56,12 +56,41 @@ namespace MMMaellon
         void Start()
         {
             _localPlayer = Networking.LocalPlayer;
-            shooter = GetComponentInParent<P_Shooter>();
             if (Utilities.IsValid(scopeCam))
             {
                 scopeCam.SetActive(false);
             }
         }
+
+#if !COMPILER_UDONSHARP && UNITY_EDITOR
+        public void Reset()
+        {
+            SetupScope(this);
+        }
+
+        public static void SetupScope(Scope scope)
+        {
+            if (!Utilities.IsValid(scope) || scope.shooter != null && scope.transform.IsChildOf(scope.shooter.transform))
+            {
+                //null or already setup
+                return;
+            }
+            if (!Helper.IsEditable(scope))
+            {
+                Helper.ErrorLog(scope, "Scope is not editable");
+                return;
+            }
+            P_Shooter parentShooter = scope.GetComponentInParent<P_Shooter>();
+            if(!Utilities.IsValid(parentShooter))
+            {
+                Helper.ErrorLog(scope, "Scope is not a child of a P-Shooter");
+                return;
+            }
+            SerializedObject serializedObject = new SerializedObject(scope);
+            serializedObject.FindProperty("shooter").objectReferenceValue = parentShooter;
+            serializedObject.ApplyModifiedProperties();
+        }
+#endif
         public override void OnPickup()
         {
             loop = true;

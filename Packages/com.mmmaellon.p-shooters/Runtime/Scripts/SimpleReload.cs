@@ -4,7 +4,7 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
 
-namespace MMMaellon
+namespace MMMaellon.P_Shooters
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
     public class SimpleReload : AmmoTracker
@@ -85,9 +85,8 @@ namespace MMMaellon
             }
         }
 
-        public override void Start()
+        public void Start()
         {
-            base.Start();
             if (startLoaded)
             {
                 chamberAmmo = chamberCapacity;
