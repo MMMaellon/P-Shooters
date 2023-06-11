@@ -67,6 +67,7 @@ namespace MMMaellon.P_Shooters
         [System.NonSerialized]
         public const int STATE_DISABLED = 4;//gun jammed or overheated or something
         public ParticleSystem shootParticles;
+        public ParticleSystem onHitPlayerParticles;
 
         [Header("Required Components")]
         public SmartObjectSync sync;
@@ -92,8 +93,10 @@ namespace MMMaellon.P_Shooters
         [Header("Sounds")]
         public AudioSource gunshotSource;
         public AudioClip[] gunshots;
+        public AudioSource onHitPlayerSource;
+        public AudioClip[] onHitPlayerSounds;
         [Tooltip("There's a hard limit to how many audio clips can be playing at one time. If you have too many, background sounds and players might become muted until you rejoin the world.")]
-        public bool overlapGunshotSounds = false;
+        public bool overlapSoundEffects = false;
         public int state{
             get => _state;
             set
@@ -222,13 +225,34 @@ namespace MMMaellon.P_Shooters
             }
             if (Utilities.IsValid(gunshotSource) && gunshots.Length > 0)
             {
-                if (overlapGunshotSounds)
+                if (overlapSoundEffects)
                 {
                     gunshotSource.PlayOneShot(gunshots[Random.Range(0, gunshots.Length)]);
                 } else
                 {
                     gunshotSource.clip = gunshots[Random.Range(0, gunshots.Length)];
                     gunshotSource.Play();
+                }
+            }
+        }
+
+        public void OnHitPlayerFX()
+        {
+            _print("OnHitPlayerFX");
+            if (Utilities.IsValid(onHitPlayerParticles))
+            {
+                onHitPlayerParticles.Play();
+            }
+            if (Utilities.IsValid(onHitPlayerSource) && onHitPlayerSounds.Length > 0)
+            {
+                if (overlapSoundEffects)
+                {
+                    onHitPlayerSource.PlayOneShot(onHitPlayerSounds[Random.Range(0, onHitPlayerSounds.Length)]);
+                }
+                else
+                {
+                    onHitPlayerSource.clip = onHitPlayerSounds[Random.Range(0, onHitPlayerSounds.Length)];
+                    onHitPlayerSource.Play();
                 }
             }
         }

@@ -637,15 +637,23 @@ namespace MMMaellon.P_Shooters
 
         public void OnPShooterHit(P_Shooter otherShooter)
         {
-            if (!Utilities.IsValid(otherShooter) || !otherShooter.sync.IsLocalOwner())
+            if (!Utilities.IsValid(otherShooter))
             {
                 return;
             }
 
-            if (IsOwnerLocal() && !otherShooter.selfDamage)
+            if (otherShooter.sync.owner == Owner && !otherShooter.selfDamage)
             {
                 return;
             }
+
+            otherShooter.OnHitPlayerFX();
+
+            if (!otherShooter.sync.IsLocalOwner())
+            {
+                return;
+            }
+
             foreach (PlayerListener listener in playerHandler.playerListeners)
             {
                 if (!listener.CanDealDamage(_localPlayerObject, this))

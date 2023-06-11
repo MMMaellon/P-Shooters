@@ -10,7 +10,7 @@ using UdonSharpEditor;
 using System.Collections.Immutable;
 #endif
 
-namespace MMMaellon
+namespace MMMaellon.P_Shooters
 {
     [RequireComponent(typeof(ParticleSystem))]
     public class ParticleCollisionSFX : UdonSharpBehaviour
