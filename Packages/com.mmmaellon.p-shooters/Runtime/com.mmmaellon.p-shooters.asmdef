@@ -8,6 +8,7 @@
         "UdonSharp.Editor",
         "Unity.TextMeshPro",
         "com.mmmaellon.smartobjectsync",
+        "Cinemachine",
         "Cyan.PlayerObjectPool",
         "Cyan.PlayerObjectPool.Editor",
         "Cyan.PlayerObjectPool.UdonSharp"

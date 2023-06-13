@@ -3,6 +3,7 @@ using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
+using Cinemachine;
 #if !COMPILER_UDONSHARP && UNITY_EDITOR
 using VRC.SDKBase.Editor.BuildPipeline;
 using UnityEditor;
@@ -12,33 +13,38 @@ using System.Collections.Immutable;
 
 namespace MMMaellon.P_Shooters
 {
-    [UdonBehaviourSyncMode(BehaviourSyncMode.Manual), RequireComponent(typeof(P_Shooter))]
-    public class Scope : UdonSharpBehaviour
+    [UdonBehaviourSyncMode(BehaviourSyncMode.Manual), DefaultExecutionOrder(5)]
+    public class Scope : SmartObjectSyncListener
     {
-        [HideInInspector]
+        public KeyCode zoomShortcut = KeyCode.LeftAlt;
         public P_Shooter shooter;
         public GameObject scopeCam;
-        public Transform scopeAnchor;
+        
+        public Transform ADSPosition;
         public float zoomInTime = 0.25f;
         public float zoomOutTime = 0.1f;
         VRCPlayerApi _localPlayer;
-
-        VRC_Pickup leftPickup;
-        VRC_Pickup rightPickup;
-        Scope leftScope;
-        Scope rightScope;
+        VRC_Pickup otherPickup;
         VRCPlayerApi.TrackingData headData;
 
-        private bool ADS = false;
-        private Vector3 zoomStartPos;
-        private Vector3 zoomStopPos;
-        private Quaternion zoomStartRot;
-        private Quaternion zoomStopRot;
-        private float zoomStart;
-        float lerp;
-        float smoothedLerp;
-        Vector3 leftPos;
-        Vector3 rightPos;
+        [System.NonSerialized]
+        public bool ADS = false;
+        [System.NonSerialized]
+        public Vector3 zoomStartPos;
+        [System.NonSerialized]
+        public Vector3 zoomStopPos;
+        [System.NonSerialized]
+        public Quaternion zoomStartRot;
+        [System.NonSerialized]
+        public Quaternion zoomStopRot;
+        [System.NonSerialized]
+        public float zoomStart;
+        [System.NonSerialized]
+        public float lerp;
+        [System.NonSerialized]
+        public float smoothedLerp;
+        Vector3 thisPos;
+        Vector3 otherPos;
         [System.NonSerialized]
         public bool _loop = false;
         public bool loop
@@ -48,11 +54,36 @@ namespace MMMaellon.P_Shooters
             {
                 if (!_loop && value)
                 {
-                    SendCustomEventDelayedFrames(nameof(UpdateLoop), 0);
+                    // SendCustomEventDelayedFrames(nameof(UpdateLoop), 0, VRC.Udon.Common.Enums.EventTiming.LateUpdate);
+                    //loop just got enabled
+                    if (shooter.sync.pickup.currentHand == VRC_Pickup.PickupHand.Left)
+                    {
+                        otherPickup = _localPlayer.GetPickupInHand(VRC_Pickup.PickupHand.Right);
+                    } else
+                    {
+                        otherPickup = _localPlayer.GetPickupInHand(VRC_Pickup.PickupHand.Left);
+                    }
+                    if (Utilities.IsValid(otherPickup))
+                    {
+                        otherScope = otherPickup.GetComponentInChildren<Scope>();
+                        if (Utilities.IsValid(otherScope))
+                        {
+                            otherScope.otherScope = this;
+                        }
+                    }
+                    else
+                    {
+                        otherScope = null;
+                    }
+                } else if (!value)
+                {
+                    otherScope = null;
                 }
                 _loop = value;
+                enabled = value;
             }
         }
+        Scope otherScope;
         void Start()
         {
             _localPlayer = Networking.LocalPlayer;
@@ -60,6 +91,16 @@ namespace MMMaellon.P_Shooters
             {
                 scopeCam.SetActive(false);
             }
+            shooter.sync.AddListener(this);
+        }
+
+        public override void OnChangeState(SmartObjectSync sync, int oldState, int newState)
+        {
+            loop = loop || sync.pickup.IsHeld;
+        }
+        public override void OnChangeOwner(SmartObjectSync sync, VRCPlayerApi oldOwner, VRCPlayerApi newOwner)
+        {
+            
         }
 
 #if !COMPILER_UDONSHARP && UNITY_EDITOR
@@ -70,7 +111,7 @@ namespace MMMaellon.P_Shooters
 
         public static void SetupScope(Scope scope)
         {
-            if (!Utilities.IsValid(scope) || scope.shooter != null && scope.transform.IsChildOf(scope.shooter.transform))
+            if (!Utilities.IsValid(scope) || (scope.shooter != null && scope.ADSPosition != null && scope.scopeCam != null))
             {
                 //null or already setup
                 return;
@@ -88,6 +129,21 @@ namespace MMMaellon.P_Shooters
             }
             SerializedObject serializedObject = new SerializedObject(scope);
             serializedObject.FindProperty("shooter").objectReferenceValue = parentShooter;
+            if (scope.ADSPosition == null)
+            {
+                serializedObject.FindProperty("ADSPosition").objectReferenceValue = scope.transform;
+            }
+            if (scope.scopeCam == null)
+            {
+                Debug.LogWarning("scope cam not found");
+                Camera cam = parentShooter.GetComponentInChildren<Camera>();
+                Debug.LogWarning("cam found: " + cam != null);
+                serializedObject.FindProperty("scopeCam").objectReferenceValue = cam != null ? cam.gameObject : null;
+            }
+            if (scope.scopeCam != null)
+            {
+                scope.scopeCam.SetActive(false);
+            }
             serializedObject.ApplyModifiedProperties();
         }
 #endif
@@ -139,15 +195,15 @@ namespace MMMaellon.P_Shooters
         public void zoomIn()
         {
             VRCPlayerApi.TrackingData headData = _localPlayer.GetTrackingData(VRCPlayerApi.TrackingDataType.Head);
-            if (!Utilities.IsValid(scopeAnchor))
+            if (!Utilities.IsValid(ADSPosition))
             {
-                zoomStopPos = Vector3.ProjectOnPlane((transform.position - headData.position), headData.rotation * Vector3.left) + headData.position;
-                zoomStopPos = transform.InverseTransformPoint(zoomStopPos);
+                zoomStopPos = Vector3.ProjectOnPlane((shooter.transform.position - headData.position), headData.rotation * Vector3.left) + headData.position;
+                zoomStopPos = shooter.transform.InverseTransformPoint(zoomStopPos);
             }
             else
             {
-                zoomStopPos = Quaternion.Inverse(transform.rotation) * (headData.position - scopeAnchor.transform.position);
-                zoomStopRot = scopeAnchor.transform.localRotation;
+                zoomStopPos = Quaternion.Inverse(shooter.transform.rotation) * (headData.position - ADSPosition.transform.position);
+                zoomStopRot = ADSPosition.transform.localRotation;
             }
 
             if (zoomInTime <= 0)
@@ -182,14 +238,14 @@ namespace MMMaellon.P_Shooters
                 shooter.gunParent.localRotation = Quaternion.Lerp(zoomStartRot, zoomStopRot, smoothedLerp);
             }
         }
-
-        public void UpdateLoop()
+        bool nextADS;
+        public override void PostLateUpdate()
         {
             if (!loop)
             {
                 return;
             }
-            SendCustomEventDelayedFrames(nameof(UpdateLoop), 0);
+            // SendCustomEventDelayedFrames(nameof(UpdateLoop), 0, VRC.Udon.Common.Enums.EventTiming.LateUpdate);
             if (!Utilities.IsValid(shooter) || !Utilities.IsValid(_localPlayer))
             {
                 return;
@@ -218,42 +274,27 @@ namespace MMMaellon.P_Shooters
 
             if (Utilities.IsValid(scopeCam))
             {
-                leftPickup = _localPlayer.GetPickupInHand(VRC_Pickup.PickupHand.Left);
-                rightPickup = _localPlayer.GetPickupInHand(VRC_Pickup.PickupHand.Right);
                 headData = _localPlayer.GetTrackingData(VRCPlayerApi.TrackingDataType.Head);
 
-                leftScope = Utilities.IsValid(leftPickup) ? leftScope.GetComponent<Scope>() : null;
-                rightScope = Utilities.IsValid(rightPickup) ? rightScope.GetComponent<Scope>() : null;
-
-                if (Utilities.IsValid(leftScope) && Utilities.IsValid(rightScope))
+                if (Utilities.IsValid(otherScope))
                 {
-                    leftPos = Utilities.IsValid(leftScope.scopeAnchor) ? leftScope.scopeAnchor.position : leftScope.transform.position;
-                    rightPos = Utilities.IsValid(rightScope.scopeAnchor) ? rightScope.scopeAnchor.position : rightScope.transform.position;
-                    if (leftScope == this)
-                    {
-                        scopeCam.SetActive(rightScope == null || Vector3.Distance(leftPos, headData.position) < Vector3.Distance(rightPos, headData.position));
-                    } else if (rightScope == this)
-                    {
-                        scopeCam.SetActive(leftPickup == null || Vector3.Distance(leftPos, headData.position) >= Vector3.Distance(rightPos, headData.position));
-                    }
+                    thisPos = Utilities.IsValid(ADSPosition) ? ADSPosition.position : transform.position;
+                    otherPos = Utilities.IsValid(otherScope.ADSPosition) ? otherScope.ADSPosition.position : otherScope.transform.position;
+                    scopeCam.SetActive(Vector3.Distance(thisPos, headData.position) < Vector3.Distance(otherPos, headData.position));
                 } else
                 {
                     scopeCam.SetActive(true);
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.LeftAlt))
+            nextADS = Input.GetKey(zoomShortcut) && shooter.state != P_Shooter.STATE_RELOAD;
+            if (nextADS != ADS)
             {
-                ADS = true;
                 recordStartZoomTransforms();
             }
-            else if (Input.GetKeyUp(KeyCode.LeftAlt))
-            {
-                ADS = false;
-                recordStartZoomTransforms();
-            }
+            ADS = nextADS;
 
-            if (Input.GetKey(KeyCode.LeftAlt))
+            if (ADS)
             {
                 zoomIn();
             }

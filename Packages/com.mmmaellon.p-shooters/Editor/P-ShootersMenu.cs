@@ -36,10 +36,10 @@ namespace MMMaellon.P_Shooters
         }
 
 
-        [MenuItem(RootMenu + "Wiki (open in browser)")]
-        static void OpenWiki()
+        [MenuItem(RootMenu + "Trigger Auto Setup")]
+        static void TriggerAutoSetup()
         {
-            Application.OpenURL("https://github.com/MMMaellon/P-Shooters/wiki");
+            Setup();
         }
 
         [MenuItem(RootMenu + "Import Example Project")]
@@ -94,6 +94,12 @@ namespace MMMaellon.P_Shooters
                 EditorUtility.FocusProjectWindow();
                 AssetDatabase.OpenAsset(exampleFolder);
             }
+        }
+
+        [MenuItem(RootMenu + "Wiki (open in browser)")]
+        static void OpenWiki()
+        {
+            Application.OpenURL("https://github.com/MMMaellon/P-Shooters/wiki");
         }
 
         public static void Copy(string sourceDirectory, string targetDirectory)
@@ -199,9 +205,9 @@ namespace MMMaellon.P_Shooters
             {
                 P_Shooter.SetupShooter(shooter);
             }
-            foreach (RapidFire rapid in GameObject.FindObjectsOfType<RapidFire>())
+            foreach (AltFire rapid in GameObject.FindObjectsOfType<AltFire>())
             {
-                RapidFire.SetupRapidFire(rapid);
+                AltFire.SetupRapidFire(rapid);
             }
             foreach (Scope scope in GameObject.FindObjectsOfType<Scope>())
             {
