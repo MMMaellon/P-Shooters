@@ -250,6 +250,7 @@ namespace MMMaellon.P_Shooters
             {
                 return;
             }
+
             if (!shooter.sync.pickup.IsHeld)
             {
                 if (ADS)
@@ -281,10 +282,16 @@ namespace MMMaellon.P_Shooters
                     thisPos = Utilities.IsValid(ADSPosition) ? ADSPosition.position : transform.position;
                     otherPos = Utilities.IsValid(otherScope.ADSPosition) ? otherScope.ADSPosition.position : otherScope.transform.position;
                     scopeCam.SetActive(Vector3.Distance(thisPos, headData.position) < Vector3.Distance(otherPos, headData.position));
-                } else
+                }
+                else
                 {
                     scopeCam.SetActive(true);
                 }
+            }
+
+            if (_localPlayer.IsUserInVR())
+            {
+                return;
             }
 
             nextADS = Input.GetKey(zoomShortcut) && shooter.state != P_Shooter.STATE_RELOAD;
