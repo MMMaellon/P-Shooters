@@ -165,6 +165,10 @@ namespace MMMaellon.P_Shooters
         public static void OnPlayModeStateChanged(PlayModeStateChange change)
         {
             if (change != PlayModeStateChange.ExitingEditMode) return;
+            if (!autoSetup)
+            {
+                return;
+            }
             Setup();
         }
 
@@ -172,15 +176,15 @@ namespace MMMaellon.P_Shooters
 
         public bool OnBuildRequested(VRCSDKRequestedBuildType requestedBuildType)
         {
+            if (!autoSetup)
+            {
+                return true;
+            }
             return Setup();
         }
 
         public static bool Setup()
         {
-            if (!autoSetup)
-            {
-                return true;
-            }
             foreach (HealthAndShieldChanger changer in GameObject.FindObjectsOfType<HealthAndShieldChanger>())
             {
                 HealthAndShieldChanger.SetupHealthAndShieldChanger(changer);

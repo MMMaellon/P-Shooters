@@ -39,7 +39,7 @@ namespace MMMaellon.P_Shooters
         public static bool SetupPlayers()
         {
             Cyan.PlayerObjectPool.CyanPlayerObjectAssigner assigner = GameObject.FindObjectOfType<Cyan.PlayerObjectPool.CyanPlayerObjectAssigner>();
-            assigner.GetComponent<Cyan.PlayerObjectPool.CyanPoolSetupHelper>().RespawnAllPoolObjects();
+            // assigner.GetComponent<Cyan.PlayerObjectPool.CyanPoolSetupHelper>().RespawnAllPoolObjects();
             Player[] players = GameObject.FindObjectsOfType<Player>();
             PlayerListener[] listeners = GameObject.FindObjectsOfType<PlayerListener>();
             P_ShootersPlayerHandler[] handlers = GameObject.FindObjectsOfType<P_ShootersPlayerHandler>();
