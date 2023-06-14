@@ -22,28 +22,6 @@ namespace MMMaellon.P_Shooters
         public bool selfDamage = false;
         public bool toggleableDamage = false;
         public bool toggleOffOnDrop = true;
-        [FieldChangeCallback(nameof(shootSpeed))]
-        public float _shootSpeed = 1.0f;
-        [FieldChangeCallback(nameof(reloadSpeed))]
-        public float _reloadSpeed = 1.0f;
-        public float shootSpeed {
-            get => _shootSpeed;
-            set {
-                    _shootSpeed = value;
-                    if(Utilities.IsValid(animator)){
-                        animator.SetFloat("shoot_speed", value);
-                    }
-                }
-            }
-        public float reloadSpeed {
-            get => _reloadSpeed;
-            set {
-                    _reloadSpeed = value;
-                    if(Utilities.IsValid(animator)){
-                        animator.SetFloat("reload_speed", value);
-                    }
-                }
-            }
         public bool printDebugMessages = true;
         public void _print(string message)
         {
@@ -189,8 +167,14 @@ namespace MMMaellon.P_Shooters
         {
             _localPlayer = Networking.LocalPlayer;
             sync.AddListener(this);
-            shootSpeed = shootSpeed;
-            reloadSpeed = reloadSpeed;
+        }
+
+        public void OnEnable()
+        {
+            //reset all the animator stuff
+            state = state;
+            animator.SetInteger("pickup_state", sync.state);
+            animator.SetBool("local", sync.IsLocalOwner());
         }
 
         public void EnableAnimator()

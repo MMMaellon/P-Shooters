@@ -213,6 +213,12 @@ namespace MMMaellon.P_Shooters
             }
         }
 
+        public void OnEnable()
+        {
+            SetMagParameter();
+            chamberAmmo = chamberAmmo;
+        }
+
         public override void ReloadFX()
         {
             base.ReloadFX();

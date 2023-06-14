@@ -36,6 +36,13 @@ namespace MMMaellon.P_Shooters
             parent = transform.parent;
             _localPlayer = Networking.LocalPlayer;
         }
+
+        public void OnEnable()
+        {
+            //reset all the animator stuff
+            _SetAnimatorValues();
+        }
+
         [System.NonSerialized]
         public int id = -1001;
         [System.NonSerialized, UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(team))]
@@ -399,8 +406,27 @@ namespace MMMaellon.P_Shooters
             {
                 foreach (ResourceManager resource in resources)
                 {
-                    statsAnimator.SetInteger(resource.resourceName, GetResourceValueById(resource.id));
+                    if (resource.setAnimationParameterAsRatio)
+                    {
+                        if (resource.maxValue - resource.minValue == 0)
+                        {
+                            statsAnimator.SetFloat(resource.resourceName, 0);
+                        }
+                        else
+                        {
+                            statsAnimator.SetFloat(resource.resourceName, Mathf.Clamp01((float)(GetResourceValueById(resource.id) - resource.minValue) / (float)(resource.maxValue - resource.minValue)));
+                        }
+                    }
+                    else
+                    {
+                        statsAnimator.SetInteger(resource.resourceName, resource.maxValue);
+                    }
                 }
+
+                statsAnimator.SetInteger("team", team);
+                statsAnimator.SetInteger("state", state);
+                statsAnimator.SetFloat("health", Mathf.Clamp01((float)health / (float)maxHealth));
+                statsAnimator.SetFloat("shield", Mathf.Clamp01((float)shield / (float)maxShield));
             }
         }
         public void _SetHealthBar()

@@ -92,7 +92,7 @@ namespace MMMaellon.P_Shooters
         public int rapidFireDamage = 15;
         public int[] altFireDamage = new int[] { 15 };
 
-        public void Start()
+        public void OnEnable()
         {
             shooter.animator.SetBool("rapidfire", rapidFire);
             shooter.animator.SetInteger("altfire", altFire);
