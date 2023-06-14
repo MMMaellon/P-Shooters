@@ -88,11 +88,16 @@ namespace MMMaellon.P_Shooters
         public const int STATE_DEAD = 3;//can't do anything, waiting for respawn
         [System.NonSerialized]
         public const int STATE_FROZEN = 5;//can't do anything and can't move, while resurrecting another player and stuff like that
+        // [System.NonSerialized, UdonSynced(UdonSyncMode.None)]
+        // public int[] damageDealt = new int[8];
+        // [System.NonSerialized, UdonSynced(UdonSyncMode.None)]
+        // public int[] damageTargetId = { -1001, -1001, -1001, -1001, -1001, -1001, -1001, -1001 };
+
+        //two rightmost digits are the index, the rest are the damage.
+        //if two rightmost are more then 82, then it's a wipe
+        // //arbitrarily choose to keep the last 8 
         [System.NonSerialized, UdonSynced(UdonSyncMode.None)]
-        //arbitrarily choose to keep the last 8 
-        public int[] damageDealt = new int[8];
-        [System.NonSerialized, UdonSynced(UdonSyncMode.None)]
-        public int[] damageTargetId = { -1001, -1001, -1001, -1001, -1001, -1001, -1001, -1001};
+        public int[] damageSyncCache = { 99, 99, 99, 99, 99, 99, 99, 99};
         [System.NonSerialized]//we don't serialize this whole thing
         public int[] damageMatrix = new int[82];
         [System.NonSerialized, UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(shield))]
@@ -339,15 +344,7 @@ namespace MMMaellon.P_Shooters
             if (IsOwnerLocal())
             {
                 state = STATE_NORMAL;
-                for (int i = 0; i < damageDealt.Length; i++)
-                {
-                    damageDealt[i] = 0;
-                    damageTargetId[i] = -1001;
-                }
-                for (int i = 0; i < damageMatrix.Length; i++)
-                {
-                    damageMatrix[i] = 0;
-                }
+                WipeDamageMatrix();
             } else if (Utilities.IsValid(_localPlayerObject))
             {
                 damageMatrix[_localPlayerObject.id] = 0;
@@ -679,30 +676,30 @@ namespace MMMaellon.P_Shooters
         }
 
         private int matchingIndex = 0;
+        private int tempPlayerId = 99;
         public void SendDamage(int damage, int targetPlayerId)
         {
             if (!CanDealDamage())
             {
                 return;
             }
+            matchingIndex = damageSyncCache.Length - 1;
             //find match if there is one
-            for (int i = 0; i < damageTargetId.Length; i++)
+            for (int i = 0; i < damageSyncCache.Length; i++)
             {
-                matchingIndex = i;
-                if (damageTargetId[i] == targetPlayerId)
+                if (Mathf.Abs(damageSyncCache[i]) % 100 == targetPlayerId)
                 {
+                    matchingIndex = i;
                     break;
                 }
             }
             //then work backwards from that point to push all elements one forward, overriding the match if there was one
             for (int i = matchingIndex; i > 0; i--)
             {
-                damageDealt[i] = damageDealt[i - 1];
-                damageTargetId[i] = damageTargetId[i - 1];
+                damageSyncCache[i] = damageSyncCache[i - 1];
             }
             //write the newest damage entry at 0
-            damageDealt[0] = damageMatrix[targetPlayerId] + damage;
-            damageTargetId[0] = targetPlayerId;
+            damageSyncCache[0] = (damageMatrix[targetPlayerId] + damage) * 100 + targetPlayerId;
             SyncDamageMatrix();
             RequestSerialization();
         }
@@ -794,42 +791,62 @@ namespace MMMaellon.P_Shooters
 
         public override void OnDeserialization()
         {
+            Debug.LogWarning(name + " ondeserialization");
             SyncDamageMatrix();
         }
 
+        int tempDamage;
+        int tempDamageChange;
         public void SyncDamageMatrix()
         {
             if (!Utilities.IsValid(_localPlayerObject))
             {
                 return;
             }
-            for (int i = 0; i < damageDealt.Length; i++)
+            for (int i = 0; i < damageSyncCache.Length; i++)
             {
-                if (damageTargetId[i] < 0)
+                //set this player to this much damage
+                tempPlayerId = Mathf.Abs(damageSyncCache[i]) % 100;
+
+                if (tempPlayerId < 0 || tempPlayerId >= damageMatrix.Length)
                 {
-                    if (i == 0 && !IsOwnerLocal())
+                    if (i == 0)
                     {
                         //this was a complete wipe, meaning we should reset the damage counter
                         damageMatrix[_localPlayerObject.id] = 0;
                     }
                     return;
                 }
-                if (damageTargetId[i] == _localPlayerObject.id)//don't send damage messages if we were just resetting our damage messages
+
+                tempDamage = (damageSyncCache[i] - tempPlayerId) / 100;
+                tempDamageChange = tempDamage - damageMatrix[tempPlayerId];
+                damageMatrix[tempPlayerId] = tempDamage;
+                
+                if (tempPlayerId == _localPlayerObject.id)//don't send damage messages if we were just resetting our damage messages
                 {
-                    int damage = damageDealt[i] - damageMatrix[_localPlayerObject.id];
-                    if (damage < 0)
+                    if (tempDamageChange < 0)
                     {
-                        _localPlayerObject.ReceiveOtherPlayerHeal(-damage, id);
+                        _localPlayerObject.ReceiveOtherPlayerHeal(-tempDamageChange, id);
                     } else
                     {
-                        _localPlayerObject.ReceiveOtherPlayerDamage(damage, id);
+                        _localPlayerObject.ReceiveOtherPlayerDamage(tempDamageChange, id);
                     }
-                    damageMatrix[_localPlayerObject.id] = damageDealt[i];
-                } else if (IsOwnerLocal())
-                {
-                    damageMatrix[damageTargetId[i]] = damageDealt[i];
                 }
             }
+        }
+
+        public void WipeDamageMatrix()
+        {
+            Debug.LogWarning("WIIIIIPE");
+            for (int i = 0; i < damageMatrix.Length; i++)
+            {
+                damageMatrix[i] = 0;
+            }
+            for (int i = 0; i < damageSyncCache.Length; i++)
+            {
+                damageSyncCache[i] = 99;
+            }
+            RequestSerialization();
         }
 
         public void ConfirmNormalKill()

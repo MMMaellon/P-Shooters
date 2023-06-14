@@ -4,7 +4,7 @@
  {
      Properties
      {
-         _MainTex ("Sprite Texture", 2D) = "white" {}
+         [PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
          _Color ("Tint", Color) = (1,1,1,1)
          
          [Enum(UnityEngine.Rendering.CompareFunction)] _StencilComp ("Stencil Comparison", Float) = 8
@@ -16,7 +16,6 @@
          _StencilReadMask ("Stencil Read Mask", Float) = 255
          _MinDistance ("Minimum Distance", float) = 1
          _MaxDistance ("Maximum Distance", float) = 100
-         _ZOffset ("Z Offset", float) = -1
          _Scale ("Scale", float) = 1.0
          [MaterialToggle] _Billboard ("Billboard", int) = 0
         //  Property
@@ -81,7 +80,6 @@
              fixed4 _Color;
              float _MinDistance;
              float _MaxDistance;
-             float _ZOffset;
              float _Scale;
              fixed4 _TextureSampleAdd; //Added for font color support
              fixed _Billboard;
@@ -118,7 +116,7 @@
                 float3x3 billboardRotation = float3x3(r, u, f);
  
                 // apply scale, rotation, and translation to billboard
-                float3 worldPos = mul(IN.vertex.xyz * scale, billboardRotation) + worldPivot + normalize(worldPivot - camPos) * _ZOffset;
+                float3 worldPos = mul(IN.vertex.xyz * scale, billboardRotation) + worldPivot;
  
                 // transform into clip space
                 OUT.vertex = _Billboard == 0 ? UnityObjectToClipPos(IN.vertex) : UnityWorldToClipPos(worldPos);
