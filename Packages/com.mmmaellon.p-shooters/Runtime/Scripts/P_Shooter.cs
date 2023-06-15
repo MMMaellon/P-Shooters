@@ -67,6 +67,17 @@ namespace MMMaellon.P_Shooters
 
         [HideInInspector]
         public AmmoTracker ammo;
+        [FieldChangeCallback(nameof(shootSpeed))]
+        public float _shootSpeed = 1.0f;
+        public float shootSpeed
+        {
+            get => _shootSpeed;
+            set
+            {
+                _shootSpeed = value;
+                animator.SetFloat("shoot_speed", value);
+            }
+        }
 
         [Header("Sounds")]
         public AudioSource gunshotSource;
@@ -175,6 +186,7 @@ namespace MMMaellon.P_Shooters
             state = state;
             animator.SetInteger("pickup_state", sync.state);
             animator.SetBool("local", sync.IsLocalOwner());
+            shootSpeed = shootSpeed;
         }
 
         public void EnableAnimator()

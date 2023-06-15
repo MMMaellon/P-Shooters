@@ -15,6 +15,18 @@ namespace MMMaellon.P_Shooters
     {
         [HideInInspector]
         public P_Shooter shooter;
+        
+        [FieldChangeCallback(nameof(reloadSpeed))]
+        public float _reloadSpeed = 1.0f;
+        public float reloadSpeed
+        {
+            get => _reloadSpeed;
+            set
+            {
+                _reloadSpeed = value;
+                shooter.animator.SetFloat("reload_speed", value);
+            }
+        }
 
         public AudioSource audioSource;
         public AudioClip[] reloads;
@@ -66,6 +78,11 @@ namespace MMMaellon.P_Shooters
             {
                 audioSource.PlayOneShot(clips[Random.Range(0, clips.Length)], volume);
             }
+        }
+        public virtual void OnEnable()
+        {
+            //reset all the animator stuff
+            reloadSpeed = reloadSpeed;
         }
 
 

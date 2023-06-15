@@ -26,28 +26,6 @@ namespace MMMaellon.P_Shooters
         public bool startLoaded = true;
         [Tooltip("If this is true, then the gun automatically reloads if the player pulls the trigger while it's empty.")]
         public bool autoReload = true;
-        [FieldChangeCallback(nameof(shootSpeed))]
-        public float _shootSpeed = 1.0f;
-        [FieldChangeCallback(nameof(reloadSpeed))]
-        public float _reloadSpeed = 1.0f;
-        public float shootSpeed
-        {
-            get => _shootSpeed;
-            set
-            {
-                _shootSpeed = value;
-                shooter.animator.SetFloat("shoot_speed", value);
-            }
-        }
-        public float reloadSpeed
-        {
-            get => _reloadSpeed;
-            set
-            {
-                _reloadSpeed = value;
-                shooter.animator.SetFloat("reload_speed", value);
-            }
-        }
         public AudioClip[] magInsertSounds;
         [Range(0.0f, 1.0f)]
         public float magInsertVol = 1.0f;
@@ -112,13 +90,12 @@ namespace MMMaellon.P_Shooters
             }
         }
 
-        public void OnEnable()
+        public override void OnEnable()
         {
             //reset all the animator stuff
+            base.OnEnable();
             chamberAmmo = chamberAmmo;
             magAmmo = magAmmo;
-            shootSpeed = shootSpeed;
-            reloadSpeed = reloadSpeed;
         }
 
         public override void Shoot()

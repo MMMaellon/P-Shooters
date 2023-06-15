@@ -213,8 +213,9 @@ namespace MMMaellon.P_Shooters
             }
         }
 
-        public void OnEnable()
+        public override void OnEnable()
         {
+            base.OnEnable();
             SetMagParameter();
             chamberAmmo = chamberAmmo;
         }

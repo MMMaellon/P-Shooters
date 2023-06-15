@@ -90,12 +90,10 @@ namespace MMMaellon.P_Shooters
 
         public void Attach(Transform newTransform)
         {
-            Debug.LogWarning("MAG Attach");
             if (!Utilities.IsValid(newTransform))
             {
                 return;
             }
-            Debug.LogWarning("MAG Attach | transform valid: " + newTransform.name);
             childState.Attach(newTransform);
             if (childState.IsActiveState())
             {
