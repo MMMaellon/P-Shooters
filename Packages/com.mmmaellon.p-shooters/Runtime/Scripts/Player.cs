@@ -863,7 +863,6 @@ namespace MMMaellon.P_Shooters
 
         public void WipeDamageMatrix()
         {
-            Debug.LogWarning("WIIIIIPE");
             for (int i = 0; i < damageMatrix.Length; i++)
             {
                 damageMatrix[i] = 0;

@@ -98,21 +98,27 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 283033749750275716, guid: 2bf34f3678b77e3409511e56f09eb3e4,
         type: 3}
+    - target: {fileID: 612737719305101880, guid: 2bf34f3678b77e3409511e56f09eb3e4,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3237183086497458991, guid: 2bf34f3678b77e3409511e56f09eb3e4,
         type: 3}
       propertyPath: m_Name
-      value: PlayersWithDamageAndRespawn
-      objectReference: {fileID: 0}
-    - target: {fileID: 3387802532356035583, guid: 2bf34f3678b77e3409511e56f09eb3e4,
-        type: 3}
-      propertyPath: poolEventListener
-      value: 
+      value: Player Setup with Damage and Death Respawn
       objectReference: {fileID: 0}
     - target: {fileID: 3387802532356035583, guid: 2bf34f3678b77e3409511e56f09eb3e4,
         type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 3387802532356035583, guid: 2bf34f3678b77e3409511e56f09eb3e4,
+        type: 3}
+    - target: {fileID: 6727387326631777404, guid: 2bf34f3678b77e3409511e56f09eb3e4,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 6727387326631777404, guid: 2bf34f3678b77e3409511e56f09eb3e4,
         type: 3}
     - target: {fileID: 7367138173251141170, guid: 2bf34f3678b77e3409511e56f09eb3e4,
         type: 3}
