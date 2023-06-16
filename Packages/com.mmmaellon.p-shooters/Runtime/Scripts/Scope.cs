@@ -192,6 +192,7 @@ namespace MMMaellon.P_Shooters
             }
             zoomStart = Time.realtimeSinceStartup - incompleteZoom;
         }
+        Vector3 scaledPos;
         public void zoomIn()
         {
             VRCPlayerApi.TrackingData headData = _localPlayer.GetTrackingData(VRCPlayerApi.TrackingDataType.Head);
@@ -203,7 +204,7 @@ namespace MMMaellon.P_Shooters
             else
             {
                 zoomStopPos = Quaternion.Inverse(shooter.transform.rotation) * (headData.position - ADSPosition.transform.position);
-                zoomStopRot = ADSPosition.transform.localRotation;
+                zoomStopRot = Quaternion.Inverse(shooter.transform.rotation) * ADSPosition.transform.rotation;
             }
 
             if (zoomInTime <= 0)
@@ -213,10 +214,11 @@ namespace MMMaellon.P_Shooters
             }
             else
             {
-                float lerp = (Time.realtimeSinceStartup - zoomStart) / zoomInTime;
-                float smoothedLerp = Mathf.Lerp(lerp, 1, lerp);
-                shooter.gunParent.localPosition = Vector3.Lerp(zoomStartPos, zoomStopPos, smoothedLerp);
-                shooter.gunParent.localRotation = Quaternion.Lerp(zoomStartRot, zoomStopRot, smoothedLerp);
+                lerp = (Time.realtimeSinceStartup - zoomStart) / zoomInTime;
+                smoothedLerp = Mathf.Lerp(lerp, 1, lerp);
+                scaledPos = new Vector3 (zoomStopPos.x / shooter.transform.lossyScale.x, zoomStopPos.y / shooter.transform.lossyScale.y, zoomStopPos.z / shooter.transform.lossyScale.z);
+                shooter.gunParent.localPosition = Vector3.Lerp(zoomStartPos, scaledPos, smoothedLerp);
+                shooter.gunParent.localRotation = Quaternion.LerpUnclamped(zoomStartRot, zoomStopRot, smoothedLerp / shooter.transform.lossyScale.x);
             }
         }
 

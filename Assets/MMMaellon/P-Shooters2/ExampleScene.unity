@@ -11038,12 +11038,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a09ebf96cafcbbf47b9f9a884f119ed5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &1025847338 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 9011897178555123086, guid: 6ff064430676e4148abdb48e7d217ee6,
-    type: 3}
-  m_PrefabInstance: {fileID: 9011897178506573227}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1032989017
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -38795,6 +38789,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7329122735131203840, guid: 6ff064430676e4148abdb48e7d217ee6,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 7329122735131203840, guid: 6ff064430676e4148abdb48e7d217ee6,
+        type: 3}
     - target: {fileID: 8574173954160765747, guid: 6ff064430676e4148abdb48e7d217ee6,
         type: 3}
       propertyPath: particles
@@ -38835,16 +38835,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9011897178555123075, guid: 6ff064430676e4148abdb48e7d217ee6,
         type: 3}
-    - target: {fileID: 9011897178555123079, guid: 6ff064430676e4148abdb48e7d217ee6,
-        type: 3}
-      propertyPath: shooter
-      value: 
-      objectReference: {fileID: 1025847334}
-    - target: {fileID: 9011897178555123079, guid: 6ff064430676e4148abdb48e7d217ee6,
-        type: 3}
-      propertyPath: ADSPosition
-      value: 
-      objectReference: {fileID: 1025847338}
     - target: {fileID: 9011897178555123079, guid: 6ff064430676e4148abdb48e7d217ee6,
         type: 3}
       propertyPath: serializationData.Prefab
