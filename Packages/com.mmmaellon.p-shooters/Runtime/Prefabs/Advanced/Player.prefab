@@ -210,7 +210,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 4663366338715102013}
-  printDebugMessages: 0
+  printDebugMessages: 1
   capsuleCollider: {fileID: 0}
   _statsAnimator: {fileID: 8249617076228757282}
   eventAnimator: {fileID: 1466223848799953716}

@@ -60,7 +60,7 @@
       }
     },
     "com.mmmaellon.smartobjectsync": {
-      "version": "3.3.1",
+      "version": "3.3.4",
       "dependencies": {
         "com.vrchat.udonsharp": "1.1.X"
       }

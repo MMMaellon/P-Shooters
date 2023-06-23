@@ -132,6 +132,7 @@ namespace MMMaellon.P_Shooters
             get => _shield;
             set
             {
+                _print("set shield from " + _shield + " to " + value);
                 if (value > _shield)
                 {
                     _shield = value;
@@ -360,6 +361,7 @@ namespace MMMaellon.P_Shooters
 
         public void ResetPlayerResources()
         {
+            _print("ResetPlayerResources");
             if (IsOwnerLocal())
             {
                 shield = playerHandler.startingShield;
@@ -664,7 +666,7 @@ namespace MMMaellon.P_Shooters
             {
                 return;
             }
-
+            _print("OnPShooterHit");
             if (otherShooter.sync.owner == Owner && !otherShooter.selfDamage)
             {
                 return;
@@ -709,6 +711,7 @@ namespace MMMaellon.P_Shooters
             {
                 return;
             }
+            _print("Sending " + damage + " to " + targetPlayerId);
             matchingIndex = damageSyncCache.Length - 1;
             //find match if there is one
             for (int i = 0; i < damageSyncCache.Length; i++)
@@ -725,7 +728,14 @@ namespace MMMaellon.P_Shooters
                 damageSyncCache[i] = damageSyncCache[i - 1];
             }
             //write the newest damage entry at 0
-            damageSyncCache[0] = (damageMatrix[targetPlayerId] + damage) * 100 + targetPlayerId;
+            tempDamage = (damageMatrix[targetPlayerId] + damage) * 100;
+            if (tempDamage > 0)
+            {
+                damageSyncCache[0] = tempDamage + targetPlayerId;
+            } else
+            {
+                damageSyncCache[0] = tempDamage - targetPlayerId;
+            }
             SyncDamageMatrix();
             RequestSerialization();
         }
@@ -752,6 +762,7 @@ namespace MMMaellon.P_Shooters
             ReceiveDamage(damage, false);
         }
 
+        int tempShield;
         public void ReceiveDamage(int damage, bool ignoreInvincibleAndSpectator)
         {
             _print("ReceiveDamage " + damage);
@@ -764,8 +775,11 @@ namespace MMMaellon.P_Shooters
                 health -= damage;
             } else if (damage > shield)
             {
-                health -= damage - shield;
+                _print("damage is more than shield " + damage);
+                //we have to subtract shield first because if we subtract health first we'll respawn before shield can be set to zero
+                tempShield = shield;
                 shield = 0;
+                health -= damage - tempShield;
             } else
             {
                 shield -= damage;
@@ -798,19 +812,23 @@ namespace MMMaellon.P_Shooters
 
         public void ReceiveHealth(int heal, bool ignoreInvincibleAndSpectator)
         {
+            _print("ReceiveHealth " + heal);
             if (heal == 0 || !IsOwnerLocal() || (!ignoreInvincibleAndSpectator && !CanTakeDamage()))
             {
                 return;
             }
             if (health >= maxHealth)
             {
+                _print("ReceiveHealth 1");
                 shield += heal;
             } else if (heal > maxHealth - health)
             {
+                _print("ReceiveHealth 2");
                 shield += heal - (maxHealth - health);
                 health = maxHealth;
             } else
             {
+                _print("ReceiveHealth 3");
                 health += heal;
             }
         }
@@ -829,15 +847,21 @@ namespace MMMaellon.P_Shooters
             {
                 return;
             }
+            _print("SyncDamageMatrix");
+            _print("full damage cache:");
+
             for (int i = 0; i < damageSyncCache.Length; i++)
             {
+                _print("damageSyncCache[" + i + "] " + damageSyncCache[i]);
                 //set this player to this much damage
                 tempPlayerId = Mathf.Abs(damageSyncCache[i]) % 100;
-
+                _print("SyncDamageMatrix temp id " + tempPlayerId);
                 if (tempPlayerId < 0 || tempPlayerId >= damageMatrix.Length)
                 {
+                    _print("invalide temp id");
                     if (i == 0)
                     {
+                        _print("wiiiiiipe");
                         //this was a complete wipe, meaning we should reset the damage counter
                         damageMatrix[_localPlayerObject.id] = 0;
                     }
@@ -845,11 +869,16 @@ namespace MMMaellon.P_Shooters
                 }
 
                 tempDamage = (damageSyncCache[i] - tempPlayerId) / 100;
+                _print("tempDamage " + tempDamage);
+                _print("damageMatrix[tempPlayerId] " + damageMatrix[tempPlayerId]);
                 tempDamageChange = tempDamage - damageMatrix[tempPlayerId];
+                _print("tempDamageChange " + tempDamageChange);
                 damageMatrix[tempPlayerId] = tempDamage;
-                
+
+                _print("_localPlayerObject.id " + _localPlayerObject.id);
                 if (tempPlayerId == _localPlayerObject.id)//don't send damage messages if we were just resetting our damage messages
                 {
+                    _print("tempId was local");
                     if (tempDamageChange < 0)
                     {
                         _localPlayerObject.ReceiveOtherPlayerHeal(-tempDamageChange, id);
