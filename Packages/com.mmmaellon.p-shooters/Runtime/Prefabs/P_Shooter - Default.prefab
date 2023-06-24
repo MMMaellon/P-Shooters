@@ -284,6 +284,8 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 5248753524452220099}
+  respawnEventListeners: []
+  respawnEventName: 
   ignorePhysicsEvents: 1
   respawnCooldown: 0
 --- !u!114 &5248753524452220099
@@ -572,7 +574,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 2012449602}
-  targetUdon: {fileID: 0}
+  targetUdon: {fileID: 1320582978233205927}
   targetUdonEvent: Cycle
   onInteract: 1
   onPickup: 0
@@ -625,7 +627,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: ed2b09a4f76484a44b95a19053388655, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -15194,6 +15196,7 @@ MonoBehaviour:
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 8397389300495070513}
   shooter: {fileID: 0}
+  _reloadSpeed: 1
   audioSource: {fileID: 4317792030358083477}
   reloads:
   - {fileID: 8300000, guid: e8b508355b22ecb4fbe962658425f41d, type: 3}
