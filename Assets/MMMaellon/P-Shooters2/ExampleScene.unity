@@ -1063,6 +1063,30 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 631605971}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &109695430 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7347431191976235797, guid: 3943f732b41a47140a295a14353c170e,
+    type: 3}
+  m_PrefabInstance: {fileID: 631605971}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 109695429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6208347dfdd87f64599321e370b308b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &109695434 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2056090398507583697, guid: 3943f732b41a47140a295a14353c170e,
+    type: 3}
+  m_PrefabInstance: {fileID: 631605971}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 109695429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de54cdce13f66a5429fa182153d4b38e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &114726768
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1885,7 +1909,7 @@ MonoBehaviour:
   collisionCooldown: 0.1
   attachmentVector: {x: 0, y: -0.2, z: 0}
   returnToStartingParentOnExit: 1
-  disableAutoSerialization: 0
+  automaticallySetTransforms: 1
 --- !u!114 &198008644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5984,6 +6008,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1459997101972512644, guid: 3943f732b41a47140a295a14353c170e,
         type: 3}
+    - target: {fileID: 2056090398507583697, guid: 3943f732b41a47140a295a14353c170e,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 2056090398507583697, guid: 3943f732b41a47140a295a14353c170e,
+        type: 3}
     - target: {fileID: 3396802237755520458, guid: 3943f732b41a47140a295a14353c170e,
         type: 3}
       propertyPath: players.Array.data[0]
@@ -6400,6 +6430,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3396802237755520458, guid: 3943f732b41a47140a295a14353c170e,
         type: 3}
+    - target: {fileID: 3396802237755520458, guid: 3943f732b41a47140a295a14353c170e,
+        type: 3}
+      propertyPath: playerListeners.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3396802237755520458, guid: 3943f732b41a47140a295a14353c170e,
+        type: 3}
+      propertyPath: playerListeners.Array.data[0]
+      value: 
+      objectReference: {fileID: 109695434}
+    - target: {fileID: 3396802237755520458, guid: 3943f732b41a47140a295a14353c170e,
+        type: 3}
+      propertyPath: playerListeners.Array.data[1]
+      value: 
+      objectReference: {fileID: 109695430}
     - target: {fileID: 4186557331453243135, guid: 3943f732b41a47140a295a14353c170e,
         type: 3}
       propertyPath: m_RootOrder
@@ -7210,6 +7255,8 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 666391960}
+  respawnEventListeners: []
+  respawnEventName: 
   ignorePhysicsEvents: 0
   respawnCooldown: 0.5
 --- !u!114 &666391962
@@ -9909,7 +9956,7 @@ MonoBehaviour:
   collisionCooldown: 0.1
   attachmentVector: {x: 0, y: -0.2, z: 0}
   returnToStartingParentOnExit: 1
-  disableAutoSerialization: 0
+  automaticallySetTransforms: 1
 --- !u!114 &870231946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11790,6 +11837,8 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1031291277}
+  respawnEventListeners: []
+  respawnEventName: 
   ignorePhysicsEvents: 0
   respawnCooldown: 0.5
 --- !u!114 &1031291279
@@ -14740,7 +14789,7 @@ MonoBehaviour:
   collisionCooldown: 0.1
   attachmentVector: {x: 0, y: -0.2, z: 0}
   returnToStartingParentOnExit: 1
-  disableAutoSerialization: 0
+  automaticallySetTransforms: 1
 --- !u!114 &1096323955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15728,7 +15777,7 @@ MonoBehaviour:
   collisionCooldown: 0.1
   attachmentVector: {x: 0, y: -0.2, z: 0}
   returnToStartingParentOnExit: 1
-  disableAutoSerialization: 0
+  automaticallySetTransforms: 1
 --- !u!114 &1240449882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15939,7 +15988,7 @@ MonoBehaviour:
   collisionCooldown: 0.5
   attachmentVector: {x: 0, y: 0, z: 0}
   returnToStartingParentOnExit: 1
-  disableAutoSerialization: 0
+  automaticallySetTransforms: 1
 --- !u!114 &1240631823
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -16361,6 +16410,8 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1284850152}
+  respawnEventListeners: []
+  respawnEventName: 
   ignorePhysicsEvents: 0
   respawnCooldown: 0.5
 --- !u!114 &1284850154
@@ -18791,7 +18842,7 @@ MonoBehaviour:
   collisionCooldown: 0.1
   attachmentVector: {x: 0, y: -0.2, z: 0}
   returnToStartingParentOnExit: 1
-  disableAutoSerialization: 0
+  automaticallySetTransforms: 1
 --- !u!114 &1433495564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24685,7 +24736,7 @@ MonoBehaviour:
   collisionCooldown: 0.1
   attachmentVector: {x: 0, y: -0.2, z: 0}
   returnToStartingParentOnExit: 1
-  disableAutoSerialization: 0
+  automaticallySetTransforms: 1
 --- !u!1001 &1520825602
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25123,7 +25174,7 @@ MonoBehaviour:
   collisionCooldown: 0.1
   attachmentVector: {x: 0, y: -0.2, z: 0}
   returnToStartingParentOnExit: 1
-  disableAutoSerialization: 0
+  automaticallySetTransforms: 1
 --- !u!114 &1530098810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25408,7 +25459,7 @@ MonoBehaviour:
   collisionCooldown: 0.1
   attachmentVector: {x: 0, y: -0.2, z: 0}
   returnToStartingParentOnExit: 1
-  disableAutoSerialization: 0
+  automaticallySetTransforms: 1
 --- !u!114 &1542358752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33695,6 +33746,8 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1736600027}
+  respawnEventListeners: []
+  respawnEventName: 
   ignorePhysicsEvents: 0
   respawnCooldown: 0.5
 --- !u!114 &1736600029
@@ -36778,6 +36831,8 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 2027427528}
+  respawnEventListeners: []
+  respawnEventName: 
   ignorePhysicsEvents: 0
   respawnCooldown: 0.5
 --- !u!114 &2027427530
