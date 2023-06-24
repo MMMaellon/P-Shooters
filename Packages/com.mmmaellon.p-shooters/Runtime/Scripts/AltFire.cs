@@ -140,6 +140,22 @@ namespace MMMaellon.P_Shooters
             }
         }
 
+        bool startingRapidFire = false;
+        int startingAltFire = 0;
+        public void Start()
+        {
+            startingRapidFire = _rapidFire;
+            startingAltFire = _altFire;
+        }
+
+        public void ResetAltFire()
+        {
+            Networking.SetOwner(Networking.LocalPlayer, gameObject);
+            rapidFire = rapidFire;
+            altFire = altFire;
+            RequestSerialization();
+        }
+
         public void ToggleAltFire()
         {
             if (altFireModeCount <= 0)

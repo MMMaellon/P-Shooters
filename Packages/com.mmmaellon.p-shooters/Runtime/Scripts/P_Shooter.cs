@@ -189,6 +189,19 @@ namespace MMMaellon.P_Shooters
             shootSpeed = shootSpeed;
         }
 
+        public void ResetGun()
+        {
+            state = STATE_IDLE;
+            if (Utilities.IsValid(ammo))
+            {
+                ammo.ResetAmmo();
+            }
+            if (Utilities.IsValid(GetComponent<AltFire>()))
+            {
+                GetComponent<AltFire>().ResetAltFire();
+            }
+        }
+
         public void EnableAnimator()
         {
             _animator.enabled = true;

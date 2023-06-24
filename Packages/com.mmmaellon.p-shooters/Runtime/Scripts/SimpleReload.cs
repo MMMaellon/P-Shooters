@@ -292,5 +292,18 @@ namespace MMMaellon.P_Shooters
         {
             RandomOneShot(chamberSounds, chamberVol);
         }
+
+        public override void ResetAmmo()
+        {
+            if (startLoaded)
+            {
+                chamberAmmo = chamberCapacity;
+                magAmmo = magCapacity;
+            } else
+            {
+                chamberAmmo = 0;
+                magAmmo = 0;
+            }
+        }
     }
 }

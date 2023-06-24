@@ -63,6 +63,14 @@ namespace MMMaellon.P_Shooters
             }
         }
 
+        public override void ResetAmmo()
+        {
+            if (chamberAmmo == 0)
+            {
+                ChamberAmmo();
+            }
+        }
+
 
 #if !COMPILER_UDONSHARP && UNITY_EDITOR
         public override void Reset()

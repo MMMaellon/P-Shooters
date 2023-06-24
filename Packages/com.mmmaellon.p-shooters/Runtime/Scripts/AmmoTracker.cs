@@ -49,6 +49,7 @@ namespace MMMaellon.P_Shooters
         public abstract void ReloadEnd();
         public abstract bool ChamberAmmo();
         public abstract bool ConsumeAmmo();
+        public abstract void ResetAmmo();
 
         public virtual void ReloadFX()
         {
@@ -74,6 +75,10 @@ namespace MMMaellon.P_Shooters
 
         public void RandomOneShot(AudioClip[] clips, float volume)
         {
+            if (Time.timeSinceLevelLoad < 5f)//delay to prevent the spam you get at load in
+            {
+                return;
+            }
             if (Utilities.IsValid(audioSource) && clips.Length > 0)
             {
                 audioSource.PlayOneShot(clips[Random.Range(0, clips.Length)], volume);
