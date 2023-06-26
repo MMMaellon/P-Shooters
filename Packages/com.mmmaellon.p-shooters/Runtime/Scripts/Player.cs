@@ -692,12 +692,12 @@ namespace MMMaellon.P_Shooters
                 return;
             }
 
-            otherShooter.OnHitPlayerFX();
-
             if (!otherShooter.sync.IsLocalOwner())
             {
                 return;
             }
+
+            otherShooter.OnHitPlayerFX();
 
             foreach (PlayerListener listener in playerHandler.playerListeners)
             {
