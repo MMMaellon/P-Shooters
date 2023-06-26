@@ -369,8 +369,8 @@ MonoBehaviour:
   ControlsDamage: 0
   healHealth: 0
   healShield: 1
-  postDamageCooldown: 10
-  healAmount: 3
+  postDamageCooldown: 15
+  healAmount: 10
   healInterval: 1
 --- !u!114 &6709666205895514348
 MonoBehaviour:

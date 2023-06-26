@@ -10,8 +10,8 @@ namespace MMMaellon.P_Shooters
     {
         public bool healHealth = false;
         public bool healShield = true;
-        public float postDamageCooldown = 10f;
-        public int healAmount = 3;
+        public float postDamageCooldown = 15f;
+        public int healAmount = 10;
         public float healInterval = 1f;
         float lastDamage = -1001f;
         Player localPlayer;
@@ -54,6 +54,7 @@ namespace MMMaellon.P_Shooters
         }
 
         float lastHeal = -1001f;
+        int overheal;
         public void Update()
         {
             if (!Utilities.IsValid(localPlayer))
@@ -71,10 +72,11 @@ namespace MMMaellon.P_Shooters
             lastHeal = Time.timeSinceLevelLoad;
             if (healHealth && localPlayer.health < localPlayer.maxHealth)
             {
-                localPlayer.health = Mathf.Min(localPlayer.maxShield, localPlayer.health + healAmount);
-                if (localPlayer.maxHealth - localPlayer.health < healAmount && healShield && localPlayer.shield < localPlayer.maxShield)
+                overheal = healAmount - (localPlayer.maxHealth - localPlayer.health);
+                localPlayer.health = Mathf.Min(localPlayer.maxHealth, localPlayer.health + healAmount);
+                if (overheal > 0 && healShield && localPlayer.shield < localPlayer.maxShield)
                 {
-                    localPlayer.shield = Mathf.Min(localPlayer.maxShield, localPlayer.shield + (healAmount - localPlayer.maxHealth + localPlayer.health));
+                    localPlayer.shield = Mathf.Min(localPlayer.maxShield, localPlayer.shield + overheal);
                 }
                 return;
             }

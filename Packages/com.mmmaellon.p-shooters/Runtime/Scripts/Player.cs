@@ -59,7 +59,8 @@ namespace MMMaellon.P_Shooters
                 {
                     statsAnimator.SetInteger("team", value);
                 }
-                if(IsOwnerLocal()){
+                if (IsOwnerLocal())
+                {
                     RequestSerialization();
                 }
             }
@@ -76,7 +77,8 @@ namespace MMMaellon.P_Shooters
                 {
                     statsAnimator.SetInteger("state", value);
                 }
-                if(IsOwnerLocal()){
+                if (IsOwnerLocal())
+                {
                     RequestSerialization();
                 }
             }
@@ -104,7 +106,7 @@ namespace MMMaellon.P_Shooters
         //if two rightmost are more then 82, then it's a wipe
         // //arbitrarily choose to keep the last 8 
         [System.NonSerialized, UdonSynced(UdonSyncMode.None)]
-        public int[] damageSyncCache = { 99, 99, 99, 99, 99, 99, 99, 99};
+        public int[] damageSyncCache = { 99, 99, 99, 99, 99, 99, 99, 99 };
         [System.NonSerialized]//we don't serialize this whole thing
         public int[] damageMatrix = new int[82];
         [System.NonSerialized, UdonSynced(UdonSyncMode.None), FieldChangeCallback(nameof(shield))]
@@ -141,7 +143,8 @@ namespace MMMaellon.P_Shooters
                         _shield = maxShield;
                         _OnIncreaseShield();
                         _OnMaxShield();
-                    } else
+                    }
+                    else
                     {
                         _OnIncreaseShield();
                     }
@@ -154,7 +157,8 @@ namespace MMMaellon.P_Shooters
                         _shield = 0;
                         _OnDecreaseShield();
                         _OnMinShield();
-                    } else
+                    }
+                    else
                     {
                         _OnDecreaseShield();
                     }
@@ -197,7 +201,8 @@ namespace MMMaellon.P_Shooters
                         _health = maxHealth;
                         _OnIncreaseHealth();
                         _OnMaxHealth();
-                    } else
+                    }
+                    else
                     {
                         _OnIncreaseHealth();
                     }
@@ -210,7 +215,8 @@ namespace MMMaellon.P_Shooters
                         _health = 0;
                         _OnDecreaseHealth();
                         _OnMinHealth();
-                    } else
+                    }
+                    else
                     {
                         _OnDecreaseHealth();
                     }
@@ -225,7 +231,8 @@ namespace MMMaellon.P_Shooters
         [Tooltip("Will automatically set \"health\" and \"shield\" float parameters and a \"team\" integer parameter on this animator")]
         [FieldChangeCallback(nameof(statsAnimator))]
         public Animator _statsAnimator = null;
-        public Animator statsAnimator{
+        public Animator statsAnimator
+        {
             get => _statsAnimator;
             set
             {
@@ -245,9 +252,11 @@ namespace MMMaellon.P_Shooters
         [HideInInspector, FieldChangeCallback(nameof(localResources))]
         public int[] _localResources = { };
         int oldValue;
-        public int[] syncedResources{
+        public int[] syncedResources
+        {
             get => _syncedResources;
-            set{
+            set
+            {
                 _syncedResources = value;
                 if (!Utilities.IsValid(value) || value.Length == 0)
                 {
@@ -282,24 +291,32 @@ namespace MMMaellon.P_Shooters
                 }
             }
         }
-        public int[] localResources{
+        public int[] localResources
+        {
             get => _localResources;
-            set{
+            set
+            {
                 _localResources = value;
-                for(int i = 0; i < value.Length; i++){
+                for (int i = 0; i < value.Length; i++)
+                {
                     ResourceManager resource = resources[reverseLocalResourceIdMap[i]];
                     oldValue = i < _localResources.Length ? _localResources[i] : resource.defaultValue;
-                    if(value[i] > oldValue){
+                    if (value[i] > oldValue)
+                    {
                         if (value[i] >= resource.maxValue)
                         {
-                            if(!resource.allowOverflow){
+                            if (!resource.allowOverflow)
+                            {
                                 _localResources[i] = resource.maxValue;
                             }
                         }
-                    } else if (value[i] < oldValue){
+                    }
+                    else if (value[i] < oldValue)
+                    {
                         if (value[i] <= resource.minValue)
                         {
-                            if(!resource.allowOverflow){
+                            if (!resource.allowOverflow)
+                            {
                                 _localResources[i] = resource.minValue;
                             }
                         }
@@ -353,7 +370,8 @@ namespace MMMaellon.P_Shooters
             {
                 state = STATE_NORMAL;
                 WipeDamageMatrix();
-            } else if (Utilities.IsValid(_localPlayerObject))
+            }
+            else if (Utilities.IsValid(_localPlayerObject))
             {
                 damageMatrix[_localPlayerObject.id] = 0;
             }
@@ -394,8 +412,8 @@ namespace MMMaellon.P_Shooters
             headPos = headPos != Vector3.zero ? headPos : feetPos + Vector3.up * defaultHeight;
 
             //assuming the model is 6 heads tall, headPos is at the 5th head, so we need to add 10% (1/5th) to the height
-            transform.position = Vector3.Lerp(feetPos, headPos, 2.75f/5f); // this weird ratio because of the 7 heads thing
-            capsuleCollider.height = Vector3.Distance(feetPos, headPos) * (6f/5f);
+            transform.position = Vector3.Lerp(feetPos, headPos, 2.75f / 5f); // this weird ratio because of the 7 heads thing
+            capsuleCollider.height = Vector3.Distance(feetPos, headPos) * (6f / 5f);
             transform.rotation = Owner.GetRotation() * Quaternion.FromToRotation(Vector3.up, headPos - feetPos);
             if (Utilities.IsValid(statsAnimator))
             {
@@ -462,14 +480,16 @@ namespace MMMaellon.P_Shooters
         }
         public void SetResourceValueById(int resourceId, int value)
         {
-            if(resourceId < 0 || resourceId >= resources.Length){
+            if (resourceId < 0 || resourceId >= resources.Length)
+            {
                 return;
             }
             if (resources[resourceId].synced)
             {
                 syncedResources[resourceIdMap[resourceId]] = value;
                 RequestSerialization();
-            } else
+            }
+            else
             {
                 localResources[resourceIdMap[resourceId]] = value;
             }
@@ -693,7 +713,7 @@ namespace MMMaellon.P_Shooters
         public int AdjustDamage(int damage)
         {
             newDamage = damage;
-            foreach(PlayerListener listener in playerHandler.playerListeners)
+            foreach (PlayerListener listener in playerHandler.playerListeners)
             {
                 if (listener.ControlsDamage)
                 {
@@ -732,7 +752,8 @@ namespace MMMaellon.P_Shooters
             if (tempDamage > 0)
             {
                 damageSyncCache[0] = tempDamage + targetPlayerId;
-            } else
+            }
+            else
             {
                 damageSyncCache[0] = tempDamage - targetPlayerId;
             }
@@ -754,10 +775,6 @@ namespace MMMaellon.P_Shooters
                         return;
                     }
                 }
-                lastAttacker = playerHandler.players[attackerId];
-            } else
-            {
-                lastAttacker = this;
             }
             ReceiveDamage(damage, false);
         }
@@ -773,14 +790,16 @@ namespace MMMaellon.P_Shooters
             if (shield <= 0)
             {
                 health -= damage;
-            } else if (damage > shield)
+            }
+            else if (damage > shield)
             {
                 _print("damage is more than shield " + damage);
                 //we have to subtract shield first because if we subtract health first we'll respawn before shield can be set to zero
                 tempShield = shield;
                 shield = 0;
                 health -= damage - tempShield;
-            } else
+            }
+            else
             {
                 shield -= damage;
             }
@@ -821,12 +840,14 @@ namespace MMMaellon.P_Shooters
             {
                 _print("ReceiveHealth 1");
                 shield += heal;
-            } else if (heal > maxHealth - health)
+            }
+            else if (heal > maxHealth - health)
             {
                 _print("ReceiveHealth 2");
                 shield += heal - (maxHealth - health);
                 health = maxHealth;
-            } else
+            }
+            else
             {
                 _print("ReceiveHealth 3");
                 health += heal;
@@ -855,13 +876,10 @@ namespace MMMaellon.P_Shooters
                 _print("damageSyncCache[" + i + "] " + damageSyncCache[i]);
                 //set this player to this much damage
                 tempPlayerId = Mathf.Abs(damageSyncCache[i]) % 100;
-                _print("SyncDamageMatrix temp id " + tempPlayerId);
                 if (tempPlayerId < 0 || tempPlayerId >= damageMatrix.Length)
                 {
-                    _print("invalide temp id");
                     if (i == 0)
                     {
-                        _print("wiiiiiipe");
                         //this was a complete wipe, meaning we should reset the damage counter
                         damageMatrix[_localPlayerObject.id] = 0;
                     }
@@ -869,20 +887,20 @@ namespace MMMaellon.P_Shooters
                 }
 
                 tempDamage = (damageSyncCache[i] - tempPlayerId) / 100;
-                _print("tempDamage " + tempDamage);
-                _print("damageMatrix[tempPlayerId] " + damageMatrix[tempPlayerId]);
                 tempDamageChange = tempDamage - damageMatrix[tempPlayerId];
-                _print("tempDamageChange " + tempDamageChange);
                 damageMatrix[tempPlayerId] = tempDamage;
-
-                _print("_localPlayerObject.id " + _localPlayerObject.id);
-                if (tempPlayerId == _localPlayerObject.id)//don't send damage messages if we were just resetting our damage messages
+                if (tempDamageChange < 0)
                 {
-                    _print("tempId was local");
-                    if (tempDamageChange < 0)
+                    playerHandler.players[tempPlayerId].lastHealer = this;
+                    if (tempPlayerId == _localPlayerObject.id)//don't send damage messages if we were just resetting our damage messages
                     {
                         _localPlayerObject.ReceiveOtherPlayerHeal(-tempDamageChange, id);
-                    } else
+                    }
+                }
+                else
+                {
+                    playerHandler.players[tempPlayerId].lastAttacker = this;
+                    if (tempPlayerId == _localPlayerObject.id)//don't send damage messages if we were just resetting our damage messages
                     {
                         _localPlayerObject.ReceiveOtherPlayerDamage(tempDamageChange, id);
                     }
