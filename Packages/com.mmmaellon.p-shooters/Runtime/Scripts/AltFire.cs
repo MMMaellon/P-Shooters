@@ -183,7 +183,7 @@ namespace MMMaellon.P_Shooters
                 rapidFire = true;
                 altFire = 0;
             }
-            else if (altFire == 0)
+            else if (altFire < altFireModeCount)
             {
                 ToggleAltFire();
             }
