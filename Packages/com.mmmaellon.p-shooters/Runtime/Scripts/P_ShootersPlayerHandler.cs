@@ -125,13 +125,13 @@ namespace MMMaellon.P_Shooters
             }
 
             ResourceManager[] resources = GameObject.FindObjectsOfType<ResourceManager>();
+            int[] resourceIdMap = new int[0];
+            int[] reverseSyncResourceIdMap = new int[0];
+            int[] reverseLocalResourceIdMap = new int[0];
+            int[] syncedResources = new int[0];
+            int[] localResources = new int[0];
             if (resources.Length > 0)
             {
-                int[] resourceIdMap;
-                int[] reverseSyncResourceIdMap;
-                int[] reverseLocalResourceIdMap;
-                int[] syncedResources;
-                int[] localResources;
                 BuildResourceIdMap(out resourceIdMap, out reverseSyncResourceIdMap, out reverseLocalResourceIdMap, out syncedResources, out localResources, resources);
 
                 for (int i = 0; i < resources.Length; i++)
@@ -151,73 +151,73 @@ namespace MMMaellon.P_Shooters
                     serialized.FindProperty("id").intValue = i;
                     serialized.ApplyModifiedProperties();
                 }
+            }
 
-                foreach (Player player in players)
+            foreach (Player player in players)
+            {
+                if (!Helper.IsEditable(player))
                 {
-                    if (!Helper.IsEditable(player))
-                    {
-                        // Helper.ErrorLog(player, "Player is not editable");
-                        // Would have already printed this message so we skip printing it again
-                        continue;
-                    }
-                    SerializedObject serialized = new SerializedObject(player);
-                    if (player.resources != resources)
-                    {
-                        serialized.FindProperty("resources").ClearArray();
-                        for (int i = 0; i < resources.Length; i++)
-                        {
-                            serialized.FindProperty("resources").InsertArrayElementAtIndex(i);
-                            serialized.FindProperty("resources").GetArrayElementAtIndex(i).objectReferenceValue = resources[i];
-                        }
-                    }
-
-                    if (player.resourceIdMap != resourceIdMap)
-                    {
-                        serialized.FindProperty("resourceIdMap").ClearArray();
-                        for (int i = 0; i < resourceIdMap.Length; i++)
-                        {
-                            serialized.FindProperty("resourceIdMap").InsertArrayElementAtIndex(i);
-                            serialized.FindProperty("resourceIdMap").GetArrayElementAtIndex(i).intValue = resourceIdMap[i];
-                        }
-                    }
-                    if (player.reverseSyncResourceIdMap != reverseSyncResourceIdMap)
-                    {
-                        serialized.FindProperty("reverseSyncResourceIdMap").ClearArray();
-                        for (int i = 0; i < reverseSyncResourceIdMap.Length; i++)
-                        {
-                            serialized.FindProperty("reverseSyncResourceIdMap").InsertArrayElementAtIndex(i);
-                            serialized.FindProperty("reverseSyncResourceIdMap").GetArrayElementAtIndex(i).intValue = reverseSyncResourceIdMap[i];
-                        }
-                    }
-                    if (player.reverseLocalResourceIdMap != reverseLocalResourceIdMap)
-                    {
-                        serialized.FindProperty("reverseLocalResourceIdMap").ClearArray();
-                        for (int i = 0; i < reverseLocalResourceIdMap.Length; i++)
-                        {
-                            serialized.FindProperty("reverseLocalResourceIdMap").InsertArrayElementAtIndex(i);
-                            serialized.FindProperty("reverseLocalResourceIdMap").GetArrayElementAtIndex(i).intValue = reverseLocalResourceIdMap[i];
-                        }
-                    }
-                    if (player._syncedResources != syncedResources)
-                    {
-                        serialized.FindProperty("_syncedResources").ClearArray();
-                        for (int i = 0; i < syncedResources.Length; i++)
-                        {
-                            serialized.FindProperty("_syncedResources").InsertArrayElementAtIndex(i);
-                            serialized.FindProperty("_syncedResources").GetArrayElementAtIndex(i).intValue = syncedResources[i];
-                        }
-                    }
-                    if (player._localResources != localResources)
-                    {
-                        serialized.FindProperty("_localResources").ClearArray();
-                        for (int i = 0; i < localResources.Length; i++)
-                        {
-                            serialized.FindProperty("_localResources").InsertArrayElementAtIndex(i);
-                            serialized.FindProperty("_localResources").GetArrayElementAtIndex(i).intValue = localResources[i];
-                        }
-                    }
-                    serialized.ApplyModifiedProperties();
+                    // Helper.ErrorLog(player, "Player is not editable");
+                    // Would have already printed this message so we skip printing it again
+                    continue;
                 }
+                SerializedObject serialized = new SerializedObject(player);
+                if (player.resources != resources)
+                {
+                    serialized.FindProperty("resources").ClearArray();
+                    for (int i = 0; i < resources.Length; i++)
+                    {
+                        serialized.FindProperty("resources").InsertArrayElementAtIndex(i);
+                        serialized.FindProperty("resources").GetArrayElementAtIndex(i).objectReferenceValue = resources[i];
+                    }
+                }
+
+                if (player.resourceIdMap != resourceIdMap)
+                {
+                    serialized.FindProperty("resourceIdMap").ClearArray();
+                    for (int i = 0; i < resourceIdMap.Length; i++)
+                    {
+                        serialized.FindProperty("resourceIdMap").InsertArrayElementAtIndex(i);
+                        serialized.FindProperty("resourceIdMap").GetArrayElementAtIndex(i).intValue = resourceIdMap[i];
+                    }
+                }
+                if (player.reverseSyncResourceIdMap != reverseSyncResourceIdMap)
+                {
+                    serialized.FindProperty("reverseSyncResourceIdMap").ClearArray();
+                    for (int i = 0; i < reverseSyncResourceIdMap.Length; i++)
+                    {
+                        serialized.FindProperty("reverseSyncResourceIdMap").InsertArrayElementAtIndex(i);
+                        serialized.FindProperty("reverseSyncResourceIdMap").GetArrayElementAtIndex(i).intValue = reverseSyncResourceIdMap[i];
+                    }
+                }
+                if (player.reverseLocalResourceIdMap != reverseLocalResourceIdMap)
+                {
+                    serialized.FindProperty("reverseLocalResourceIdMap").ClearArray();
+                    for (int i = 0; i < reverseLocalResourceIdMap.Length; i++)
+                    {
+                        serialized.FindProperty("reverseLocalResourceIdMap").InsertArrayElementAtIndex(i);
+                        serialized.FindProperty("reverseLocalResourceIdMap").GetArrayElementAtIndex(i).intValue = reverseLocalResourceIdMap[i];
+                    }
+                }
+                if (player._syncedResources != syncedResources)
+                {
+                    serialized.FindProperty("_syncedResources").ClearArray();
+                    for (int i = 0; i < syncedResources.Length; i++)
+                    {
+                        serialized.FindProperty("_syncedResources").InsertArrayElementAtIndex(i);
+                        serialized.FindProperty("_syncedResources").GetArrayElementAtIndex(i).intValue = syncedResources[i];
+                    }
+                }
+                if (player._localResources != localResources)
+                {
+                    serialized.FindProperty("_localResources").ClearArray();
+                    for (int i = 0; i < localResources.Length; i++)
+                    {
+                        serialized.FindProperty("_localResources").InsertArrayElementAtIndex(i);
+                        serialized.FindProperty("_localResources").GetArrayElementAtIndex(i).intValue = localResources[i];
+                    }
+                }
+                serialized.ApplyModifiedProperties();
             }
 
             Helper.InfoLog(handlers[0], "Configured " + players.Length + " Players, " + listeners.Length + " Player Listeners, and " + resources.Length + " Resources");
