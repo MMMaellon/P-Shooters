@@ -81,7 +81,8 @@ namespace MMMaellon.P_Shooters
             }
         }
 
-        public void Start()
+
+        public virtual void Start()
         {
             if (startLoaded)
             {

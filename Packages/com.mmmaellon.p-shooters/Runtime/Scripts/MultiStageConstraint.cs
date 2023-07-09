@@ -50,7 +50,8 @@ namespace MMMaellon.P_Shooters
         Vector3 enablePosition;
         public SmartObjectSync controllerObject;
         public Transform constrainedObject;
-        void Start()
+
+        public virtual void Start()
         {
             if (Utilities.IsValid(constrainedObject))
             {

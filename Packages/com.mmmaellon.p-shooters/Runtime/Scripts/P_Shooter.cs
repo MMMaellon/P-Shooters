@@ -173,8 +173,9 @@ namespace MMMaellon.P_Shooters
 #endif
         [System.NonSerialized]
         public VRCPlayerApi _localPlayer;
-        
-        void Start()
+
+
+        public virtual void Start()
         {
             _localPlayer = Networking.LocalPlayer;
             sync.AddListener(this);

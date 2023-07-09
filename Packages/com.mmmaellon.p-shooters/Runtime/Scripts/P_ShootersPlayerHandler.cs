@@ -25,7 +25,8 @@ namespace MMMaellon.P_Shooters
         public LayerMask meleeLayer;
         public PlayerListener[] playerListeners;
         public Cyan.PlayerObjectPool.CyanPlayerObjectAssigner assigner;
-        void Start()
+
+        public virtual void Start()
         {
             if (Utilities.IsValid(players))
             {

@@ -84,7 +84,8 @@ namespace MMMaellon.P_Shooters
             }
         }
         Scope otherScope;
-        void Start()
+
+        public virtual void Start()
         {
             _localPlayer = Networking.LocalPlayer;
             if (Utilities.IsValid(scopeCam))

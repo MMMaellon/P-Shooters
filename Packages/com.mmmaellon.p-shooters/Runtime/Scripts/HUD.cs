@@ -65,7 +65,8 @@ namespace MMMaellon.P_Shooters
 
         [System.NonSerialized] public bool isLocal;
         [System.NonSerialized] public bool desktopUI;
-        void Start()
+
+        public virtual void Start()
         {
             _localPlayer = Networking.LocalPlayer;
             animator = GetComponent<Animator>();

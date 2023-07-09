@@ -132,7 +132,8 @@ namespace MMMaellon.P_Shooters
         public bool hideAfterThrow;
         public float hideTimer = 3f;
         private float lastDrop;
-        public void Start()
+
+        public virtual void Start()
         {
             childState.sync.AddListener(this);
         }

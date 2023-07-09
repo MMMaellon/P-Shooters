@@ -80,7 +80,8 @@ namespace MMMaellon.P_Shooters
         private float enterTime = -1001f;
         [Tooltip("Instead of triggering OnColliderStay and OnTriggerStay events every frame, we only trigger at this regular interval in seconds")]
         public float stayTriggerInterval = 0.25f;
-        void Start()
+
+        public virtual void Start()
         {
             if (!onInteract)
             {

@@ -55,7 +55,8 @@ namespace MMMaellon.P_Shooters
                 shooter.animator.SetInteger("chamber", chamberCapacity > 0 ? value : -1001);
             }
         }
-        public void Start()
+
+        public virtual void Start()
         {
             if (Utilities.IsValid(magReceiver.attachedMag))
             {

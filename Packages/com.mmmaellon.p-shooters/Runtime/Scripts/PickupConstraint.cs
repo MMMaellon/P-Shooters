@@ -35,7 +35,8 @@ namespace MMMaellon.P_Shooters
         public bool nextMultiStageOnMin = false;
         public bool nextMultiZtageOnMax = false;
         bool start_ran = false;
-        public void Start()
+
+        public virtual void Start()
         {
             enabled = false;
             controllerObject.AddListener(this);

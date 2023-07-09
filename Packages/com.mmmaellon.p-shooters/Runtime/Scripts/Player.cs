@@ -25,7 +25,7 @@ namespace MMMaellon.P_Shooters
         public Player _localPlayerObject = null;
         [HideInInspector]
         public CapsuleCollider capsuleCollider = null;
-        void Start()
+        public virtual void Start()
         {
             lastHealer = this;
             lastAttacker = this;

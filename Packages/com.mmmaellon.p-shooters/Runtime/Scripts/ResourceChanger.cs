@@ -19,10 +19,6 @@ namespace MMMaellon.P_Shooters
         [Tooltip("Check to increment and decrement the resource instead of setting it to a set number. Use a negative number as the value to make the resource decrement.")]
         public bool incrementByValue = true;
         public int value;
-        void Start()
-        {
-            
-        }
 
         public void Change()
         {

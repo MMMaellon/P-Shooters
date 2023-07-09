@@ -28,7 +28,8 @@ namespace MMMaellon.P_Shooters
         public float ejectCooldown = 0.5f;
         float lastEject = -1001f;
 
-        public void Start()
+
+        public virtual void Start()
         {
             attachedMag = attachedMag;
         }
