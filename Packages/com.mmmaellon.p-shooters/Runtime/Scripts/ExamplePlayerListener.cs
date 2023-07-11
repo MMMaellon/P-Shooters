@@ -8,12 +8,14 @@ namespace MMMaellon.P_Shooters
 {
     public class ExamplePlayerListener : PlayerListener
     {
+        public float respawnDelayTime = 2f;
         public float respawnInvincibilityTime = 3f;
         public AudioSource receiveDamageAudio;
         public AudioSource onKillConfirmedAudio;
 
         [System.NonSerialized]
         public float[] respawnTimes;
+        Player localplayer;
         void Start()
         {
             respawnTimes = new float[playerHandler.players.Length];
@@ -21,11 +23,16 @@ namespace MMMaellon.P_Shooters
             {
                 respawnTimes[i] = -1001f;
             }
+            Networking.LocalPlayer.CombatSetup();
+            Networking.LocalPlayer.CombatSetRespawn(true, respawnDelayTime, null);
+            Networking.LocalPlayer.CombatSetMaxHitpoints(100f);
+            Networking.LocalPlayer.CombatSetCurrentHitpoints(100f);
+            Networking.LocalPlayer.CombatSetDamageGraphic(null);
         }
 
         public override bool CanDealDamage(Player attacker, Player receiver)
         {
-            if (gameObject.activeInHierarchy && respawnTimes[receiver.id] + respawnInvincibilityTime >= Time.timeSinceLevelLoad)
+            if (gameObject.activeInHierarchy && respawnTimes[receiver.id] + respawnDelayTime + respawnInvincibilityTime >= Time.timeSinceLevelLoad)
             {
                 return false;
             }
@@ -51,12 +58,19 @@ namespace MMMaellon.P_Shooters
 
         public override void OnMinHealth(Player attacker, Player receiver, int value)
         {
-            if (gameObject.activeInHierarchy && receiver.IsOwnerLocal())
+            Debug.LogWarning("OnMinHealth");
+            if (gameObject.activeInHierarchy)
             {
-                receiver.ResetPlayer();
-                receiver.Owner.Respawn();
-                respawnTimes[receiver.id] = Time.timeSinceLevelLoad;
-                attacker.ConfirmNormalKill();
+                if (receiver.IsOwnerLocal())
+                {
+                    localplayer = receiver;
+                    attacker.ConfirmNormalKill();
+                    SendCustomEventDelayedSeconds(nameof(RespawnCallback), respawnDelayTime, VRC.Udon.Common.Enums.EventTiming.Update);
+                    respawnTimes[receiver.id] = Time.timeSinceLevelLoad;
+                }
+                Debug.LogWarning("Setting combat to 0");
+                receiver.Owner.CombatSetMaxHitpoints(100);
+                receiver.Owner.CombatSetCurrentHitpoints(0);
             }
         }
 
@@ -67,6 +81,19 @@ namespace MMMaellon.P_Shooters
                 receiveDamageAudio.transform.position = attacker.transform.position;
                 receiveDamageAudio.Play();
             }
+        }
+
+        public void RespawnCallback()
+        {
+            //we have to make sure this gets called on a normal update loop
+            localplayer.ResetPlayer();
+            localplayer.Owner.Respawn();
+        }
+
+        public override void OnPlayerJoined(VRCPlayerApi player)
+        {
+            base.OnPlayerJoined(player);
+            player.CombatSetup();
         }
     }
 }
