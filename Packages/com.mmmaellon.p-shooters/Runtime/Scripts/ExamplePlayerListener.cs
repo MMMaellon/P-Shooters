@@ -75,8 +75,8 @@ namespace MMMaellon.P_Shooters
         {
             if (gameObject.activeInHierarchy && Utilities.IsValid(onKillConfirmedAudio))
             {
-                receiveDamageAudio.transform.position = attacker.transform.position;
-                receiveDamageAudio.Play();
+                onKillConfirmedAudio.transform.position = attacker.transform.position;
+                onKillConfirmedAudio.Play();
             }
         }
 
