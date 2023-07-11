@@ -58,7 +58,6 @@ namespace MMMaellon.P_Shooters
 
         public override void OnMinHealth(Player attacker, Player receiver, int value)
         {
-            Debug.LogWarning("OnMinHealth");
             if (gameObject.activeInHierarchy)
             {
                 if (receiver.IsOwnerLocal())
@@ -67,10 +66,8 @@ namespace MMMaellon.P_Shooters
                     attacker.ConfirmNormalKill();
                     SendCustomEventDelayedSeconds(nameof(RespawnCallback), respawnDelayTime, VRC.Udon.Common.Enums.EventTiming.Update);
                     respawnTimes[receiver.id] = Time.timeSinceLevelLoad;
+                    receiver.Owner.CombatSetCurrentHitpoints(0);
                 }
-                Debug.LogWarning("Setting combat to 0");
-                receiver.Owner.CombatSetMaxHitpoints(100);
-                receiver.Owner.CombatSetCurrentHitpoints(0);
             }
         }
 
