@@ -37,7 +37,7 @@ namespace MMMaellon.P_Shooters
             _localPlayer = Networking.LocalPlayer;
         }
 
-        public void OnEnable()
+        public virtual void OnEnable()
         {
             //reset all the animator stuff
             _SetAnimatorValues();
@@ -363,7 +363,7 @@ namespace MMMaellon.P_Shooters
             }
         }
 
-        public void ResetPlayer()
+        public virtual void ResetPlayer()
         {
             ResetPlayerResources();
             if (IsOwnerLocal())
@@ -377,7 +377,7 @@ namespace MMMaellon.P_Shooters
             }
         }
 
-        public void ResetPlayerResources()
+        public virtual void ResetPlayerResources()
         {
             _print("ResetPlayerResources");
             if (IsOwnerLocal())
@@ -399,7 +399,7 @@ namespace MMMaellon.P_Shooters
         private Vector3 leftFootPos;
         private Vector3 rightFootPos;
 
-        public void Update()
+        public virtual void Update()
         {
             if (!Utilities.IsValid(Owner))
             {
@@ -537,7 +537,7 @@ namespace MMMaellon.P_Shooters
         [System.NonSerialized] public Player lastHealer = null;
         [System.NonSerialized] public Player lastAttacker = null;
 
-        public void _OnIncreaseHealth()
+        public virtual void _OnIncreaseHealth()
         {
             if (Utilities.IsValid(eventAnimator))
             {
@@ -549,7 +549,7 @@ namespace MMMaellon.P_Shooters
             }
         }
 
-        public void _OnDecreaseHealth()
+        public virtual void _OnDecreaseHealth()
         {
             if (Utilities.IsValid(eventAnimator))
             {
@@ -560,7 +560,7 @@ namespace MMMaellon.P_Shooters
                 listener.OnDecreaseHealth(lastAttacker, this, health);
             }
         }
-        public void _OnMaxHealth()
+        public virtual void _OnMaxHealth()
         {
             if (Utilities.IsValid(eventAnimator))
             {
@@ -572,7 +572,7 @@ namespace MMMaellon.P_Shooters
             }
         }
 
-        public void _OnMinHealth()
+        public virtual void _OnMinHealth()
         {
             if (Utilities.IsValid(eventAnimator))
             {
@@ -583,7 +583,7 @@ namespace MMMaellon.P_Shooters
                 listener.OnMinHealth(lastAttacker, this, health);
             }
         }
-        public void _OnIncreaseShield()
+        public virtual void _OnIncreaseShield()
         {
             if (Utilities.IsValid(eventAnimator))
             {
@@ -595,7 +595,7 @@ namespace MMMaellon.P_Shooters
             }
         }
 
-        public void _OnDecreaseShield()
+        public virtual void _OnDecreaseShield()
         {
             if (Utilities.IsValid(eventAnimator))
             {
@@ -606,7 +606,7 @@ namespace MMMaellon.P_Shooters
                 listener.OnDecreaseShield(lastAttacker, this, shield);
             }
         }
-        public void _OnMaxShield()
+        public virtual void _OnMaxShield()
         {
             if (Utilities.IsValid(eventAnimator))
             {
@@ -618,7 +618,7 @@ namespace MMMaellon.P_Shooters
             }
         }
 
-        public void _OnMinShield()
+        public virtual void _OnMinShield()
         {
             if (Utilities.IsValid(eventAnimator))
             {
@@ -629,7 +629,7 @@ namespace MMMaellon.P_Shooters
                 listener.OnMinShield(lastAttacker, this, shield);
             }
         }
-        public void _SetStatAnimatorForResource(ResourceManager resource, int value)
+        public virtual void _SetStatAnimatorForResource(ResourceManager resource, int value)
         {
             if (resource.setAnimationParameterAsRatio)
             {
@@ -647,12 +647,12 @@ namespace MMMaellon.P_Shooters
                 statsAnimator.SetInteger(resource.resourceName, resource.maxValue);
             }
         }
-        public void _OnChangeResource(ResourceManager resource, int oldValue, int newValue)
+        public virtual void _OnChangeResource(ResourceManager resource, int oldValue, int newValue)
         {
         }
         P_Shooter otherPShooter;
 
-        public void OnParticleCollision(GameObject other)
+        public virtual void OnParticleCollision(GameObject other)
         {
             otherPShooter = other.GetComponent<P_Shooter>();
             if (!Utilities.IsValid(otherPShooter))
@@ -664,7 +664,7 @@ namespace MMMaellon.P_Shooters
                 OnPShooterHit(otherPShooter);
             }
         }
-        public void OnTriggerEnter(Collider other)
+        public virtual void OnTriggerEnter(Collider other)
         {
             if (playerHandler.meleeLayer == (playerHandler.meleeLayer | (1 << other.gameObject.layer)))
             {
@@ -680,7 +680,7 @@ namespace MMMaellon.P_Shooters
             }
         }
 
-        public void OnPShooterHit(P_Shooter otherShooter)
+        public virtual void OnPShooterHit(P_Shooter otherShooter)
         {
             if (!Utilities.IsValid(otherShooter))
             {
@@ -710,7 +710,7 @@ namespace MMMaellon.P_Shooters
         }
 
         int newDamage;
-        public int AdjustDamage(int damage)
+        public virtual int AdjustDamage(int damage)
         {
             newDamage = damage;
             foreach (PlayerListener listener in playerHandler.playerListeners)
@@ -725,7 +725,7 @@ namespace MMMaellon.P_Shooters
 
         private int matchingIndex = 0;
         private int tempPlayerId = 99;
-        public void SendDamage(int damage, int targetPlayerId)
+        public virtual void SendDamage(int damage, int targetPlayerId)
         {
             if (!CanDealDamage())
             {
@@ -761,7 +761,7 @@ namespace MMMaellon.P_Shooters
             RequestSerialization();
         }
 
-        public void ReceiveOtherPlayerDamage(int damage, int attackerId)
+        public virtual void ReceiveOtherPlayerDamage(int damage, int attackerId)
         {
             _print("ReceiveOtherPlayerDamage " + damage);
             //here maybe we do a ping or something to show where the damage came from
@@ -780,7 +780,7 @@ namespace MMMaellon.P_Shooters
         }
 
         int tempShield;
-        public void ReceiveDamage(int damage, bool ignoreInvincibleAndSpectator)
+        public virtual void ReceiveDamage(int damage, bool ignoreInvincibleAndSpectator)
         {
             _print("ReceiveDamage " + damage);
             if (damage == 0 || !IsOwnerLocal() || (!ignoreInvincibleAndSpectator && !CanTakeDamage()))
@@ -806,7 +806,7 @@ namespace MMMaellon.P_Shooters
         }
 
 
-        public void ReceiveOtherPlayerHeal(int heal, int healerId)
+        public virtual void ReceiveOtherPlayerHeal(int heal, int healerId)
         {
             _print("ReceiveOtherPlayerHeal " + heal);
             //here maybe we do a ping or something to show where the damage came from
@@ -829,7 +829,7 @@ namespace MMMaellon.P_Shooters
             ReceiveHealth(heal, false);
         }
 
-        public void ReceiveHealth(int heal, bool ignoreInvincibleAndSpectator)
+        public virtual void ReceiveHealth(int heal, bool ignoreInvincibleAndSpectator)
         {
             _print("ReceiveHealth " + heal);
             if (heal == 0 || !IsOwnerLocal() || (!ignoreInvincibleAndSpectator && !CanTakeDamage()))
@@ -862,7 +862,7 @@ namespace MMMaellon.P_Shooters
 
         int tempDamage;
         int tempDamageChange;
-        public void SyncDamageMatrix()
+        public virtual void SyncDamageMatrix()
         {
             if (!Utilities.IsValid(_localPlayerObject))
             {
@@ -908,7 +908,7 @@ namespace MMMaellon.P_Shooters
             }
         }
 
-        public void WipeDamageMatrix()
+        public virtual void WipeDamageMatrix()
         {
             for (int i = 0; i < damageMatrix.Length; i++)
             {
@@ -921,7 +921,7 @@ namespace MMMaellon.P_Shooters
             RequestSerialization();
         }
 
-        public void ConfirmNormalKill()
+        public virtual void ConfirmNormalKill()
         {
             if (Utilities.IsValid(Owner))
             {
@@ -929,7 +929,7 @@ namespace MMMaellon.P_Shooters
             }
         }
 
-        public void ConfirmCriticalKill()
+        public virtual void ConfirmCriticalKill()
         {
             if (Utilities.IsValid(Owner))
             {
@@ -937,7 +937,7 @@ namespace MMMaellon.P_Shooters
             }
         }
 
-        public void ConfirmTeamKill()
+        public virtual void ConfirmTeamKill()
         {
             if (Utilities.IsValid(Owner))
             {
@@ -945,7 +945,7 @@ namespace MMMaellon.P_Shooters
             }
         }
 
-        public void OnNormalKillConfirmed()
+        public virtual void OnNormalKillConfirmed()
         {
             if (Utilities.IsValid(playerHandler))
             {
@@ -955,7 +955,7 @@ namespace MMMaellon.P_Shooters
                 }
             }
         }
-        public void OnCriticalKillConfirmed()
+        public virtual void OnCriticalKillConfirmed()
         {
             if (Utilities.IsValid(playerHandler))
             {
@@ -965,7 +965,7 @@ namespace MMMaellon.P_Shooters
                 }
             }
         }
-        public void OnTeamKillConfirmed()
+        public virtual void OnTeamKillConfirmed()
         {
             if (Utilities.IsValid(playerHandler))
             {
@@ -981,11 +981,11 @@ namespace MMMaellon.P_Shooters
             return Utilities.IsValid(Owner) && Owner.isLocal;
         }
 
-        public bool CanTakeDamage()
+        public virtual bool CanTakeDamage()
         {
             return state == STATE_NORMAL || state == STATE_FROZEN;
         }
-        public bool CanDealDamage()
+        public virtual bool CanDealDamage()
         {
             return state == STATE_NORMAL || state == STATE_INVINCIBLE;
         }
