@@ -185,9 +185,10 @@ namespace MMMaellon.P_Shooters
                 return false;
             }
             shooter._print("ChamberAmmo");
-            actualChamberAmmoAmount = Mathf.Min(magAmmo, Mathf.Min(ammoPerShot, chamberCapacity - chamberAmmo));
+            actualChamberAmmoAmount = 1;
             if (magCapacity > 0)
             {
+                actualChamberAmmoAmount = Mathf.Min(magAmmo, Mathf.Min(ammoPerShot, chamberCapacity - chamberAmmo));
                 if (magAmmo > 0)
                 {
                     magAmmo -= actualChamberAmmoAmount;
@@ -203,9 +204,9 @@ namespace MMMaellon.P_Shooters
         }
         public override bool CanShoot()
         {
-            if (chamberCapacity > 0 && chamberAmmo >= ammoPerShot)
+            if (chamberCapacity > 0)
             {
-                return true;
+                return chamberAmmo >= ammoPerShot;
             }
             if (Utilities.IsValid(vrReloadPickup) && vrReloadPickup.IsHeld())
             {
@@ -215,7 +216,7 @@ namespace MMMaellon.P_Shooters
             {
                 return true;
             }
-            if (chamberCapacity <= 0 && magAmmo >= ammoPerShot)
+            if (magAmmo >= ammoPerShot)
             {
                 return true;
             }

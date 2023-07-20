@@ -60,7 +60,7 @@ AnimationClip:
     messageOptions: 0
   - time: 0.016666668
     functionName: SendCustomEvent
-    data: ReloadEnd
+    data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
