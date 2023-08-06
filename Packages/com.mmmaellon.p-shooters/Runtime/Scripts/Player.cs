@@ -654,6 +654,10 @@ namespace MMMaellon.P_Shooters
 
         public virtual void OnParticleCollision(GameObject other)
         {
+            if (!Utilities.IsValid(other))
+            {
+                return;
+            }
             otherPShooter = other.GetComponent<P_Shooter>();
             if (!Utilities.IsValid(otherPShooter))
             {
@@ -666,6 +670,10 @@ namespace MMMaellon.P_Shooters
         }
         public virtual void OnTriggerEnter(Collider other)
         {
+            if (!Utilities.IsValid(other))
+            {
+                return;
+            }
             if (playerHandler.meleeLayer == (playerHandler.meleeLayer | (1 << other.gameObject.layer)))
             {
                 otherPShooter = other.GetComponent<P_Shooter>();
