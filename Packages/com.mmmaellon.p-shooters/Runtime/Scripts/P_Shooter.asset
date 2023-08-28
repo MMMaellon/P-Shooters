@@ -791,13 +791,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: ammo
+      Data: _ammo
     - Name: $v
       Entry: 7
       Data: 41|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: ammo
+      Data: _ammo
     - Name: <UserType>k__BackingField
       Entry: 7
       Data: 42|System.RuntimeType, mscorlib
@@ -830,7 +830,7 @@ MonoBehaviour:
       Data: 1
     - Name: 
       Entry: 7
-      Data: 44|UnityEngine.HideInInspector, UnityEngine.CoreModule
+      Data: 44|UdonSharp.FieldChangeCallbackAttribute, UdonSharp.Runtime
     - Name: 
       Entry: 8
       Data: 

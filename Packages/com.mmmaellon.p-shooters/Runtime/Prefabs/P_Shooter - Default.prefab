@@ -224,6 +224,7 @@ MonoBehaviour:
   syncParticleCollisions: 0
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -15173,6 +15174,32 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &644086332681202452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6589608277433838867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45115577ef41a5b4ca741ed302693907, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactTextPlacement: {fileID: 0}
+  interactText: Use
+  interactTextGO: {fileID: 0}
+  proximity: 2
+  SynchronizePosition: 0
+  AllowCollisionOwnershipTransfer: 0
+  Reliable: 0
+  _syncMethod: 3
+  serializedProgramAsset: {fileID: 11400000, guid: cb013c83d8f559e43b82982e1029956c,
+    type: 2}
+  programSource: {fileID: 11400000, guid: 5d8c92274e3061947b5b32a8ff067417, type: 2}
+  serializedPublicVariablesBytesString: Ai8AAAAAATIAAABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlAFQAYQBiAGwAZQAsACAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4AAAAAAAYBAAAAAAAAACcBBAAAAHQAeQBwAGUAAWgAAABTAHkAcwB0AGUAbQAuAEMAbwBsAGwAZQBjAHQAaQBvAG4AcwAuAEcAZQBuAGUAcgBpAGMALgBMAGkAcwB0AGAAMQBbAFsAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4ALgBJAG4AdABlAHIAZgBhAGMAZQBzAC4ASQBVAGQAbwBuAFYAYQByAGkAYQBiAGwAZQAsACAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4AXQBdACwAIABtAHMAYwBvAHIAbABpAGIAAQEJAAAAVgBhAHIAaQBhAGIAbABlAHMALwEAAAABaAAAAFMAeQBzAHQAZQBtAC4AQwBvAGwAbABlAGMAdABpAG8AbgBzAC4ARwBlAG4AZQByAGkAYwAuAEwAaQBzAHQAYAAxAFsAWwBWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAEkAbgB0AGUAcgBmAGEAYwBlAHMALgBJAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlACwAIABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgBdAF0ALAAgAG0AcwBjAG8AcgBsAGkAYgABAAAABgEAAAAAAAAAAi8CAAAAAUkAAABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlAGAAMQBbAFsAUwB5AHMAdABlAG0ALgBJAG4AdAAzADIALAAgAG0AcwBjAG8AcgBsAGkAYgBdAF0ALAAgAFYAUgBDAC4AVQBkAG8AbgAuAEMAbwBtAG0AbwBuAAIAAAAGAgAAAAAAAAAnAQQAAAB0AHkAcABlAAEXAAAAUwB5AHMAdABlAG0ALgBTAHQAcgBpAG4AZwAsACAAbQBzAGMAbwByAGwAaQBiACcBCgAAAFMAeQBtAGIAbwBsAE4AYQBtAGUAAR8AAABfAF8AXwBVAGQAbwBuAFMAaABhAHIAcABCAGUAaABhAHYAaQBvAHUAcgBWAGUAcgBzAGkAbwBuAF8AXwBfACcBBAAAAHQAeQBwAGUAARYAAABTAHkAcwB0AGUAbQAuAEkAbgB0ADMAMgAsACAAbQBzAGMAbwByAGwAaQBiABcBBQAAAFYAYQBsAHUAZQACAAAABwUHBQcF
+  publicVariablesUnityEngineObjects: []
+  publicVariablesSerializationDataFormat: 0
 --- !u!114 &1157590988920738970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15252,6 +15279,32 @@ MonoBehaviour:
   serializedPublicVariablesBytesString: Ai8AAAAAATIAAABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlAFQAYQBiAGwAZQAsACAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4AAAAAAAYBAAAAAAAAACcBBAAAAHQAeQBwAGUAAWgAAABTAHkAcwB0AGUAbQAuAEMAbwBsAGwAZQBjAHQAaQBvAG4AcwAuAEcAZQBuAGUAcgBpAGMALgBMAGkAcwB0AGAAMQBbAFsAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4ALgBJAG4AdABlAHIAZgBhAGMAZQBzAC4ASQBVAGQAbwBuAFYAYQByAGkAYQBiAGwAZQAsACAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4AXQBdACwAIABtAHMAYwBvAHIAbABpAGIAAQEJAAAAVgBhAHIAaQBhAGIAbABlAHMALwEAAAABaAAAAFMAeQBzAHQAZQBtAC4AQwBvAGwAbABlAGMAdABpAG8AbgBzAC4ARwBlAG4AZQByAGkAYwAuAEwAaQBzAHQAYAAxAFsAWwBWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAEkAbgB0AGUAcgBmAGEAYwBlAHMALgBJAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlACwAIABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgBdAF0ALAAgAG0AcwBjAG8AcgBsAGkAYgABAAAABgEAAAAAAAAAAi8CAAAAAUkAAABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlAGAAMQBbAFsAUwB5AHMAdABlAG0ALgBJAG4AdAAzADIALAAgAG0AcwBjAG8AcgBsAGkAYgBdAF0ALAAgAFYAUgBDAC4AVQBkAG8AbgAuAEMAbwBtAG0AbwBuAAIAAAAGAgAAAAAAAAAnAQQAAAB0AHkAcABlAAEXAAAAUwB5AHMAdABlAG0ALgBTAHQAcgBpAG4AZwAsACAAbQBzAGMAbwByAGwAaQBiACcBCgAAAFMAeQBtAGIAbwBsAE4AYQBtAGUAAR8AAABfAF8AXwBVAGQAbwBuAFMAaABhAHIAcABCAGUAaABhAHYAaQBvAHUAcgBWAGUAcgBzAGkAbwBuAF8AXwBfACcBBAAAAHQAeQBwAGUAARYAAABTAHkAcwB0AGUAbQAuAEkAbgB0ADMAMgAsACAAbQBzAGMAbwByAGwAaQBiABcBBQAAAFYAYQBsAHUAZQACAAAABwUHBQcF
   publicVariablesUnityEngineObjects: []
   publicVariablesSerializationDataFormat: 0
+--- !u!114 &2416735299612124751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6589608277433838867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45115577ef41a5b4ca741ed302693907, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactTextPlacement: {fileID: 0}
+  interactText: Use
+  interactTextGO: {fileID: 0}
+  proximity: 2
+  SynchronizePosition: 0
+  AllowCollisionOwnershipTransfer: 0
+  Reliable: 0
+  _syncMethod: 3
+  serializedProgramAsset: {fileID: 11400000, guid: cb013c83d8f559e43b82982e1029956c,
+    type: 2}
+  programSource: {fileID: 11400000, guid: 5d8c92274e3061947b5b32a8ff067417, type: 2}
+  serializedPublicVariablesBytesString: Ai8AAAAAATIAAABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlAFQAYQBiAGwAZQAsACAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4AAAAAAAYBAAAAAAAAACcBBAAAAHQAeQBwAGUAAWgAAABTAHkAcwB0AGUAbQAuAEMAbwBsAGwAZQBjAHQAaQBvAG4AcwAuAEcAZQBuAGUAcgBpAGMALgBMAGkAcwB0AGAAMQBbAFsAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4ALgBJAG4AdABlAHIAZgBhAGMAZQBzAC4ASQBVAGQAbwBuAFYAYQByAGkAYQBiAGwAZQAsACAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4AXQBdACwAIABtAHMAYwBvAHIAbABpAGIAAQEJAAAAVgBhAHIAaQBhAGIAbABlAHMALwEAAAABaAAAAFMAeQBzAHQAZQBtAC4AQwBvAGwAbABlAGMAdABpAG8AbgBzAC4ARwBlAG4AZQByAGkAYwAuAEwAaQBzAHQAYAAxAFsAWwBWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAEkAbgB0AGUAcgBmAGEAYwBlAHMALgBJAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlACwAIABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgBdAF0ALAAgAG0AcwBjAG8AcgBsAGkAYgABAAAABgEAAAAAAAAAAi8CAAAAAUkAAABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlAGAAMQBbAFsAUwB5AHMAdABlAG0ALgBJAG4AdAAzADIALAAgAG0AcwBjAG8AcgBsAGkAYgBdAF0ALAAgAFYAUgBDAC4AVQBkAG8AbgAuAEMAbwBtAG0AbwBuAAIAAAAGAgAAAAAAAAAnAQQAAAB0AHkAcABlAAEXAAAAUwB5AHMAdABlAG0ALgBTAHQAcgBpAG4AZwAsACAAbQBzAGMAbwByAGwAaQBiACcBCgAAAFMAeQBtAGIAbwBsAE4AYQBtAGUAAR8AAABfAF8AXwBVAGQAbwBuAFMAaABhAHIAcABCAGUAaABhAHYAaQBvAHUAcgBWAGUAcgBzAGkAbwBuAF8AXwBfACcBBAAAAHQAeQBwAGUAARYAAABTAHkAcwB0AGUAbQAuAEkAbgB0ADMAMgAsACAAbQBzAGMAbwByAGwAaQBiABcBBQAAAFYAYQBsAHUAZQACAAAABwUHBQcF
+  publicVariablesUnityEngineObjects: []
+  publicVariablesSerializationDataFormat: 0
 --- !u!114 &2693152156013483527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15274,15 +15327,29 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1320582978233205927}
-  startRapidFire: 1
+  startRapidFire: 0
   startAltFireMode: 0
   shooter: {fileID: 6589608277433838878}
   _rapidFire: 1
   _altFire: 0
-  altFireModeCount: 0
+  altFireModeCount: 1
   affectDamage: 0
+  affectSFX: 1
+  affectAmmo: 1
   rapidFireDamage: 15
-  altFireDamage: 
+  altFireDamage: 0f000000
+  rapidSFX:
+  - {fileID: 8300000, guid: 14d7590938c8c464a9e8418189378676, type: 3}
+  - {fileID: 8300000, guid: 1fac30d3937e6114893f6b93a73f96fc, type: 3}
+  rapidAmmo: {fileID: 8999822914264499266}
+  altFireSFX:
+  - {fileID: 8300000, guid: 84e92b957173b1a4387fc20511db71b8, type: 3}
+  altFireEndIndexes: 01000000
+  altFireAmmo:
+  - {fileID: 9190538007855224584}
+  originalDamage: 0
+  originalSFX: []
+  originalAmmo: {fileID: 0}
 --- !u!114 &8397389300495070513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15309,6 +15376,112 @@ MonoBehaviour:
   serializedPublicVariablesBytesString: Ai8AAAAAATIAAABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlAFQAYQBiAGwAZQAsACAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4AAAAAAAYBAAAAAAAAACcBBAAAAHQAeQBwAGUAAWgAAABTAHkAcwB0AGUAbQAuAEMAbwBsAGwAZQBjAHQAaQBvAG4AcwAuAEcAZQBuAGUAcgBpAGMALgBMAGkAcwB0AGAAMQBbAFsAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4ALgBJAG4AdABlAHIAZgBhAGMAZQBzAC4ASQBVAGQAbwBuAFYAYQByAGkAYQBiAGwAZQAsACAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4AXQBdACwAIABtAHMAYwBvAHIAbABpAGIAAQEJAAAAVgBhAHIAaQBhAGIAbABlAHMALwEAAAABaAAAAFMAeQBzAHQAZQBtAC4AQwBvAGwAbABlAGMAdABpAG8AbgBzAC4ARwBlAG4AZQByAGkAYwAuAEwAaQBzAHQAYAAxAFsAWwBWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAEkAbgB0AGUAcgBmAGEAYwBlAHMALgBJAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlACwAIABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgBdAF0ALAAgAG0AcwBjAG8AcgBsAGkAYgABAAAABgEAAAAAAAAAAi8CAAAAAUkAAABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlAGAAMQBbAFsAUwB5AHMAdABlAG0ALgBJAG4AdAAzADIALAAgAG0AcwBjAG8AcgBsAGkAYgBdAF0ALAAgAFYAUgBDAC4AVQBkAG8AbgAuAEMAbwBtAG0AbwBuAAIAAAAGAgAAAAAAAAAnAQQAAAB0AHkAcABlAAEXAAAAUwB5AHMAdABlAG0ALgBTAHQAcgBpAG4AZwAsACAAbQBzAGMAbwByAGwAaQBiACcBCgAAAFMAeQBtAGIAbwBsAE4AYQBtAGUAAR8AAABfAF8AXwBVAGQAbwBuAFMAaABhAHIAcABCAGUAaABhAHYAaQBvAHUAcgBWAGUAcgBzAGkAbwBuAF8AXwBfACcBBAAAAHQAeQBwAGUAARYAAABTAHkAcwB0AGUAbQAuAEkAbgB0ADMAMgAsACAAbQBzAGMAbwByAGwAaQBiABcBBQAAAFYAYQBsAHUAZQACAAAABwUHBQcF
   publicVariablesUnityEngineObjects: []
   publicVariablesSerializationDataFormat: 0
+--- !u!114 &8999822914264499266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6589608277433838867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 075f1d4e9ca626242822ad51f3d10868, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  _udonSharpBackingUdonBehaviour: {fileID: 644086332681202452}
+  shooter: {fileID: 6589608277433838878}
+  _reloadSpeed: 2
+  audioSource: {fileID: 4317792030358083477}
+  reloads:
+  - {fileID: 8300000, guid: e8b508355b22ecb4fbe962658425f41d, type: 3}
+  reloadVol: 1
+  reloadEnds:
+  - {fileID: 8300000, guid: 87df76426569bf34c87e3359a43a1736, type: 3}
+  reloadEndVol: 1
+  outOfAmmos:
+  - {fileID: 8300000, guid: 7830a1cb5e7589346abe76adb47194c7, type: 3}
+  - {fileID: 8300000, guid: 3cfc9e966007a634ba7625157ee9b41f, type: 3}
+  outOfAmmoVol: 1
+  ejectEmptys:
+  - {fileID: 8300000, guid: 5a625825d3e1cc146b347539c579a475, type: 3}
+  ejectEmptyVol: 1
+  ejectEmptyParticles: {fileID: 2700295838802104633}
+  desktopReloadShortcut: 101
+  vrReloadPickup: {fileID: 458532001}
+  ammoPerShot: 1
+  magCapacity: 24
+  chamberCapacity: 0
+  pointDownToReloadAngle: 15
+  pointUpToReloadAngle: 15
+  startLoaded: 1
+  autoReload: 1
+  magInsertSounds:
+  - {fileID: 8300000, guid: ede542ebb66777d4990ace72283f78ec, type: 3}
+  magInsertVol: 1
+  chamberSounds: []
+  chamberVol: 1
+--- !u!114 &9190538007855224584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6589608277433838867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 075f1d4e9ca626242822ad51f3d10868, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  _udonSharpBackingUdonBehaviour: {fileID: 2416735299612124751}
+  shooter: {fileID: 6589608277433838878}
+  _reloadSpeed: 10
+  audioSource: {fileID: 4317792030358083477}
+  reloads:
+  - {fileID: 8300000, guid: e8b508355b22ecb4fbe962658425f41d, type: 3}
+  reloadVol: 1
+  reloadEnds:
+  - {fileID: 8300000, guid: 87df76426569bf34c87e3359a43a1736, type: 3}
+  reloadEndVol: 1
+  outOfAmmos:
+  - {fileID: 8300000, guid: 7830a1cb5e7589346abe76adb47194c7, type: 3}
+  - {fileID: 8300000, guid: 3cfc9e966007a634ba7625157ee9b41f, type: 3}
+  outOfAmmoVol: 1
+  ejectEmptys:
+  - {fileID: 8300000, guid: 5a625825d3e1cc146b347539c579a475, type: 3}
+  ejectEmptyVol: 1
+  ejectEmptyParticles: {fileID: 2700295838802104633}
+  desktopReloadShortcut: 101
+  vrReloadPickup: {fileID: 458532001}
+  ammoPerShot: 1
+  magCapacity: 12
+  chamberCapacity: 0
+  pointDownToReloadAngle: 15
+  pointUpToReloadAngle: 15
+  startLoaded: 1
+  autoReload: 1
+  magInsertSounds:
+  - {fileID: 8300000, guid: ede542ebb66777d4990ace72283f78ec, type: 3}
+  magInsertVol: 1
+  chamberSounds: []
+  chamberVol: 1
 --- !u!1 &6235190361654378098
 GameObject:
   m_ObjectHideFlags: 0
@@ -25205,6 +25378,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8204062348515326525, guid: af792625e2673b348a0c7af3efc10c5b,
         type: 3}
+      propertyPath: _ammo
+      value: 
+      objectReference: {fileID: 1157590988920738970}
+    - target: {fileID: 8204062348515326525, guid: af792625e2673b348a0c7af3efc10c5b,
+        type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 8204062348515326525, guid: af792625e2673b348a0c7af3efc10c5b,
@@ -25323,6 +25501,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3073797925806233379}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6589608277433838867 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8204062348515326512, guid: af792625e2673b348a0c7af3efc10c5b,
+    type: 3}
+  m_PrefabInstance: {fileID: 3073797925806233379}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1459927906409442053 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4533689273353092134, guid: af792625e2673b348a0c7af3efc10c5b,
@@ -25335,21 +25519,15 @@ AudioSource:
     type: 3}
   m_PrefabInstance: {fileID: 3073797925806233379}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &6589608277332648548 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8204062348347028807, guid: af792625e2673b348a0c7af3efc10c5b,
-    type: 3}
-  m_PrefabInstance: {fileID: 3073797925806233379}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &6589608277433838867 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8204062348515326512, guid: af792625e2673b348a0c7af3efc10c5b,
-    type: 3}
-  m_PrefabInstance: {fileID: 3073797925806233379}
-  m_PrefabAsset: {fileID: 0}
 --- !u!82 &4248981165977066691 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 1179726731454450656, guid: af792625e2673b348a0c7af3efc10c5b,
+    type: 3}
+  m_PrefabInstance: {fileID: 3073797925806233379}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6589608277332648548 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8204062348347028807, guid: af792625e2673b348a0c7af3efc10c5b,
     type: 3}
   m_PrefabInstance: {fileID: 3073797925806233379}
   m_PrefabAsset: {fileID: 0}

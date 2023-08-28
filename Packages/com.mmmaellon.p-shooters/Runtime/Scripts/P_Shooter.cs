@@ -65,8 +65,21 @@ namespace MMMaellon.P_Shooters
         }
         public Transform gunParent;
 
-        [HideInInspector]
-        public AmmoTracker ammo;
+        [FieldChangeCallback(nameof(ammo))]
+        public AmmoTracker _ammo;
+        public AmmoTracker ammo
+        {
+            get => _ammo;
+            set
+            {
+                if (Utilities.IsValid(_ammo))
+                {
+                    _ammo.enabled = false;
+                }
+                _ammo = value;
+                _ammo.enabled = true;
+            }
+        }
         [FieldChangeCallback(nameof(shootSpeed))]
         public float _shootSpeed = 1.0f;
         public float shootSpeed

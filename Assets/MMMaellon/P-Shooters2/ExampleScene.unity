@@ -991,6 +991,11 @@ PrefabInstance:
       objectReference: {fileID: 1214115713}
     - target: {fileID: 6589608277433838878, guid: 228dfe288c7f553488209c9f783148db,
         type: 3}
+      propertyPath: _ammo
+      value: 
+      objectReference: {fileID: 1214115713}
+    - target: {fileID: 6589608277433838878, guid: 228dfe288c7f553488209c9f783148db,
+        type: 3}
       propertyPath: damage
       value: 50
       objectReference: {fileID: 0}
@@ -1120,6 +1125,18 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 8235561027257106794, guid: 228dfe288c7f553488209c9f783148db,
+        type: 3}
+    - target: {fileID: 8999822914264499266, guid: 228dfe288c7f553488209c9f783148db,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 8999822914264499266, guid: 228dfe288c7f553488209c9f783148db,
+        type: 3}
+    - target: {fileID: 9190538007855224584, guid: 228dfe288c7f553488209c9f783148db,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 9190538007855224584, guid: 228dfe288c7f553488209c9f783148db,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 228dfe288c7f553488209c9f783148db, type: 3}
@@ -2104,6 +2121,7 @@ MonoBehaviour:
   syncParticleCollisions: 0
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -2873,6 +2891,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -3481,6 +3500,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -5393,6 +5413,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -5922,6 +5943,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -7354,6 +7376,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 643776049}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &644168261 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1157590989419319391, guid: a044cd97772afc24aa4fd771f2bfa277,
+    type: 3}
+  m_PrefabInstance: {fileID: 32364339060253897}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 075f1d4e9ca626242822ad51f3d10868, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &652913394
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7785,6 +7819,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -8145,6 +8180,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -8951,6 +8987,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -9387,6 +9424,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -11270,6 +11308,7 @@ MonoBehaviour:
   syncParticleCollisions: 0
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -11675,6 +11714,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -12077,6 +12117,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -13410,6 +13451,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -13679,6 +13721,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -15936,6 +15979,12 @@ PrefabInstance:
       propertyPath: NetworkIDs.Array.data[204].gameObject
       value: 
       objectReference: {fileID: 1137386483}
+    - target: {fileID: 8464459589408506562, guid: 8894fa7e4588a5c4fab98453e558847d,
+        type: 3}
+      propertyPath: serializedProgramAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: abeb27bc215a280409547d93bf03d5e1,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8894fa7e4588a5c4fab98453e558847d, type: 3}
 --- !u!1 &1062521480 stripped
@@ -16349,6 +16398,7 @@ MonoBehaviour:
   syncParticleCollisions: 0
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -22267,6 +22317,7 @@ MonoBehaviour:
   syncParticleCollisions: 0
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -22504,6 +22555,7 @@ MonoBehaviour:
   syncParticleCollisions: 0
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -22961,6 +23013,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -24116,6 +24169,11 @@ PrefabInstance:
       objectReference: {fileID: 89608782}
     - target: {fileID: 6589608277433838878, guid: 228dfe288c7f553488209c9f783148db,
         type: 3}
+      propertyPath: _ammo
+      value: 
+      objectReference: {fileID: 89608782}
+    - target: {fileID: 6589608277433838878, guid: 228dfe288c7f553488209c9f783148db,
+        type: 3}
       propertyPath: damage
       value: 1
       objectReference: {fileID: 0}
@@ -24245,6 +24303,18 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 8235561027257106794, guid: 228dfe288c7f553488209c9f783148db,
+        type: 3}
+    - target: {fileID: 8999822914264499266, guid: 228dfe288c7f553488209c9f783148db,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 8999822914264499266, guid: 228dfe288c7f553488209c9f783148db,
+        type: 3}
+    - target: {fileID: 9190538007855224584, guid: 228dfe288c7f553488209c9f783148db,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 9190538007855224584, guid: 228dfe288c7f553488209c9f783148db,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 228dfe288c7f553488209c9f783148db, type: 3}
@@ -24870,6 +24940,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -25081,6 +25152,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -25524,6 +25596,7 @@ MonoBehaviour:
   syncParticleCollisions: 0
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -25750,6 +25823,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -31126,6 +31200,30 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 108139603663511100, guid: 1d399f689a01f15458071d1b77f8196c,
         type: 3}
+    - target: {fileID: 1550507766523246714, guid: 1d399f689a01f15458071d1b77f8196c,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 1550507766523246714, guid: 1d399f689a01f15458071d1b77f8196c,
+        type: 3}
+    - target: {fileID: 1550507766687220626, guid: 1d399f689a01f15458071d1b77f8196c,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 1550507766687220626, guid: 1d399f689a01f15458071d1b77f8196c,
+        type: 3}
+    - target: {fileID: 1651150111719156528, guid: 1d399f689a01f15458071d1b77f8196c,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 1651150111719156528, guid: 1d399f689a01f15458071d1b77f8196c,
+        type: 3}
+    - target: {fileID: 1651150111791091928, guid: 1d399f689a01f15458071d1b77f8196c,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 1651150111791091928, guid: 1d399f689a01f15458071d1b77f8196c,
+        type: 3}
     - target: {fileID: 1748887698183286296, guid: 1d399f689a01f15458071d1b77f8196c,
         type: 3}
       propertyPath: particles
@@ -31203,6 +31301,11 @@ PrefabInstance:
       objectReference: {fileID: 1498418188}
     - target: {fileID: 3566049180569139588, guid: 1d399f689a01f15458071d1b77f8196c,
         type: 3}
+      propertyPath: _ammo
+      value: 
+      objectReference: {fileID: 1498418188}
+    - target: {fileID: 3566049180569139588, guid: 1d399f689a01f15458071d1b77f8196c,
+        type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 3566049180569139588, guid: 1d399f689a01f15458071d1b77f8196c,
@@ -31234,6 +31337,11 @@ PrefabInstance:
     - target: {fileID: 3566049180656796268, guid: 1d399f689a01f15458071d1b77f8196c,
         type: 3}
       propertyPath: ammo
+      value: 
+      objectReference: {fileID: 1498418185}
+    - target: {fileID: 3566049180656796268, guid: 1d399f689a01f15458071d1b77f8196c,
+        type: 3}
+      propertyPath: _ammo
       value: 
       objectReference: {fileID: 1498418185}
     - target: {fileID: 3566049180656796268, guid: 1d399f689a01f15458071d1b77f8196c,
@@ -31991,6 +32099,7 @@ MonoBehaviour:
   syncParticleCollisions: 0
   respawnHeight: -100
   printDebugMessages: 1
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -32737,6 +32846,7 @@ MonoBehaviour:
   syncParticleCollisions: 0
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -33022,6 +33132,7 @@ MonoBehaviour:
   syncParticleCollisions: 0
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -33618,6 +33729,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -34187,6 +34299,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -35446,6 +35559,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -35836,6 +35950,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -36047,6 +36162,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -41438,6 +41554,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -43450,6 +43567,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -43661,6 +43779,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -45073,6 +45192,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -46347,6 +46467,7 @@ MonoBehaviour:
   syncParticleCollisions: 1
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -46432,6 +46553,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5319908109530513871, guid: a044cd97772afc24aa4fd771f2bfa277,
         type: 3}
+    - target: {fileID: 6557248622535183634, guid: a044cd97772afc24aa4fd771f2bfa277,
+        type: 3}
+      propertyPath: _ammo
+      value: 
+      objectReference: {fileID: 644168261}
     - target: {fileID: 6557248622535183634, guid: a044cd97772afc24aa4fd771f2bfa277,
         type: 3}
       propertyPath: serializationData.Prefab
@@ -46936,14 +47062,9 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 2693152156013483527, guid: 228dfe288c7f553488209c9f783148db,
         type: 3}
-      propertyPath: altFireModeCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2693152156013483527, guid: 228dfe288c7f553488209c9f783148db,
-        type: 3}
-      propertyPath: altFireDamage.Array.size
-      value: 1
-      objectReference: {fileID: 0}
+      propertyPath: rapidSFX.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 2145e9e5790b83343a71bd342e4db137, type: 3}
     - target: {fileID: 2693152156013483527, guid: 228dfe288c7f553488209c9f783148db,
         type: 3}
       propertyPath: serializationData.Prefab
@@ -46952,7 +47073,7 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 2693152156013483527, guid: 228dfe288c7f553488209c9f783148db,
         type: 3}
-      propertyPath: altFireDamage.Array.data[0]
+      propertyPath: altFireDamage.Array.data[1]
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3184806545215103691, guid: 228dfe288c7f553488209c9f783148db,
@@ -47013,6 +47134,11 @@ PrefabInstance:
     - target: {fileID: 6589608277433838878, guid: 228dfe288c7f553488209c9f783148db,
         type: 3}
       propertyPath: ammo
+      value: 
+      objectReference: {fileID: 503728612}
+    - target: {fileID: 6589608277433838878, guid: 228dfe288c7f553488209c9f783148db,
+        type: 3}
+      propertyPath: _ammo
       value: 
       objectReference: {fileID: 503728612}
     - target: {fileID: 6589608277433838878, guid: 228dfe288c7f553488209c9f783148db,
@@ -47131,6 +47257,18 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 8235561027257106794, guid: 228dfe288c7f553488209c9f783148db,
+        type: 3}
+    - target: {fileID: 8999822914264499266, guid: 228dfe288c7f553488209c9f783148db,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 8999822914264499266, guid: 228dfe288c7f553488209c9f783148db,
+        type: 3}
+    - target: {fileID: 9190538007855224584, guid: 228dfe288c7f553488209c9f783148db,
+        type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 9190538007855224584, guid: 228dfe288c7f553488209c9f783148db,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 228dfe288c7f553488209c9f783148db, type: 3}
@@ -47475,6 +47613,11 @@ PrefabInstance:
     - target: {fileID: 9011897178555123126, guid: 6ff064430676e4148abdb48e7d217ee6,
         type: 3}
       propertyPath: ammo
+      value: 
+      objectReference: {fileID: 1025847331}
+    - target: {fileID: 9011897178555123126, guid: 6ff064430676e4148abdb48e7d217ee6,
+        type: 3}
+      propertyPath: _ammo
       value: 
       objectReference: {fileID: 1025847331}
     - target: {fileID: 9011897178555123126, guid: 6ff064430676e4148abdb48e7d217ee6,

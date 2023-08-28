@@ -66,6 +66,10 @@ namespace MMMaellon.P_Shooters
 
         public virtual void EjectEmptyFX()
         {
+            if (!enabled)
+            {
+                return;
+            }
             RandomOneShot(ejectEmptys, ejectEmptyVol);
             if (Utilities.IsValid(ejectEmptyParticles))
             {
@@ -75,6 +79,10 @@ namespace MMMaellon.P_Shooters
 
         public void RandomOneShot(AudioClip[] clips, float volume)
         {
+            if (!enabled)
+            {
+                return;
+            }
             if (Time.timeSinceLevelLoad < 5f)//delay to prevent the spam you get at load in
             {
                 return;
@@ -86,6 +94,11 @@ namespace MMMaellon.P_Shooters
         }
         public virtual void OnEnable()
         {
+            if (shooter.ammo != this)
+            {
+                enabled = false;
+                return;
+            }
             //reset all the animator stuff
             reloadSpeed = reloadSpeed;
         }
@@ -135,12 +148,7 @@ namespace MMMaellon.P_Shooters
                 Helper.ErrorLog(ammoTracker, "AmmoTracker is missing a P_Shooter");
                 return;
             }
-            if (Utilities.IsValid(ammoTracker.shooter.ammo) && ammoTracker.shooter.ammo != ammoTracker && ammoTracker.shooter.gameObject == ammoTracker.shooter.ammo.gameObject)
-            {
-                Helper.ErrorLog(ammoTracker, "AmmoTracker is already assigned to a different P_Shooter. Make sure you do not have two ammo trackers on the same object");
-                return;
-            }
-            if (ammoTracker.shooter.ammo != ammoTracker)
+            if (ammoTracker.shooter.ammo == null)
             {
                 if (!Helper.IsEditable(ammoTracker.shooter))
                 {
@@ -148,7 +156,7 @@ namespace MMMaellon.P_Shooters
                     return;
                 }
                 SerializedObject serializedShooter = new SerializedObject(ammoTracker.shooter);
-                serializedShooter.FindProperty("ammo").objectReferenceValue = ammoTracker;
+                serializedShooter.FindProperty("_ammo").objectReferenceValue = ammoTracker;
                 serializedShooter.ApplyModifiedProperties();
             }
         }
