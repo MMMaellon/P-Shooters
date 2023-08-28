@@ -276,7 +276,7 @@ namespace MMMaellon.P_Shooters
         [HideInInspector]
         public P_Shooter shooter;
         [HideInInspector, UdonSynced, FieldChangeCallback(nameof(rapidFire))]
-        public bool _rapidFire = true;
+        public bool _rapidFire = false;
         [HideInInspector, UdonSynced, FieldChangeCallback(nameof(altFire))]
         public int _altFire = 0;
         [Tooltip("Set to 0 to disable")]
@@ -334,7 +334,7 @@ namespace MMMaellon.P_Shooters
             {
                 _rapidFire = value;
                 shooter.animator.SetBool("rapidfire", value);
-                if (_altFire == 0)
+                if (_altFire == 0 && startRan)
                 {
                     if (rapidFire)
                     {
@@ -351,7 +351,7 @@ namespace MMMaellon.P_Shooters
                             shooter.ammo = rapidAmmo;
                         }
                     }
-                    else if (originalSFX != null)
+                    else
                     {
                         if (affectDamage)
                         {
@@ -384,7 +384,7 @@ namespace MMMaellon.P_Shooters
                 {
                     rapidFire = rapidFire;
                 }
-                else if (_altFire > 0)
+                else if (_altFire > 0 && startRan)
                 {
                     if (affectDamage)
                     {
@@ -417,11 +417,13 @@ namespace MMMaellon.P_Shooters
                 }
             }
         }
+        bool startRan = false;
         public void Start()
         {
             originalDamage = shooter.damage;
             originalSFX = (AudioClip[])shooter.gunshots.Clone();
             originalAmmo = shooter.ammo;
+            startRan = true;
             rapidFire = startRapidFire;
             altFire = startAltFireMode;
         }
