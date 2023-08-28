@@ -67,6 +67,7 @@ namespace MMMaellon.P_Shooters
                     SendCustomEventDelayedSeconds(nameof(RespawnCallback), respawnDelayTime, VRC.Udon.Common.Enums.EventTiming.Update);
                     respawnTimes[receiver.id] = Time.timeSinceLevelLoad;
                     receiver.Owner.CombatSetCurrentHitpoints(0);
+                    receiver.state = Player.STATE_DEAD;
                 }
             }
         }
