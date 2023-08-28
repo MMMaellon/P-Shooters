@@ -195,6 +195,11 @@ namespace MMMaellon.P_Shooters
                 _print("set health from " + _health + " to " + value);
                 if (value > _health)
                 {
+                    if (_health >= maxHealth)
+                    {
+                        //prevent repeat events
+                        return;
+                    }
                     _health = value;
                     if (value >= maxHealth)
                     {
@@ -209,6 +214,11 @@ namespace MMMaellon.P_Shooters
                 }
                 else if (value < _health)
                 {
+                    if (_health <= 0)
+                    {
+                        //prevent repeat events
+                        return;
+                    }
                     _health = value;
                     if (value <= 0)
                     {
