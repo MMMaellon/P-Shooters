@@ -72,9 +72,11 @@ namespace MMMaellon.P_Shooters
                 {
                     EditorGUILayout.PropertyField(rapidAmmo, true);
                 }
-                if (rapid.altFireDamage == null || rapid.altFireModeCount != rapid.altFireDamage.Length) {
+                if (rapid.altFireDamage == null || rapid.altFireModeCount != rapid.altFireDamage.Length)
+                {
                     int[] newArr = new int[rapid.altFireModeCount];
-                    for (int i = 0; i < rapid.altFireModeCount; i++) {
+                    for (int i = 0; i < rapid.altFireModeCount; i++)
+                    {
                         newArr[i] = rapid.altFireDamage != null && rapid.altFireDamage.Length > i ? rapid.altFireDamage[i] : rapid.shooter.damage;
                     }
                     rapid.altFireDamage = newArr;
@@ -138,6 +140,10 @@ namespace MMMaellon.P_Shooters
                             else if (clipCount != startingClipCount)
                             {
                                 AudioClip[] newArr = new AudioClip[clipCount - startingClipCount + rapid.altFireSFX.Length];
+                                for (int j = 0; j < Mathf.Min(rapid.altFireSFX.Length, newArr.Length); j++)
+                                {
+                                    newArr[j] = rapid.altFireSFX[j];
+                                }
                                 for (int j = rapid.altFireEndIndexes[i]; j < rapid.altFireSFX.Length; j++)
                                 {
                                     newArr[j + clipCount - startingClipCount] = rapid.altFireSFX[j];
@@ -315,12 +321,12 @@ namespace MMMaellon.P_Shooters
         }
 #endif
 
-        [HideInInspector]
+        [System.NonSerialized]
         public int originalDamage;
-        [HideInInspector]
-        public AudioClip[] originalSFX;
-        [HideInInspector]
-        public AmmoTracker originalAmmo;
+        [System.NonSerialized]
+        public AudioClip[] originalSFX = null;
+        [System.NonSerialized]
+        public AmmoTracker originalAmmo = null;
         public bool rapidFire
         {
             get => _rapidFire;
@@ -345,7 +351,7 @@ namespace MMMaellon.P_Shooters
                             shooter.ammo = rapidAmmo;
                         }
                     }
-                    else
+                    else if (originalSFX != null)
                     {
                         if (affectDamage)
                         {
@@ -361,7 +367,8 @@ namespace MMMaellon.P_Shooters
                         }
                     }
                 }
-                if(Networking.LocalPlayer.IsOwner(gameObject)){
+                if (Networking.LocalPlayer.IsOwner(gameObject))
+                {
                     RequestSerialization();
                 }
             }
@@ -392,7 +399,8 @@ namespace MMMaellon.P_Shooters
                             if (value == 1)
                             {
                                 shooter.gunshots[i] = altFireSFX[i];
-                            } else
+                            }
+                            else
                             {
                                 shooter.gunshots[i] = altFireSFX[i + altFireEndIndexes[value - 2]];
                             }
@@ -403,7 +411,8 @@ namespace MMMaellon.P_Shooters
                         shooter.ammo = altFireAmmo[value - 1];
                     }
                 }
-                if (Networking.LocalPlayer.IsOwner(gameObject)){
+                if (Networking.LocalPlayer.IsOwner(gameObject))
+                {
                     RequestSerialization();
                 }
             }
@@ -411,7 +420,7 @@ namespace MMMaellon.P_Shooters
         public void Start()
         {
             originalDamage = shooter.damage;
-            originalSFX = shooter.gunshots;
+            originalSFX = (AudioClip[])shooter.gunshots.Clone();
             originalAmmo = shooter.ammo;
             rapidFire = startRapidFire;
             altFire = startAltFireMode;
