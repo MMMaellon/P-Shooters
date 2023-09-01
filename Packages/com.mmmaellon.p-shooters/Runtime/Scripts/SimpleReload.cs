@@ -271,14 +271,14 @@ namespace MMMaellon.P_Shooters
         {
             if (Utilities.IsValid(vrReloadPickup))
             {
-                vrReloadPickup.pickup.pickupable = shooter.sync.IsLocalOwner();
+                vrReloadPickup.pickupable = shooter.sync.IsLocalOwner();
             }
         }
         public override void OnDrop()
         {
             if (Utilities.IsValid(vrReloadPickup))
             {
-                vrReloadPickup.pickup.pickupable = false;
+                vrReloadPickup.pickupable = false;
             }
         }
 
