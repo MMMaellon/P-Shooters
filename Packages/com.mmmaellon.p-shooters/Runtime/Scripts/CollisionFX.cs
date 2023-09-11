@@ -16,12 +16,15 @@ namespace MMMaellon.P_Shooters
         public bool fxOnCollisionEnter = true;
         public bool fxOnTriggerEnter = true;
 
+        public float cooldown = 0.5f;
+        float lastHit = -1001f;
         public void OnCollisionEnter(Collision collision)
         {
-            if (!Utilities.IsValid(collision.gameObject) || !fxOnCollisionEnter)
+            if (!Utilities.IsValid(collision.gameObject) || !fxOnCollisionEnter || lastHit + cooldown > Time.timeSinceLevelLoad)
             {
                 return;
             }
+            lastHit = Time.timeSinceLevelLoad;
             if (((1 << collision.gameObject.layer) & layerMask) != 0)
             {
                 particles.transform.position = collision.contacts[0].point;
@@ -40,10 +43,11 @@ namespace MMMaellon.P_Shooters
         }
         public void OnTriggerEnter(Collider other)
         {
-            if (!Utilities.IsValid(other) || !fxOnCollisionEnter)
+            if (!Utilities.IsValid(other) || !fxOnTriggerEnter || lastHit + cooldown > Time.timeSinceLevelLoad)
             {
                 return;
             }
+            lastHit = Time.timeSinceLevelLoad;
             if (((1 << other.gameObject.layer) & layerMask) != 0)
             {
                 particles.transform.position = transform.position;
