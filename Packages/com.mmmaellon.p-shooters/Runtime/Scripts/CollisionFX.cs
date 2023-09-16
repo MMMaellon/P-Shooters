@@ -60,7 +60,7 @@ namespace MMMaellon.P_Shooters
             {
                 if (!LocalOnlyFX)
                 {
-                    Networking.LocalPlayer.TakeOwnership(gameObject);
+                    Networking.SetOwner(Networking.LocalPlayer, gameObject);
                     fxPos = collision.contacts[0].point;
                 }
                 else
