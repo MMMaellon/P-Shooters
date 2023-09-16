@@ -16,6 +16,8 @@ namespace MMMaellon.P_Shooters
         public bool fxOnCollisionEnter = true;
         public bool fxOnTriggerEnter = true;
 
+        public bool LocalOnlyFX = true;
+
         public float cooldown = 0.5f;
         float lastHit = -1001f;
         public void OnCollisionEnter(Collision collision)
@@ -27,17 +29,15 @@ namespace MMMaellon.P_Shooters
             lastHit = Time.timeSinceLevelLoad;
             if (((1 << collision.gameObject.layer) & layerMask) != 0)
             {
-                particles.transform.position = collision.contacts[0].point;
-                audioSource.transform.position = collision.contacts[0].point;
-                particles.Play();
-                if (allowOverlappingAudio)
+                if (!LocalOnlyFX)
                 {
-                    audioSource.PlayOneShot(audioClips[Random.Range(0, audioClips.Length)]);
+                    SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, nameof(PlayFXAtOrigin));
                 }
                 else
                 {
-                    audioSource.clip = audioClips[Random.Range(0, audioClips.Length)];
-                    audioSource.Play();
+                    particles.transform.position = collision.contacts[0].point;
+                    audioSource.transform.position = collision.contacts[0].point;
+                    PlayFX();
                 }
             }
         }
@@ -50,18 +50,35 @@ namespace MMMaellon.P_Shooters
             lastHit = Time.timeSinceLevelLoad;
             if (((1 << other.gameObject.layer) & layerMask) != 0)
             {
-                particles.transform.position = transform.position;
-                audioSource.transform.position = transform.position;
-                particles.Play();
-                if (allowOverlappingAudio)
+                if (!LocalOnlyFX)
                 {
-                    audioSource.PlayOneShot(audioClips[Random.Range(0, audioClips.Length)]);
+                    SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, nameof(PlayFXAtOrigin));
                 }
                 else
                 {
-                    audioSource.clip = audioClips[Random.Range(0, audioClips.Length)];
-                    audioSource.Play();
+                    PlayFXAtOrigin();
                 }
+            }
+        }
+
+        public void PlayFXAtOrigin()
+        {
+            particles.transform.position = transform.position;
+            audioSource.transform.position = transform.position;
+            PlayFX();
+        }
+
+        public void PlayFX()
+        {
+            particles.Play();
+            if (allowOverlappingAudio)
+            {
+                audioSource.PlayOneShot(audioClips[Random.Range(0, audioClips.Length)]);
+            }
+            else
+            {
+                audioSource.clip = audioClips[Random.Range(0, audioClips.Length)];
+                audioSource.Play();
             }
         }
     }

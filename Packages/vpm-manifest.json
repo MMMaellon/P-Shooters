@@ -27,13 +27,13 @@
       }
     },
     "com.vrchat.worlds": {
-      "version": "3.3.0-beta.1",
+      "version": "3.3.0",
       "dependencies": {
-        "com.vrchat.base": "3.3.0-beta.1"
+        "com.vrchat.base": "3.3.0"
       }
     },
     "com.vrchat.base": {
-      "version": "3.3.0-beta.1",
+      "version": "3.3.0",
       "dependencies": {}
     },
     "com.vrchat.clientsim": {
@@ -60,7 +60,7 @@
       }
     },
     "com.mmmaellon.smartobjectsync": {
-      "version": "3.6.1",
+      "version": "3.6.3",
       "dependencies": {
         "com.vrchat.udonsharp": "1.1.X"
       }
