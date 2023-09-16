@@ -20,6 +20,35 @@ namespace MMMaellon.P_Shooters
 
         public float cooldown = 0.5f;
         float lastHit = -1001f;
+
+        public Vector3 startPosParticles;
+        public Vector3 startPosSound;
+
+        [System.NonSerialized, UdonSynced, FieldChangeCallback(nameof(fxPos))]
+        public Vector3 _fxPos;
+        public Vector3 fxPos
+        {
+            get => _fxPos;
+            set
+            {
+                _fxPos = value;
+
+                particles.transform.position = value;
+                audioSource.transform.position = value;
+                PlayFX();
+
+                if (! Networking.LocalPlayer.IsOwner(gameObject))
+                {
+                    RequestSerialization();
+                }
+            }
+        }
+
+        public void Start()
+        {
+            startPosParticles = particles.transform.localPosition;
+            startPosSound = audioSource.transform.localPosition;
+        }
         public void OnCollisionEnter(Collision collision)
         {
             if (!Utilities.IsValid(collision.gameObject) || !fxOnCollisionEnter || lastHit + cooldown > Time.timeSinceLevelLoad)
@@ -31,7 +60,8 @@ namespace MMMaellon.P_Shooters
             {
                 if (!LocalOnlyFX)
                 {
-                    SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, nameof(PlayFXAtOrigin));
+                    Networking.LocalPlayer.TakeOwnership(gameObject);
+                    fxPos = collision.contacts[0].point;
                 }
                 else
                 {
@@ -50,22 +80,17 @@ namespace MMMaellon.P_Shooters
             lastHit = Time.timeSinceLevelLoad;
             if (((1 << other.gameObject.layer) & layerMask) != 0)
             {
+                particles.transform.localPosition = startPosParticles;
+                audioSource.transform.localPosition = startPosSound;
                 if (!LocalOnlyFX)
                 {
-                    SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, nameof(PlayFXAtOrigin));
+                    fxPos = audioSource.transform.position;
                 }
                 else
                 {
-                    PlayFXAtOrigin();
+                    PlayFX();
                 }
             }
-        }
-
-        public void PlayFXAtOrigin()
-        {
-            particles.transform.position = transform.position;
-            audioSource.transform.position = transform.position;
-            PlayFX();
         }
 
         public void PlayFX()
