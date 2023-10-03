@@ -31,6 +31,11 @@ namespace MMMaellon.P_Shooters
 
         public virtual void Start()
         {
+            SendCustomEventDelayedFrames(nameof(AttachExistingMag), 100);//start needs to run on smartobjectsync before this can work
+        }
+
+        public void AttachExistingMag()
+        {
             attachedMag = attachedMag;
         }
 
@@ -53,7 +58,7 @@ namespace MMMaellon.P_Shooters
                 return;
             }
             SerializedObject serialized = new SerializedObject(receiver);
-            serialized.FindProperty("_attachedMag").objectReferenceValue = receiver.GetComponentInChildren<Mag>();
+            // serialized.FindProperty("_attachedMag").objectReferenceValue = receiver.GetComponentInChildren<Mag>();
             serialized.ApplyModifiedProperties();
         }
 #endif
@@ -71,13 +76,13 @@ namespace MMMaellon.P_Shooters
             }
             if (Utilities.IsValid(attachedMag))
             {
-                if (ejectExistingMagOnTap)
+                if (ejectExistingMagOnTap && attachedMag != otherMag)
                 {
                     Eject();
                 }
                 return;
             }
-            otherMag.Attach(transform);
+            attachedMag = otherMag;
         }
 
         public override void Interact()
@@ -88,11 +93,9 @@ namespace MMMaellon.P_Shooters
         public void Eject()
         {
             lastEject = Time.realtimeSinceStartup;
-            if (Utilities.IsValid(attachedMag) && attachedMag.childState.IsActiveState())
+            if (Utilities.IsValid(attachedMag))
             {
-                attachedMag.childState.sync.rigid.velocity = attachedMag.transform.rotation * ejectVelocity;
-                attachedMag.childState.sync.vel = attachedMag.childState.sync.rigid.velocity;
-                attachedMag.childState.ExitState();
+                attachedMag = null;
             }
         }
         
@@ -100,6 +103,15 @@ namespace MMMaellon.P_Shooters
             get => _attachedMag;
             set
             {
+
+                Debug.LogWarning("new attached mag");
+
+                if (Utilities.IsValid(_attachedMag) && _attachedMag.childState.IsActiveState() && _attachedMag.childState._parentTransform == transform)
+                {
+                    _attachedMag.childState.sync.rigid.velocity = _attachedMag.transform.rotation * ejectVelocity;
+                    _attachedMag.childState.sync.vel = attachedMag.childState.sync.rigid.velocity;
+                    _attachedMag.childState.ExitState();
+                }
                 _attachedMag = value;
                 if (Utilities.IsValid(magReload))
                 {
@@ -110,6 +122,12 @@ namespace MMMaellon.P_Shooters
                     magReload.SetMagParameter();
                 }
                 DisableInteractive = !ejectExistingMagOnTInteract || value == null;
+                if (Utilities.IsValid(_attachedMag))
+                {
+                    Debug.LogWarning("calling attach now on mag");
+                    _attachedMag.Attach(transform);
+                    _attachedMag.receiver = this;
+                }
             }
         }
     }

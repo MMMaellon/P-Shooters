@@ -90,8 +90,10 @@ namespace MMMaellon.P_Shooters
 
         public void Attach(Transform newTransform)
         {
+            Debug.LogWarning("mag attach has been called");
             if (!Utilities.IsValid(newTransform))
             {
+                Debug.LogWarning("mag return early");
                 return;
             }
             childState.Attach(newTransform);
@@ -129,8 +131,9 @@ namespace MMMaellon.P_Shooters
             ammo = maxAmmo;
         }
 
-        public bool hideAfterThrow;
-        public float hideTimer = 3f;
+        public bool respawnAfterDrop = false;
+        public bool refillAmmoOnRespawn = true;
+        public float respawnTimer = 3f;
         private float lastDrop;
 
         public virtual void Start()
@@ -139,48 +142,42 @@ namespace MMMaellon.P_Shooters
         }
         public void Respawn()
         {
-            if (!hideAfterThrow || lastDrop < 0 || lastDrop + hideTimer > Time.realtimeSinceStartup)
+            if (!respawnAfterDrop || lastDrop < 0 || lastDrop + respawnTimer > Time.realtimeSinceStartup)
             {
                 return;
             }
             lastDrop = -1001f;
+            if (refillAmmoOnRespawn)
+            {
+                ammo = _maxAmmo;
+            }
+            childState.sync.Respawn();
         }
 
         public override void OnChangeState(SmartObjectSync sync, int oldState, int newState)
         {
             // sync.pickup.pickupable = !childState.IsActiveState();
 
-            if (childState.IsActiveState() && Utilities.IsValid(childState.parentTransform))
+            if (!childState.IsActiveState() && Utilities.IsValid(receiver) && receiver.attachedMag == this)
             {
-                receiver = childState.parentTransform.GetComponent<MagReceiver>();
-                if (Utilities.IsValid(receiver))
-                {
-                    receiver.attachedMag = this;
-                }
-            }
-            else if (Utilities.IsValid(receiver))
-            {
-                if (receiver.attachedMag == this)
-                {
-                    receiver.attachedMag = null;
-                }
+                receiver.Eject();
                 receiver = null;
             }
-            
+
             if (sync.IsHeld())
             {
                 lastDrop = -1001f;
             } else
             {
-                if (oldState == SmartObjectSync.STATE_LEFT_HAND_HELD || oldState == SmartObjectSync.STATE_RIGHT_HAND_HELD || oldState == SmartObjectSync.STATE_NO_HAND_HELD)
+                if ((oldState >= SmartObjectSync.STATE_LEFT_HAND_HELD || oldState < SmartObjectSync.STATE_SLEEPING) && sync.state < SmartObjectSync.STATE_LEFT_HAND_HELD && sync.state >= SmartObjectSync.STATE_SLEEPING)
                 {
                     lastDrop = Time.realtimeSinceStartup;
                     if (Utilities.IsValid(receiver) && Utilities.IsValid(receiver.magReload) && Utilities.IsValid(receiver.magReload.shooter))
                     {
                         receiver.magReload.shooter.EnableAnimator();
-                    } else if (hideAfterThrow && sync.IsLocalOwner())
+                    } else if (respawnAfterDrop && sync.IsLocalOwner())
                     {
-                        SendCustomEventDelayedSeconds(nameof(Respawn), hideTimer + 0.1f);
+                        SendCustomEventDelayedSeconds(nameof(Respawn), respawnTimer + 0.1f);
                     }
                 }
             }

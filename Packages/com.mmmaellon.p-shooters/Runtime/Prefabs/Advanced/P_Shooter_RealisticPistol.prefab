@@ -19867,6 +19867,7 @@ MonoBehaviour:
   syncParticleCollisions: 0
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -19972,7 +19973,7 @@ MonoBehaviour:
   sync: {fileID: 9011897178555123081}
   _animator: {fileID: 9011897178555123120}
   gunParent: {fileID: 9011897178667287287}
-  ammo: {fileID: 0}
+  _ammo: {fileID: 0}
   _shootSpeed: 1
   gunshotSource: {fileID: 7493010300544015316}
   gunshots:
@@ -20195,6 +20196,8 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 9011897178555123074}
+  respawnEventListeners: []
+  respawnEventName: 
   ignorePhysicsEvents: 1
   respawnCooldown: 5
 --- !u!114 &9011897178555123074
@@ -25827,6 +25830,7 @@ MonoBehaviour:
   syncParticleCollisions: 0
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
