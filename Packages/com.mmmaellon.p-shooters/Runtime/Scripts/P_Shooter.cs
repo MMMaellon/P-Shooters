@@ -387,5 +387,13 @@ namespace MMMaellon.P_Shooters
             }
             return damage;
         }
+
+        public void Reload()
+        {
+            if (Utilities.IsValid(ammo))
+            {
+                ammo.Reload();
+            }
+        }
     }
 }

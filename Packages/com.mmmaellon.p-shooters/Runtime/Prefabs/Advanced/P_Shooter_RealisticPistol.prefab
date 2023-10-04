@@ -19802,7 +19802,7 @@ Transform:
   m_GameObject: {fileID: 9011897178555123123}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.9799995, y: 1.3644999, z: -0.22479777}
-  m_LocalScale: {x: 0.65, y: 0.65, z: 0.65}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children:
   - {fileID: 9011897178667287287}
   - {fileID: 9011897179713860088}
@@ -19875,6 +19875,8 @@ MonoBehaviour:
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 1
   preventStealWhileAttachedToPlayer: 1
+  respawnIntoStartingState: 1
+  startingState: {fileID: 0}
   pickup: {fileID: 9011897178555123125}
   rigid: {fileID: 9011897178555123080}
   states: []
@@ -25838,6 +25840,8 @@ MonoBehaviour:
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 0
   preventStealWhileAttachedToPlayer: 1
+  respawnIntoStartingState: 1
+  startingState: {fileID: 0}
   pickup: {fileID: 9011897179137691873}
   rigid: {fileID: 9011897179137691876}
   states: []
@@ -26386,7 +26390,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9011897179713860089}
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 0, y: -0.0741, z: -0.2484}
+  m_LocalPosition: {x: 0, y: -0.0741, z: -0.234}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 9011897178555123086}

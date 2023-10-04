@@ -5088,6 +5088,7 @@ MonoBehaviour:
   syncParticleCollisions: 0
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -5095,6 +5096,8 @@ MonoBehaviour:
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 1
   preventStealWhileAttachedToPlayer: 1
+  respawnIntoStartingState: 1
+  startingState: {fileID: 0}
   pickup: {fileID: 2413132431035666246}
   rigid: {fileID: 2413132431035666235}
   states: []
@@ -5187,15 +5190,14 @@ MonoBehaviour:
   selfDamage: 0
   toggleableDamage: 0
   toggleOffOnDrop: 1
-  _shootSpeed: 1
-  _reloadSpeed: 1
   printDebugMessages: 0
   shootParticles: {fileID: 0}
   onHitPlayerParticles: {fileID: 1344404535659629098}
   sync: {fileID: 2413132431035666234}
   _animator: {fileID: 2413132431035666243}
   gunParent: {fileID: 2413132430461590276}
-  ammo: {fileID: 0}
+  _ammo: {fileID: 0}
+  _shootSpeed: 1
   gunshotSource: {fileID: 4747979281272960458}
   gunshots:
   - {fileID: 8300000, guid: b34a15767126c48438ea681850bda5a1, type: 3}
@@ -5270,9 +5272,10 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 2413132431035666253}
+  zoomShortcut: 308
   shooter: {fileID: 2413132431035666241}
   scopeCam: {fileID: 0}
-  scopeAnchor: {fileID: 0}
+  ADSPosition: {fileID: 0}
   zoomInTime: 0.25
   zoomOutTime: 0.1
 --- !u!114 &2413132431035666253
@@ -5590,7 +5593,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2413132431216379913}
   m_LocalRotation: {x: 0.00000020861623, y: 0.00000023624985, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.06382489, z: -0.3876}
+  m_LocalPosition: {x: 0, y: 0, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2413132431035666233}
@@ -5709,6 +5712,7 @@ MonoBehaviour:
   syncParticleCollisions: 0
   respawnHeight: -100
   printDebugMessages: 0
+  performanceModeCollisions: 1
   worldSpaceTeleport: 0
   worldSpaceSleep: 1
   forceContinuousSpeculative: 1
@@ -5716,6 +5720,8 @@ MonoBehaviour:
   nonKinematicPickupJitterPreventionTime: 0
   reduceJitterDuringSleep: 0
   preventStealWhileAttachedToPlayer: 1
+  respawnIntoStartingState: 1
+  startingState: {fileID: 0}
   pickup: {fileID: 2413132431398320887}
   rigid: {fileID: 2413132431398320884}
   states: []

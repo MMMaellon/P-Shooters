@@ -102,6 +102,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 22100000, guid: aca62a99dead1944996b6e7dfbab8026,
         type: 2}
+    - target: {fileID: 2413132431035666246, guid: d54b06b875ab09340ae8789f02a46eb5,
+        type: 3}
+      propertyPath: orientation
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2413132431035666252, guid: d54b06b875ab09340ae8789f02a46eb5,
         type: 3}
       propertyPath: m_Name

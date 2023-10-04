@@ -34,7 +34,7 @@ Transform:
   m_GameObject: {fileID: 7987522077622060884}
   m_LocalRotation: {x: 0.17364816, y: -0, z: -0, w: 0.9848078}
   m_LocalPosition: {x: 5.4869995, y: 1.038, z: -0.48149776}
-  m_LocalScale: {x: 0.65, y: 0.65, z: 0.65}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children:
   - {fileID: 7987522078742484675}
   - {fileID: 7987522079026203566}
@@ -171,7 +171,7 @@ MonoBehaviour:
   ThrowVelocityBoostScale: 1
   currentlyHeldBy: {fileID: 0}
   pickupable: 1
-  proximity: 2
+  proximity: 1
 --- !u!114 &7987522077622060864
 MonoBehaviour:
   m_ObjectHideFlags: 0
