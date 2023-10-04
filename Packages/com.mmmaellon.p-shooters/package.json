@@ -15,7 +15,7 @@
     },
     "vpmDependencies": {
         "com.vrchat.udonsharp": "^1.1.X",
-        "com.mmmaellon.smartobjectsync": "~3.9.0",
+        "com.mmmaellon.smartobjectsync": "^3.9.X",
         "com.cyan.playerobjectpool": "^1.1.X"
     },
     "legacyFolders": {
