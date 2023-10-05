@@ -282,6 +282,15 @@ namespace MMMaellon.P_Shooters
 
         public override void OnPickupUseDown()
         {
+            ShootDown();
+        }
+        public override void OnPickupUseUp()
+        {
+            ShootUp();
+        }
+
+        public void ShootDown()
+        {
             if (!toggleableDamage)
             {
                 if (state != STATE_IDLE)
@@ -297,7 +306,8 @@ namespace MMMaellon.P_Shooters
                 {
                     state = STATE_SHOOT;
                 }
-            } else
+            }
+            else
             {
                 if (state != STATE_IDLE && state != STATE_SHOOT)
                 {
@@ -309,17 +319,20 @@ namespace MMMaellon.P_Shooters
                     if (Utilities.IsValid(ammo))
                     {
                         ammo.Shoot();
-                    } else
+                    }
+                    else
                     {
                         state = STATE_SHOOT;
                     }
-                } else
+                }
+                else
                 {
                     state = STATE_IDLE;
                 }
             }
         }
-        public override void OnPickupUseUp()
+
+        public void ShootUp()
         {
             if (!toggleableDamage)
             {

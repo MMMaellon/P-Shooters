@@ -5084,7 +5084,7 @@ MonoBehaviour:
   _udonSharpBackingUdonBehaviour: {fileID: 2413132431035666245}
   takeOwnershipOfOtherObjectsOnCollision: 1
   allowOthersToTakeOwnershipOnCollision: 1
-  allowTheftFromSelf: 0
+  allowTheftFromSelf: 1
   syncParticleCollisions: 0
   respawnHeight: -100
   printDebugMessages: 0
@@ -5621,7 +5621,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2413132431398320895
 Transform:
   m_ObjectHideFlags: 0
