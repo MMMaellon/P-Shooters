@@ -12,10 +12,11 @@ If you need help with any of this, contact me at @MMMaellon on Twitter or MMMael
 
 ## Setup Instructions
 
-0) Download the latest unitypackage here: <https://github.com/MMMaellon/P-Shooters/releases>
-1) Navigate to the '__PREFABS__' folder and drag the prefab called '__GUN MANAGER__' into your scene.
-2) Read the instructions on the inspector of the '__GUN MANAGER__' object.
-3) Repeatedly and passionately mash the setup buttons on the '__GUN MANAGER__' object any time you make a change to anything.
+0) Download the latest unitypackage here: <https://github.com/MMMaellon/P-Shooters/releases/tag/1.6.2> and the accompanying patch here: <https://github.com/MMMaellon/P-Shooters/releases/tag/1.6.3>
+1) import the 1.6.2 you just downloaded into your project by double clicking the unitypackage while your project is open. Then import the 1.6.3 patch.
+2) Navigate to the '__PREFABS__' folder and drag the prefab called '__GUN MANAGER__' into your scene.
+3) Read the instructions on the inspector of the '__GUN MANAGER__' object.
+4) Repeatedly and passionately mash the setup buttons on the '__GUN MANAGER__' object any time you make a change to anything.
 
 ## Dependencies
 
