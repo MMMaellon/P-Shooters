@@ -70,6 +70,7 @@ namespace MMMaellon
                 else
                 {
                     enabled = true;
+                    GetComponentInChildren<P_Shooter>().enabled = true;
                 }
             }
         }

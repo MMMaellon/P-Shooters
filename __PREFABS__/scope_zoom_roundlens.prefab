@@ -199,6 +199,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 75567414056949472, guid: e0afa9dc41fca3b41885a28053b342c2,
+        type: 3}
+      propertyPath: serializedProgramAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: e111b653d2f9efe4c9ee972d35bb30e9,
+        type: 2}
     - target: {fileID: 3696468746252384218, guid: e0afa9dc41fca3b41885a28053b342c2,
         type: 3}
       propertyPath: m_Name

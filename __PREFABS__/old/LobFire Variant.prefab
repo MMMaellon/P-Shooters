@@ -4898,6 +4898,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: LobFire Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 6763777675413584177, guid: 65a46f820439b724db8bfad56e6a1ac7,
+        type: 3}
+      propertyPath: serializedProgramAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 4907faa8354199e458b857f906fdaa26,
+        type: 2}
     - target: {fileID: 6763777675413584178, guid: 65a46f820439b724db8bfad56e6a1ac7,
         type: 3}
       propertyPath: _ammo_mag
@@ -4950,6 +4956,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6763969013178379556, guid: 65a46f820439b724db8bfad56e6a1ac7,
         type: 3}
+    - target: {fileID: 6763969013178379563, guid: 65a46f820439b724db8bfad56e6a1ac7,
+        type: 3}
+      propertyPath: serializedProgramAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: a20e5fdb94b66f54e998591bee241bb6,
+        type: 2}
     - target: {fileID: 6791509492234167412, guid: 65a46f820439b724db8bfad56e6a1ac7,
         type: 3}
       propertyPath: m_RootOrder

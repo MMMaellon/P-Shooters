@@ -78,5 +78,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: scope_zoom_red_dot_squarelens
       objectReference: {fileID: 0}
+    - target: {fileID: 7846555079993115518, guid: e4a89facbabb99c42b18a2bc0f050d4e,
+        type: 3}
+      propertyPath: serializedProgramAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: e111b653d2f9efe4c9ee972d35bb30e9,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e4a89facbabb99c42b18a2bc0f050d4e, type: 3}

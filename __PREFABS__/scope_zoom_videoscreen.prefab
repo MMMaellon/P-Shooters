@@ -310,7 +310,7 @@ PrefabInstance:
         type: 3}
       propertyPath: serializedProgramAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 4273d29ea1540a84fa9dc572a8b756c5,
+      objectReference: {fileID: 11400000, guid: e111b653d2f9efe4c9ee972d35bb30e9,
         type: 2}
     - target: {fileID: 3696468746252384218, guid: e0afa9dc41fca3b41885a28053b342c2,
         type: 3}
@@ -356,11 +356,12 @@ PrefabInstance:
         type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 6448265438810796434, guid: e0afa9dc41fca3b41885a28053b342c2,
+        type: 3}
     - target: {fileID: 6448265438810796434, guid: e0afa9dc41fca3b41885a28053b342c2,
         type: 3}
       propertyPath: serializationData.SerializedFormat
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7795609688876640585, guid: e0afa9dc41fca3b41885a28053b342c2,
         type: 3}

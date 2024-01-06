@@ -11,7 +11,8 @@ PrefabInstance:
         type: 3}
       propertyPath: serializedProgramAsset
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: a20e5fdb94b66f54e998591bee241bb6,
+        type: 2}
     - target: {fileID: 1387464102685523640, guid: 699544681fafa65409131323fba01c40,
         type: 3}
       propertyPath: m_RootOrder
@@ -71,7 +72,8 @@ PrefabInstance:
         type: 3}
       propertyPath: serializedProgramAsset
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: b6361d73d9863ab429c7134f9995837e,
+        type: 2}
     - target: {fileID: 2184569787457151277, guid: 699544681fafa65409131323fba01c40,
         type: 3}
       propertyPath: serializationData.Prefab

@@ -10366,24 +10366,39 @@ MonoBehaviour:
   _udonSharpBackingUdonBehaviour: {fileID: 260516170208552989}
   melee: 0
   rare: 0
+  disable_after_respawn: 0
+  self_damage: 0
   track_ammo_mag: 1
   track_ammo_reserve: 0
   auto_reload: 0
+  grip_reload: 1
+  up_reload: 0
+  down_reload: 0
   unique_gunshot_audio_sources: 0
   base_damage: 10
+  melee_speed_boost_multiplier: 2
+  gunUpgrades: {fileID: 0}
   _starting_ammo_mag_capacity: -1
   _starting_ammo_reserve: -1
   _upgrades: []
+  animator: {fileID: 0}
+  smartPickup: {fileID: 0}
   particle_shooter: {fileID: 97847186440409358}
+  grip: {fileID: 0}
+  scope: {fileID: 0}
+  tacticalReload: {fileID: 0}
   sound_source: {fileID: 5522086068143427730}
-  sound_shoot: {fileID: 8300000, guid: 433b0e48cb99e6a4995a2f322094e70a, type: 3}
-  sound_empty: {fileID: 8300000, guid: c1e31415030a1fd43b21f7dbec408de8, type: 3}
-  sound_reload: {fileID: 8300000, guid: 1b77ce50e11abe24fab8e02f608df9f1, type: 3}
-  sound_reload_stop: {fileID: 8300000, guid: e8e864088d181d64ba2e84bb4deeb2c5, type: 3}
-  sound_upgrade: {fileID: 8300000, guid: c62209b053fff0b4998af16d390ef5bb, type: 3}
-  sound_bullet_impact_environment: {fileID: 8300000, guid: 5caf8dccb4a8e8547840597f4f94f514,
-    type: 3}
+  sound_shoots: []
+  sound_melee_boosts: []
+  sound_emptys: []
+  sound_reloads: []
+  sound_reload_stops: []
+  sound_upgrades: []
+  sound_bullet_impact_environments: []
   local_held_objects: []
+  manager: {fileID: 0}
+  objectsToOptimize: []
+  udonToOptimize: []
 --- !u!114 &260516170208552989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10404,7 +10419,7 @@ MonoBehaviour:
   AllowCollisionOwnershipTransfer: 0
   Reliable: 0
   _syncMethod: 3
-  serializedProgramAsset: {fileID: 11400000, guid: 3c0e86764f1456d4f812c664703d1c09,
+  serializedProgramAsset: {fileID: 11400000, guid: 4907faa8354199e458b857f906fdaa26,
     type: 2}
   programSource: {fileID: 11400000, guid: 2ba1127f48170a841a12bfbe9926711f, type: 2}
   serializedPublicVariablesBytesString: Ai8AAAAAATIAAABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlAFQAYQBiAGwAZQAsACAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4AAAAAAAYBAAAAAAAAACcBBAAAAHQAeQBwAGUAAWgAAABTAHkAcwB0AGUAbQAuAEMAbwBsAGwAZQBjAHQAaQBvAG4AcwAuAEcAZQBuAGUAcgBpAGMALgBMAGkAcwB0AGAAMQBbAFsAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4ALgBJAG4AdABlAHIAZgBhAGMAZQBzAC4ASQBVAGQAbwBuAFYAYQByAGkAYQBiAGwAZQAsACAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4AXQBdACwAIABtAHMAYwBvAHIAbABpAGIAAQEJAAAAVgBhAHIAaQBhAGIAbABlAHMALwEAAAABaAAAAFMAeQBzAHQAZQBtAC4AQwBvAGwAbABlAGMAdABpAG8AbgBzAC4ARwBlAG4AZQByAGkAYwAuAEwAaQBzAHQAYAAxAFsAWwBWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAEkAbgB0AGUAcgBmAGEAYwBlAHMALgBJAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlACwAIABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgBdAF0ALAAgAG0AcwBjAG8AcgBsAGkAYgABAAAABgEAAAAAAAAAAi8CAAAAAUkAAABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlAGAAMQBbAFsAUwB5AHMAdABlAG0ALgBJAG4AdAAzADIALAAgAG0AcwBjAG8AcgBsAGkAYgBdAF0ALAAgAFYAUgBDAC4AVQBkAG8AbgAuAEMAbwBtAG0AbwBuAAIAAAAGAgAAAAAAAAAnAQQAAAB0AHkAcABlAAEXAAAAUwB5AHMAdABlAG0ALgBTAHQAcgBpAG4AZwAsACAAbQBzAGMAbwByAGwAaQBiACcBCgAAAFMAeQBtAGIAbwBsAE4AYQBtAGUAAR8AAABfAF8AXwBVAGQAbwBuAFMAaABhAHIAcABCAGUAaABhAHYAaQBvAHUAcgBWAGUAcgBzAGkAbwBuAF8AXwBfACcBBAAAAHQAeQBwAGUAARYAAABTAHkAcwB0AGUAbQAuAEkAbgB0ADMAMgAsACAAbQBzAGMAbwByAGwAaQBiABcBBQAAAFYAYQBsAHUAZQACAAAABwUHBQcF
@@ -15289,12 +15304,14 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 260707525019040775}
-  player_layer: 9
   shooter: {fileID: 260516170208552990}
+  shooter_system: {fileID: 0}
   hit_particle_system: {fileID: 97170589121555160}
+  trail_particle_system: {fileID: 0}
   sound_interval: 0.1
   last_sound: 0.1
   sound_source: {fileID: 5852546350882852948}
+  hit_sound_override: {fileID: 0}
 --- !u!114 &260707525019040775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15315,7 +15332,7 @@ MonoBehaviour:
   AllowCollisionOwnershipTransfer: 0
   Reliable: 0
   _syncMethod: 3
-  serializedProgramAsset: {fileID: 11400000, guid: d99866d4cbeb86d4d9f62aeaa6cd0139,
+  serializedProgramAsset: {fileID: 11400000, guid: a20e5fdb94b66f54e998591bee241bb6,
     type: 2}
   programSource: {fileID: 11400000, guid: ec544cf7fc372f74c87ad2f913f2a7d2, type: 2}
   serializedPublicVariablesBytesString: Ai8AAAAAATIAAABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlAFQAYQBiAGwAZQAsACAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4AAAAAAAYBAAAAAAAAACcBBAAAAHQAeQBwAGUAAWgAAABTAHkAcwB0AGUAbQAuAEMAbwBsAGwAZQBjAHQAaQBvAG4AcwAuAEcAZQBuAGUAcgBpAGMALgBMAGkAcwB0AGAAMQBbAFsAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4ALgBJAG4AdABlAHIAZgBhAGMAZQBzAC4ASQBVAGQAbwBuAFYAYQByAGkAYQBiAGwAZQAsACAAVgBSAEMALgBVAGQAbwBuAC4AQwBvAG0AbQBvAG4AXQBdACwAIABtAHMAYwBvAHIAbABpAGIAAQEJAAAAVgBhAHIAaQBhAGIAbABlAHMALwEAAAABaAAAAFMAeQBzAHQAZQBtAC4AQwBvAGwAbABlAGMAdABpAG8AbgBzAC4ARwBlAG4AZQByAGkAYwAuAEwAaQBzAHQAYAAxAFsAWwBWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAEkAbgB0AGUAcgBmAGEAYwBlAHMALgBJAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlACwAIABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgBdAF0ALAAgAG0AcwBjAG8AcgBsAGkAYgABAAAABgEAAAAAAAAAAi8CAAAAAUkAAABWAFIAQwAuAFUAZABvAG4ALgBDAG8AbQBtAG8AbgAuAFUAZABvAG4AVgBhAHIAaQBhAGIAbABlAGAAMQBbAFsAUwB5AHMAdABlAG0ALgBJAG4AdAAzADIALAAgAG0AcwBjAG8AcgBsAGkAYgBdAF0ALAAgAFYAUgBDAC4AVQBkAG8AbgAuAEMAbwBtAG0AbwBuAAIAAAAGAgAAAAAAAAAnAQQAAAB0AHkAcABlAAEXAAAAUwB5AHMAdABlAG0ALgBTAHQAcgBpAG4AZwAsACAAbQBzAGMAbwByAGwAaQBiACcBCgAAAFMAeQBtAGIAbwBsAE4AYQBtAGUAAR8AAABfAF8AXwBVAGQAbwBuAFMAaABhAHIAcABCAGUAaABhAHYAaQBvAHUAcgBWAGUAcgBzAGkAbwBuAF8AXwBfACcBBAAAAHQAeQBwAGUAARYAAABTAHkAcwB0AGUAbQAuAEkAbgB0ADMAMgAsACAAbQBzAGMAbwByAGwAaQBiABcBBQAAAFYAYQBsAHUAZQACAAAABwUHBQcF

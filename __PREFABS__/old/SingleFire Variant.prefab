@@ -93,8 +93,14 @@ PrefabInstance:
     - target: {fileID: 260516170208552988, guid: dc5e49b6c28f0f049b537687d489570b,
         type: 3}
       propertyPath: m_Name
-      value: SingleFire
+      value: SingleFire Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 260516170208552989, guid: dc5e49b6c28f0f049b537687d489570b,
+        type: 3}
+      propertyPath: serializedProgramAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 4907faa8354199e458b857f906fdaa26,
+        type: 2}
     - target: {fileID: 260516170208552990, guid: dc5e49b6c28f0f049b537687d489570b,
         type: 3}
       propertyPath: base_damage
@@ -116,6 +122,12 @@ PrefabInstance:
       propertyPath: local_held_objects.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 260707525019040775, guid: dc5e49b6c28f0f049b537687d489570b,
+        type: 3}
+      propertyPath: serializedProgramAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: a20e5fdb94b66f54e998591bee241bb6,
+        type: 2}
     - target: {fileID: 260707525019040776, guid: dc5e49b6c28f0f049b537687d489570b,
         type: 3}
       propertyPath: serializationData.Prefab
