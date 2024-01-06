@@ -19,7 +19,7 @@ Version 2 is still a work in progress. It features better performance, better ne
 
 ### Version 1
 
-To set up version 1, download the unitypackage from the [releases page](https://github.com/MMMaellon/P-Shooters/releases/tag/1.6.2) and import it into your unity project by double-clicking it while your unity project is open.
+To set up version 1, download the unitypackage from the [releases page](https://github.com/MMMaellon/P-Shooters/releases/tag/1.7.0) and import it into your unity project by double-clicking it while your unity project is open.
 
 View the readme and source code of version 1 here: <https://github.com/MMMaellon/P-Shooters/tree/v1>
 
