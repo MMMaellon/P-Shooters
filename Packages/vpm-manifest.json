@@ -1,56 +1,25 @@
 {
   "dependencies": {
-    "com.vrchat.udonsharp": {
-      "version": "1.1.6"
-    },
-    "com.vrchat.clientsim": {
-      "version": "1.2.2"
-    },
     "com.vrchat.core.vpm-resolver": {
       "version": "0.1.17"
-    },
-    "dev.onevr.vrworldtoolkit": {
-      "version": "2.1.4"
     },
     "com.cyan.playerobjectpool": {
       "version": "1.1.2"
     },
+    "dev.onevr.vrworldtoolkit": {
+      "version": "3.0.1"
+    },
     "com.mmmaellon.smartobjectsync": {
-      "version": "3.1.0"
+      "version": "3.10.11"
+    },
+    "com.vrchat.worlds": {
+      "version": "3.5.2"
     }
   },
   "locked": {
-    "com.vrchat.udonsharp": {
-      "version": "1.1.9",
-      "dependencies": {
-        "com.vrchat.worlds": "^3.1.x"
-      }
-    },
-    "com.vrchat.worlds": {
-      "version": "3.3.0",
-      "dependencies": {
-        "com.vrchat.base": "3.3.0"
-      }
-    },
-    "com.vrchat.base": {
-      "version": "3.3.0",
-      "dependencies": {}
-    },
-    "com.vrchat.clientsim": {
-      "version": "1.2.7",
-      "dependencies": {
-        "com.vrchat.worlds": "^3.2.2"
-      }
-    },
     "com.vrchat.core.vpm-resolver": {
-      "version": "0.1.24",
+      "version": "0.1.28",
       "dependencies": {}
-    },
-    "dev.onevr.vrworldtoolkit": {
-      "version": "2.1.5",
-      "dependencies": {
-        "com.vrchat.base": "^3.2.x"
-      }
     },
     "com.cyan.playerobjectpool": {
       "version": "1.1.2",
@@ -59,11 +28,25 @@
         "com.vrchat.udonsharp": "^1.1.x"
       }
     },
+    "dev.onevr.vrworldtoolkit": {
+      "version": "3.0.1",
+      "dependencies": {}
+    },
     "com.mmmaellon.smartobjectsync": {
-      "version": "3.9.2",
+      "version": "3.10.11",
       "dependencies": {
-        "com.vrchat.worlds": "^3.2.0"
+        "com.vrchat.worlds": "^3.4.0"
       }
+    },
+    "com.vrchat.worlds": {
+      "version": "3.5.2",
+      "dependencies": {
+        "com.vrchat.base": "3.5.2"
+      }
+    },
+    "com.vrchat.base": {
+      "version": "3.5.2",
+      "dependencies": {}
     }
   }
 }
