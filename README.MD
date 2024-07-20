@@ -11,7 +11,7 @@ P-Shooters is a powerful, modular, and easy-to-use Unity prefab designed to help
 * **Optimized Performance**: P-Shooters is designed with VRChat's performance requirements in mind, ensuring smooth fps even in worlds with hundreds of guns.
 * **Efficient Networking**: P-Shooters ensures low latency and keeps late-joiners synced, providing a seamless multiplayer experience.
 
-## Setup
+## ‼‼‼‼‼ Setup Instructions ‼‼‼‼‼‼‼
 
 ### Version 2 (WIP)
 
