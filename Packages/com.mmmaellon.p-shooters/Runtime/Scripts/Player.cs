@@ -118,7 +118,7 @@ namespace MMMaellon.P_Shooters
             get => _maxShield;
             set
             {
-                if (_maxHealth != value)
+                if (_maxShield != value)
                 {
                     _maxShield = value;
                     _SetShieldBar();
