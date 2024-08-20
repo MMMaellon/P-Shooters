@@ -392,6 +392,8 @@ namespace MMMaellon.P_Shooters
             _print("ResetPlayerResources");
             if (IsOwnerLocal())
             {
+                maxShield = playerHandler.startingMaxShield;
+                maxHealth = playerHandler.startingMaxHealth;
                 shield = playerHandler.startingShield;
                 health = playerHandler.startingHealth;
             }
