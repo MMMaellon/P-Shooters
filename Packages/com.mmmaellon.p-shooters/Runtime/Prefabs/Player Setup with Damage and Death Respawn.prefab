@@ -24,12 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3644367465716401701}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3094420553064415411}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &8083348789671987115
 AudioSource:
@@ -151,12 +152,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5996752676675354238}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3094420553064415411}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &5543376680817948885
 AudioSource:
@@ -281,14 +283,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7895479910191778677}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.8913499, y: -5.163815, z: 3.9814878}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8108168960160049521}
   - {fileID: 1567022884645643457}
   m_Father: {fileID: 4186557331453243135}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7347431191976235797
 MonoBehaviour:
@@ -314,6 +317,7 @@ MonoBehaviour:
   _udonSharpBackingUdonBehaviour: {fileID: 518285008107556405}
   playerHandler: {fileID: 3396802237755520458}
   ControlsDamage: 0
+  respawnDelayTime: 2
   respawnInvincibilityTime: 3
   receiveDamageAudio: {fileID: 8083348789671987115}
   onKillConfirmedAudio: {fileID: 5543376680817948885}
@@ -403,6 +407,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 283033749750275716, guid: 2bf34f3678b77e3409511e56f09eb3e4,
@@ -447,13 +452,18 @@ PrefabInstance:
     - target: {fileID: 7367138173251141170, guid: 2bf34f3678b77e3409511e56f09eb3e4,
         type: 3}
       propertyPath: playerListeners.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7367138173251141170, guid: 2bf34f3678b77e3409511e56f09eb3e4,
         type: 3}
       propertyPath: playerListeners.Array.data[0]
       value: 
       objectReference: {fileID: 7347431191976235797}
+    - target: {fileID: 7367138173251141170, guid: 2bf34f3678b77e3409511e56f09eb3e4,
+        type: 3}
+      propertyPath: playerListeners.Array.data[1]
+      value: 
+      objectReference: {fileID: 2056090398507583697}
     - target: {fileID: 8169304609856700864, guid: 2bf34f3678b77e3409511e56f09eb3e4,
         type: 3}
       propertyPath: resources.Array.data[0]
@@ -1822,13 +1832,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 8288641156827456775, guid: 2bf34f3678b77e3409511e56f09eb3e4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3094420553064415411}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2bf34f3678b77e3409511e56f09eb3e4, type: 3}
---- !u!4 &4186557331453243135 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8288641156827456775, guid: 2bf34f3678b77e3409511e56f09eb3e4,
-    type: 3}
-  m_PrefabInstance: {fileID: 5268798704427584504}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3396802237755520458 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7367138173251141170, guid: 2bf34f3678b77e3409511e56f09eb3e4,
@@ -1841,6 +1852,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41544ec167ea3f048a7fc585ccb1b3b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &4186557331453243135 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8288641156827456775, guid: 2bf34f3678b77e3409511e56f09eb3e4,
+    type: 3}
+  m_PrefabInstance: {fileID: 5268798704427584504}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &7358157168068122631 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3387802532356035583, guid: 2bf34f3678b77e3409511e56f09eb3e4,
