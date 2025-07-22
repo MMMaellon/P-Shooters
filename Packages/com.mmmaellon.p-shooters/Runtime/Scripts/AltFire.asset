@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c333ccfdd0cbdbc4ca30cef2dd6e6b9b, type: 3}
   m_Name: AltFire
   m_EditorClassIdentifier: 
-  serializedUdonProgramAsset: {fileID: 11400000, guid: b11bc289870322b47aed1228327517a7,
+  serializedUdonProgramAsset: {fileID: 11400000, guid: ab70d9bd80d89b0a3b209d1e5b7bf7eb,
     type: 2}
   udonAssembly: 
   assemblyError: 

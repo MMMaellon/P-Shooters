@@ -141,6 +141,22 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.unity.sysroot": {
+      "version": "2.0.10",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.sysroot.linux-x86_64": {
+      "version": "2.0.9",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.sysroot": "2.0.10"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.test-framework": {
       "version": "1.1.33",
       "depth": 0,
@@ -170,6 +186,16 @@
         "com.unity.modules.director": "1.0.0",
         "com.unity.modules.animation": "1.0.0",
         "com.unity.modules.particlesystem": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.toolchain.linux-x86_64": {
+      "version": "2.0.10",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.sysroot": "2.0.10",
+        "com.unity.sysroot.linux-x86_64": "2.0.9"
       },
       "url": "https://packages.unity.com"
     },
@@ -225,7 +251,8 @@
         "com.unity.timeline": "1.7.6",
         "com.unity.xr.management": "4.3.3",
         "com.unity.xr.oculus": "4.0.0",
-        "com.unity.postprocessing": "3.2.2"
+        "com.unity.postprocessing": "3.2.2",
+        "com.unity.ugui": "1.0.0"
       }
     },
     "com.vrchat.core.vpm-resolver": {
@@ -244,8 +271,7 @@
         "com.unity.cinemachine": "2.9.7",
         "com.unity.textmeshpro": "3.0.6",
         "com.unity.inputsystem": "1.2.0",
-        "com.unity.ai.navigation": "1.1.5",
-        "com.unity.ugui": "1.0.0"
+        "com.unity.ai.navigation": "1.1.5"
       }
     },
     "dev.onevr.vrworldtoolkit": {

@@ -264,7 +264,6 @@ namespace MMMaellon.P_Shooters
         int oldValue;
         public int[] syncedResources
         {
-            get => _syncedResources;
             set
             {
                 _syncedResources = value;
@@ -303,7 +302,6 @@ namespace MMMaellon.P_Shooters
         }
         public int[] localResources
         {
-            get => _localResources;
             set
             {
                 _localResources = value;
@@ -490,41 +488,59 @@ namespace MMMaellon.P_Shooters
         {
             SetResourceValueById(GetResourceId(resourceName), value);
         }
+        int setResourceOldVal;
+        int setResourceNewVal;
+        ResourceManager setResource;
         public void SetResourceValueById(int resourceId, int value)
         {
             if (resourceId < 0 || resourceId >= resources.Length)
             {
                 return;
             }
-            if (resources[resourceId].synced)
+            setResource = resources[resourceId];
+            if (setResource.synced)
             {
-                syncedResources[resourceIdMap[resourceId]] = value;
+                setResourceOldVal = _syncedResources[resourceIdMap[resourceId]];
+                _syncedResources[resourceIdMap[resourceId]] = Mathf.Clamp(value, setResource.minValue, setResource.maxValue);
+                setResourceNewVal = _syncedResources[resourceIdMap[resourceId]];
                 RequestSerialization();
             }
             else
             {
-                localResources[resourceIdMap[resourceId]] = value;
+                setResourceOldVal = _localResources[resourceIdMap[resourceId]];
+                _localResources[resourceIdMap[resourceId]] = Mathf.Clamp(value, setResource.minValue, setResource.maxValue);
+                setResourceNewVal = _localResources[resourceIdMap[resourceId]];
             }
+            setResource.OnChange(this, setResourceOldVal, setResourceNewVal);
         }
         public void ChangeResource(string resourceName, int value)
         {
             ChangeResourceValueById(GetResourceId(resourceName), value);
         }
+        int changeResourceOldVal;
+        int changeResourceNewVal;
+        ResourceManager changeResource;
         public void ChangeResourceValueById(int resourceId, int change)
         {
             if (resourceId < 0 || resourceId >= resources.Length)
             {
                 return;
             }
-            if (resources[resourceId].synced)
+            changeResource = resources[resourceId];
+            if (changeResource.synced)
             {
-                syncedResources[resourceIdMap[resourceId]] += change;
+                changeResourceOldVal = _syncedResources[resourceIdMap[resourceId]];
+                _syncedResources[resourceIdMap[resourceId]] = Mathf.Clamp(_syncedResources[resourceIdMap[resourceId]] + change, changeResource.minValue, changeResource.maxValue);
+                changeResourceNewVal = _syncedResources[resourceIdMap[resourceId]];
                 RequestSerialization();
             }
             else
             {
-                localResources[resourceIdMap[resourceId]] += change;
+                changeResourceOldVal = _localResources[resourceIdMap[resourceId]];
+                _localResources[resourceIdMap[resourceId]] = Mathf.Clamp(_localResources[resourceIdMap[resourceId]] + change, changeResource.minValue, changeResource.maxValue);
+                changeResourceNewVal = _localResources[resourceIdMap[resourceId]];
             }
+            changeResource.OnChange(this, changeResourceOldVal, changeResourceNewVal);
         }
         public int GetResource(string resourceName)
         {
@@ -538,11 +554,11 @@ namespace MMMaellon.P_Shooters
             }
             if (resources[resourceId].synced)
             {
-                return syncedResources[resourceIdMap[resourceId]];
+                return _syncedResources[resourceIdMap[resourceId]];
             }
             else
             {
-                return localResources[resourceIdMap[resourceId]];
+                return _localResources[resourceIdMap[resourceId]];
             }
         }
 

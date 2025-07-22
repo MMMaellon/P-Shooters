@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c333ccfdd0cbdbc4ca30cef2dd6e6b9b, type: 3}
   m_Name: CollisionFX
   m_EditorClassIdentifier: 
-  serializedUdonProgramAsset: {fileID: 11400000, guid: 6969a7666fa244d43954aff4c9d17646,
+  serializedUdonProgramAsset: {fileID: 11400000, guid: e2d22df62e2bcf403b54e4914d8c4b07,
     type: 2}
   udonAssembly: 
   assemblyError: 

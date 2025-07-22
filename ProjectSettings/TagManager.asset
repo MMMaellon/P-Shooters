@@ -8,7 +8,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - reserved3
+  - Item
   - Water
   - UI
   - reserved6
@@ -28,7 +28,7 @@ TagManager:
   - HardwareObjects
   - reserved4
   - AmmoHolder
-  - 
+  - reserved3
   - 
   - 
   - 

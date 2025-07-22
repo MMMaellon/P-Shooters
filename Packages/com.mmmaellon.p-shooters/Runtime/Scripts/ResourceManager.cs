@@ -109,7 +109,7 @@ For example, you probably don't need to sync ammo or coins because you usually c
 
         public void ChangeValue(Player player, int change)
         {
-            player.SetResourceValueById(id, player.GetResourceValueById(id) + change);
+            player.ChangeResourceValueById(id, change);
         }
 
         public void ResetValue(Player player)
