@@ -554,7 +554,7 @@ MonoBehaviour:
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1180681007043529472}
   targetUdon: {fileID: 7909125737540900878}
-  targetUdonEvent: TakeOwnership
+  targetUdonEvent: _TakeOwnership
   onInteract: 0
   onPickup: 1
   onPickupUseDown: 0
