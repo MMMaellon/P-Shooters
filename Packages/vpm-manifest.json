@@ -17,6 +17,9 @@
     },
     "com.mmmaellon.smartobjectsync": {
       "version": "3.10.14"
+    },
+    "befuddledlabs.linuxvrchatsdkpatch-worlds": {
+      "version": "0.2.0"
     }
   },
   "locked": {
@@ -49,6 +52,19 @@
       "version": "3.10.16",
       "dependencies": {
         "com.vrchat.worlds": "^3.4.0"
+      }
+    },
+    "befuddledlabs.linuxvrchatsdkpatch-worlds": {
+      "version": "0.2.0",
+      "dependencies": {
+        "befuddledlabs.linuxvrchatsdkpatch-base": "0.2.0",
+        "com.vrchat.worlds": "^3.8.2"
+      }
+    },
+    "befuddledlabs.linuxvrchatsdkpatch-base": {
+      "version": "0.2.0",
+      "dependencies": {
+        "com.vrchat.base": "^3.8.2"
       }
     }
   }

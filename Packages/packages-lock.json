@@ -1,5 +1,17 @@
 {
   "dependencies": {
+    "befuddledlabs.linuxvrchatsdkpatch-base": {
+      "version": "file:befuddledlabs.linuxvrchatsdkpatch-base",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "befuddledlabs.linuxvrchatsdkpatch-worlds": {
+      "version": "file:befuddledlabs.linuxvrchatsdkpatch-worlds",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.cyan.playerobjectpool": {
       "version": "file:com.cyan.playerobjectpool",
       "depth": 0,
