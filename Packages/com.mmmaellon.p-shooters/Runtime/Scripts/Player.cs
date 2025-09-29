@@ -728,7 +728,7 @@ namespace MMMaellon.P_Shooters
                 return;
             }
 
-            if (!otherShooter.sync.IsLocalOwner())
+            if (!otherShooter.sync.IsLocalOwner() || otherShooter.state == P_Shooter.STATE_DISABLED)
             {
                 return;
             }
