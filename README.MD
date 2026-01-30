@@ -1,6 +1,8 @@
 # P_Shooters v2: Udon Prefab for VRChat Particle Shooter Guns
 
 # Ask questions on my [Discord Server](https://discord.gg/S5sDC4PnFp)
+# Search answers on [my AnswerOverflow](https://www.answeroverflow.com/c/1023675328582910073)
+Questions asked on my discord show up in AnswerOverflow so others can see them without having to join the discord
 
 P-Shooters is a powerful, modular, and easy-to-use Unity prefab designed to help developers create immersive and engaging gun games in VRChat. With a focus on customizability, performance, and low latency, P-Shooters provides a fully-featured foundation for creating a wide range of VRChat shooting games, from simple arcade-style PvPs to complex simulations with realistic bullet counting and reload mechanics.
 
