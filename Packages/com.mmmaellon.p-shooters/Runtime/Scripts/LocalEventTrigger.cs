@@ -184,6 +184,7 @@ namespace MMMaellon.P_Shooters
             if (Utilities.IsValid(player) && player.isLocal)
             {
                 enterTime = Time.timeSinceLevelLoad;
+                triggeredIntervals = 0;
                 if (onPlayerTriggerEnter)
                 {
                     Trigger();
@@ -254,7 +255,10 @@ namespace MMMaellon.P_Shooters
                 return 1;
             }
             intervalCount = Mathf.CeilToInt((Time.timeSinceLevelLoad - enterTime) / stayTriggerInterval);
-            if (intervalCount - triggeredIntervals > 0)
+            if(intervalCount < triggeredIntervals){
+                triggeredIntervals = intervalCount;
+                return intervalCount;
+            } else if (intervalCount - triggeredIntervals > 0)
             {
                 int difference = intervalCount - triggeredIntervals;
                 triggeredIntervals = intervalCount;
